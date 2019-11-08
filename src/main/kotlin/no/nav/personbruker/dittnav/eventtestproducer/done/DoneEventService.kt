@@ -22,4 +22,8 @@ class DoneEventService(
         }
     }
 
+    fun markEventAsDone(aktorId: String, eventId : String) {
+        DoneProducer.produceDoneEventForIdent(aktorId, eventId)
+    }
+
 }

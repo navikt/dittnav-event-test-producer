@@ -21,11 +21,22 @@ object DoneProducer {
         log.info("Har produsert et done-event for identen: $ident")
     }
 
+    fun produceDoneEventForIdent(ident: String, eventId: String) {
+        KafkaProducer<String, Done>(Kafka.producerProps(Environment())).use { producer ->
+            producer.send(ProducerRecord(doneTopicName, createDoneForIdent(ident, eventId)))
+        }
+        log.info("Har produsert et done-event for identen: $ident")
+    }
+
     private fun createDoneForIdent(ident: String, eventThatsDone: Brukernotifikasjon): Done {
+        return createDoneForIdent(ident, eventThatsDone.eventId)
+    }
+
+    private fun createDoneForIdent(ident: String, eventId: String): Done {
         val nowInMs = Instant.now().toEpochMilli()
         val build = Done.newBuilder()
                 .setAktorId(ident)
-                .setEventId(eventThatsDone.eventId)
+                .setEventId(eventId)
                 .setProdusent("DittNAV")
                 .setTidspunkt(nowInMs)
                 .setDokumentId("100$nowInMs")
