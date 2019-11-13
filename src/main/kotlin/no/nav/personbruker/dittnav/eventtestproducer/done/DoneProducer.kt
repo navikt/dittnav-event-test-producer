@@ -14,25 +14,25 @@ object DoneProducer {
 
     private val log = LoggerFactory.getLogger(DoneProducer::class.java)
 
-    fun produceDoneEventForIdent(ident: String, eventThatsDone: Brukernotifikasjon) {
+    fun produceDoneEventForSpecifiedEvent(ident: String, eventThatsDone: Brukernotifikasjon) {
+        val doneEvent = createDoneEvent(ident, eventThatsDone.eventId)
+        produceDoneEvent(doneEvent)
+        log.info("Har produsert et done-event for identen: $ident sitt event med eventId: ${eventThatsDone.eventId}")
+    }
+
+    fun produceDoneEventForSuppliedEventId(ident: String, eventId: String) {
+        val doneEvent = createDoneEvent(ident, eventId)
+        produceDoneEvent(doneEvent)
+        log.info("Har produsert et done-event for identen: $ident sitt event med eventId: $eventId")
+    }
+
+    private fun produceDoneEvent(doneEvent : Done) {
         KafkaProducer<String, Done>(Kafka.producerProps(Environment())).use { producer ->
-            producer.send(ProducerRecord(doneTopicName, createDoneForIdent(ident, eventThatsDone)))
+            producer.send(ProducerRecord(doneTopicName, doneEvent))
         }
-        log.info("Har produsert et done-event for identen: $ident")
     }
 
-    fun produceDoneEventForIdent(ident: String, eventId: String) {
-        KafkaProducer<String, Done>(Kafka.producerProps(Environment())).use { producer ->
-            producer.send(ProducerRecord(doneTopicName, createDoneForIdent(ident, eventId)))
-        }
-        log.info("Har produsert et done-event for identen: $ident")
-    }
-
-    private fun createDoneForIdent(ident: String, eventThatsDone: Brukernotifikasjon): Done {
-        return createDoneForIdent(ident, eventThatsDone.eventId)
-    }
-
-    private fun createDoneForIdent(ident: String, eventId: String): Done {
+    private fun createDoneEvent(ident: String, eventId: String): Done {
         val nowInMs = Instant.now().toEpochMilli()
         val build = Done.newBuilder()
                 .setAktorId(ident)
