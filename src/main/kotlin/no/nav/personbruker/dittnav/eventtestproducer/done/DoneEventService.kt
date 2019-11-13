@@ -18,8 +18,12 @@ class DoneEventService(
         alleBrukernotifikasjoner.addAll(oppgaver)
 
         alleBrukernotifikasjoner.forEach { brukernotifikasjon ->
-            DoneProducer.produceDoneEventForIdent(aktorId, brukernotifikasjon)
+            DoneProducer.produceDoneEventForSpecifiedEvent(aktorId, brukernotifikasjon)
         }
+    }
+
+    fun markEventAsDone(aktorId: String, eventId : String) {
+        DoneProducer.produceDoneEventForSuppliedEventId(aktorId, eventId)
     }
 
 }
