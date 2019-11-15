@@ -14,18 +14,29 @@ object DoneProducer {
 
     private val log = LoggerFactory.getLogger(DoneProducer::class.java)
 
-    fun produceDoneEventForIdent(ident: String, eventThatsDone: Brukernotifikasjon) {
-        KafkaProducer<String, Done>(Kafka.producerProps(Environment())).use { producer ->
-            producer.send(ProducerRecord(doneTopicName, createDoneForIdent(ident, eventThatsDone)))
-        }
-        log.info("Har produsert et done-event for identen: $ident")
+    fun produceDoneEventForSpecifiedEvent(ident: String, eventThatsDone: Brukernotifikasjon) {
+        val doneEvent = createDoneEvent(ident, eventThatsDone.eventId)
+        produceDoneEvent(doneEvent)
+        log.info("Har produsert et done-event for identen: $ident sitt event med eventId: ${eventThatsDone.eventId}")
     }
 
-    private fun createDoneForIdent(ident: String, eventThatsDone: Brukernotifikasjon): Done {
+    fun produceDoneEventForSuppliedEventId(ident: String, eventId: String) {
+        val doneEvent = createDoneEvent(ident, eventId)
+        produceDoneEvent(doneEvent)
+        log.info("Har produsert et done-event for identen: $ident sitt event med eventId: $eventId")
+    }
+
+    private fun produceDoneEvent(doneEvent : Done) {
+        KafkaProducer<String, Done>(Kafka.producerProps(Environment())).use { producer ->
+            producer.send(ProducerRecord(doneTopicName, doneEvent))
+        }
+    }
+
+    private fun createDoneEvent(ident: String, eventId: String): Done {
         val nowInMs = Instant.now().toEpochMilli()
         val build = Done.newBuilder()
                 .setAktorId(ident)
-                .setEventId(eventThatsDone.eventId)
+                .setEventId(eventId)
                 .setProdusent("DittNAV")
                 .setTidspunkt(nowInMs)
                 .setDokumentId("100$nowInMs")

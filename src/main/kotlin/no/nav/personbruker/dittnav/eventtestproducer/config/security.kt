@@ -6,7 +6,9 @@ import io.ktor.application.call
 import io.ktor.http.HttpHeaders
 import io.ktor.util.pipeline.PipelineContext
 
-fun PipelineContext<Unit, ApplicationCall>.extractIdentFromToken(): String {
+val PipelineContext<Unit, ApplicationCall>.userIdent get() = extractIdentFromToken()
+
+private fun PipelineContext<Unit, ApplicationCall>.extractIdentFromToken(): String {
     var authToken = getTokenFromHeader()
     if (authToken == null) {
         authToken = getTokenFromCookie()
