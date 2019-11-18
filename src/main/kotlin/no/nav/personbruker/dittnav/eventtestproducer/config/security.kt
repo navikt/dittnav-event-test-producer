@@ -3,7 +3,10 @@ package no.nav.personbruker.dittnav.eventtestproducer.config
 import com.auth0.jwt.JWT
 import io.ktor.application.ApplicationCall
 import io.ktor.application.call
+import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
+import io.ktor.request.receive
+import io.ktor.response.respondText
 import io.ktor.util.pipeline.PipelineContext
 
 val PipelineContext<Unit, ApplicationCall>.userIdent get() = extractIdentFromToken()
@@ -21,6 +24,17 @@ private fun verifyThatATokenWasFound(authToken: String?) {
     if (authToken == null) {
         throw Exception("Token ble ikke funnet. Dette skal ikke kunne skje.")
     }
+}
+
+suspend inline fun PipelineContext<Unit, ApplicationCall>.respond(handler: () -> String) {
+    val message = handler.invoke()
+    call.respondText(text = message, contentType = ContentType.Text.Plain)
+}
+
+suspend inline fun <reified T : Any> PipelineContext<Unit, ApplicationCall>.respondForParameterType(handler:(T) -> String) {
+    val postParametersDto: T = call.receive()
+    val message = handler.invoke(postParametersDto)
+    call.respondText(text = message, contentType = ContentType.Text.Plain)
 }
 
 private fun PipelineContext<Unit, ApplicationCall>.getTokenFromHeader() =
