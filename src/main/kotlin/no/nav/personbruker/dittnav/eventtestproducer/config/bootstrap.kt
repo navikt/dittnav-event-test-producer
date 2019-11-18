@@ -15,6 +15,7 @@ import io.prometheus.client.hotspot.DefaultExports
 import no.nav.personbruker.dittnav.eventtestproducer.common.healthApi
 import no.nav.personbruker.dittnav.eventtestproducer.done.doneApi
 import no.nav.personbruker.dittnav.eventtestproducer.informasjon.informasjonApi
+import no.nav.personbruker.dittnav.eventtestproducer.innboks.innboksApi
 import no.nav.personbruker.dittnav.eventtestproducer.oppgave.oppgaveApi
 import no.nav.security.token.support.ktor.tokenValidationSupport
 
@@ -41,6 +42,7 @@ fun Application.mainModule(appContext: ApplicationContext = ApplicationContext()
         authenticate {
             oppgaveApi()
             informasjonApi()
+            innboksApi()
             doneApi(appContext.doneEventService)
         }
     }
