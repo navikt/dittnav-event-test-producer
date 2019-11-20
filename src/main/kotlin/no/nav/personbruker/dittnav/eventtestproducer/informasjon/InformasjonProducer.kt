@@ -30,7 +30,7 @@ object InformasjonProducer {
                 .setLink(dto.link)
                 .setTekst(dto.tekst)
                 .setTidspunkt(nowInMs)
-                .setSikkerhetsniva(4)
+                .setSikkerhetsnivaa(4)
         return build.build()
     }
 
