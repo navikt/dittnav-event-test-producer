@@ -6,7 +6,7 @@ metadata:
   labels:
     team: personbruker
 spec:
-  image: navikt/dittnav-event-test-producer:{{version}}
+  image: {{version}}
   port: 8080
   liveness:
     path: /person/dittnav-event-test-producer/isAlive
