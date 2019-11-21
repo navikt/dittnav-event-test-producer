@@ -1,0 +1,101 @@
+version: 2.1
+orbs:
+  nais: 'navikt/nais-deployment@3.2.0'
+
+jobs:
+  bygg-og-push-docker:
+    docker:
+      - image: circleci/openjdk:13-jdk-buster
+        environment:
+          TZ: "Europe/Oslo"
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.gradle.kts" }}
+            - v1-dependencies-
+      - run:
+          name: Gradle build
+          command: gradle build
+      - setup_remote_docker
+      - run:
+          name: Docker build
+          command: docker build -t "navikt/dittnav-event-test-producer:$CIRCLE_SHA1" -t "navikt/dittnav-event-test-producer:latest" .
+      - run:
+          name: Docker push
+          command: |
+            echo $DOCKER_PASSWORD | docker login --username $DOCKER_LOGIN --password-stdin
+            docker push "navikt/dittnav-event-test-producer:$CIRCLE_SHA1"
+            docker push "navikt/dittnav-event-test-producer:latest"
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-dependencies-{{ checksum "build.gradle.kts" }}
+  deploy-q6:
+    executor: nais/deployment-cli
+    steps:
+      - nais-deploy:
+          namespace: q6
+          environment: dev-sbs
+  deploy-q1:
+    executor: nais/deployment-cli
+    steps:
+      - nais-deploy:
+          namespace: q1
+          environment: dev-sbs
+  deploy-q0:
+    executor: nais/deployment-cli
+    steps:
+      - nais-deploy:
+          namespace: q0
+          environment: dev-sbs
+
+commands:
+  nais-deploy:
+    description: Deploy til miljø
+    parameters:
+      namespace:
+        type: string
+      environment:
+        type: string
+    steps:
+      - checkout
+      - nais/deploy-with-gh-app:
+          repo: navikt/dittnav-event-test-producer
+          image: navikt/dittnav-event-test-producer
+          github-app-id: 34043
+          nais-template: nais/nais.yaml
+          environment: << parameters.environment >>
+          team: personbruker
+          enable-vars: true
+          template-vars: nais/<< parameters.environment >>/<< parameters.namespace >>.json
+
+workflows:
+  bygg-og-deploy:
+    jobs:
+      - bygg-og-push-docker:
+          context: NAIS deployment
+      - til-q6:
+          type: approval
+          requires:
+            - bygg-og-push-docker
+      - deploy-q6:
+          requires:
+            - til-q6
+      - til-q1:
+          type: approval
+          requires:
+            - deploy-q6
+      - deploy-q1:
+          requires:
+            - til-q1
+      - til-q0:
+          type: approval
+          requires:
+            - deploy-q1
+          filters:
+            branches:
+              only: master
+      - deploy-q0:
+          requires:
+            - til-q0
