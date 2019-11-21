@@ -5,7 +5,7 @@ orbs:
 jobs:
   bygg-og-push-docker:
     docker:
-      - image: circleci/openjdk:12-jdk
+      - image: circleci/openjdk:13-jdk-buster
         environment:
           TZ: "Europe/Oslo"
     steps:
