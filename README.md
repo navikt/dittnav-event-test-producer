@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/navikt/dittnav-event-test-producer.svg?style=svg)](https://circleci.com/gh/navikt/dittnav-event-test-producer)
+
 # DittNAV-event-test-producer
 
 Microservice for testing lokalt og i preprod for å produsere kafka-eventene som DittNAV lytter på.
