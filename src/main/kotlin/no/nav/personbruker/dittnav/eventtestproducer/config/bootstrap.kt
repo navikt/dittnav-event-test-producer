@@ -14,7 +14,7 @@ import io.ktor.util.KtorExperimentalAPI
 import io.prometheus.client.hotspot.DefaultExports
 import no.nav.personbruker.dittnav.eventtestproducer.common.healthApi
 import no.nav.personbruker.dittnav.eventtestproducer.done.doneApi
-import no.nav.personbruker.dittnav.eventtestproducer.informasjon.informasjonApi
+import no.nav.personbruker.dittnav.eventtestproducer.beskjed.beskjedApi
 import no.nav.personbruker.dittnav.eventtestproducer.innboks.innboksApi
 import no.nav.personbruker.dittnav.eventtestproducer.oppgave.oppgaveApi
 import no.nav.security.token.support.ktor.tokenValidationSupport
@@ -41,7 +41,7 @@ fun Application.mainModule(appContext: ApplicationContext = ApplicationContext()
         healthApi()
         authenticate {
             oppgaveApi()
-            informasjonApi()
+            beskjedApi()
             innboksApi()
             doneApi(appContext.doneEventService)
         }

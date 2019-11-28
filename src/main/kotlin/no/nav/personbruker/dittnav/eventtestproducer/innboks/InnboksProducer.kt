@@ -22,8 +22,8 @@ object InnboksProducer {
         val nowInMs = Instant.now().toEpochMilli()
 
         return Innboks.newBuilder()
-                .setAktorId(ident)
-                .setDokumentId("100$nowInMs")
+                .setFodselsnummer(ident)
+                .setGrupperingsId("100$nowInMs")
                 .setEventId("$nowInMs")
                 .setProdusent("DittNAV")
                 .setLink(dto.link)

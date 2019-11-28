@@ -1,31 +1,31 @@
-package no.nav.personbruker.dittnav.eventtestproducer.informasjon
+package no.nav.personbruker.dittnav.eventtestproducer.beskjed
 
-import Informasjon
+import Beskjed
 import java.sql.Connection
 import java.sql.ResultSet
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-fun Connection.getAllInformasjonByAktorId(aktorId: String): List<Informasjon> =
-        prepareStatement("""SELECT * FROM INFORMASJON WHERE aktorId = ?""")
+fun Connection.getAllBeskjedByAktorId(aktorId: String): List<Beskjed> =
+        prepareStatement("""SELECT * FROM BESKJED WHERE aktorId = ?""")
                 .use {
                     it.setString(1, aktorId)
                     it.executeQuery().list {
-                        toInformasjon()
+                        toBeskjed()
                     }
                 }
 
-fun Connection.getInformasjonByAktorId(aktorId: String): List<Informasjon> =
-        prepareStatement("""SELECT * FROM INFORMASJON WHERE aktorId = ? AND aktiv = true""")
+fun Connection.getBeskjedByAktorId(aktorId: String): List<Beskjed> =
+        prepareStatement("""SELECT * FROM BESKJED WHERE aktorId = ? AND aktiv = true""")
                 .use {
                     it.setString(1, aktorId)
                     it.executeQuery().list {
-                        toInformasjon()
+                        toBeskjed()
                     }
                 }
 
-private fun ResultSet.toInformasjon(): Informasjon {
-    return Informasjon(
+private fun ResultSet.toBeskjed(): Beskjed {
+    return Beskjed(
             id = getInt("id"),
             produsent = getString("produsent"),
             eventTidspunkt = ZonedDateTime.ofInstant(getTimestamp("eventTidspunkt").toInstant(), ZoneId.of("Europe/Oslo")),

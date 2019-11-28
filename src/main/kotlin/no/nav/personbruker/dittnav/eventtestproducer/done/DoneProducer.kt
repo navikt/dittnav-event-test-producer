@@ -35,11 +35,11 @@ object DoneProducer {
     private fun createDoneEvent(ident: String, eventId: String): Done {
         val nowInMs = Instant.now().toEpochMilli()
         val build = Done.newBuilder()
-                .setAktorId(ident)
+                .setFodselsnummer(ident)
                 .setEventId(eventId)
                 .setProdusent("DittNAV")
                 .setTidspunkt(nowInMs)
-                .setDokumentId("100$nowInMs")
+                .setGrupperingsId("100$nowInMs")
         return build.build()
     }
 
