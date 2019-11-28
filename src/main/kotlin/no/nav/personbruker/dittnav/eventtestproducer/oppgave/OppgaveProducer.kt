@@ -23,8 +23,8 @@ object OppgaveProducer {
     private fun createOppgaveForIdent(ident: String, dto: ProduceOppgaveDto): Oppgave {
         val nowInMs = Instant.now().toEpochMilli()
         val build = Oppgave.newBuilder()
-                .setAktorId(ident)
-                .setDokumentId("100$nowInMs")
+                .setFodselsnummer(ident)
+                .setGrupperingsId("100$nowInMs")
                 .setEventId("$nowInMs")
                 .setProdusent("DittNAV")
                 .setLink(dto.link)
