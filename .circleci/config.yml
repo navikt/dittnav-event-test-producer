@@ -127,7 +127,7 @@ workflows:
             - deploy-q1
           filters:
             branches:
-              only: pb-304-latest-master
+              only: master
       - deploy-q0:
           requires:
             - til-q0
