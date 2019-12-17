@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val prometheusVersion = "0.6.0"
-val ktorVersion = "1.2.4"
+val ktorVersion = "1.2.5"
 val junitVersion = "5.4.1"
 val kafkaVersion = "2.2.0"
 val confluentVersion = "5.2.0"
@@ -91,6 +91,8 @@ tasks {
     }
 
     register("runServer", JavaExec::class) {
+        environment("CORS_ALLOWED_ORIGINS", "localhost:9002")
+
         main = application.mainClassName
         classpath = sourceSets["main"].runtimeClasspath
     }
