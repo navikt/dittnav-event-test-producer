@@ -6,15 +6,17 @@ import io.ktor.application.Application
 import io.ktor.application.install
 import io.ktor.auth.Authentication
 import io.ktor.auth.authenticate
+import io.ktor.features.CORS
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.DefaultHeaders
+import io.ktor.http.HttpHeaders
 import io.ktor.jackson.jackson
 import io.ktor.routing.routing
 import io.ktor.util.KtorExperimentalAPI
 import io.prometheus.client.hotspot.DefaultExports
+import no.nav.personbruker.dittnav.eventtestproducer.beskjed.beskjedApi
 import no.nav.personbruker.dittnav.eventtestproducer.common.healthApi
 import no.nav.personbruker.dittnav.eventtestproducer.done.doneApi
-import no.nav.personbruker.dittnav.eventtestproducer.beskjed.beskjedApi
 import no.nav.personbruker.dittnav.eventtestproducer.innboks.innboksApi
 import no.nav.personbruker.dittnav.eventtestproducer.oppgave.oppgaveApi
 import no.nav.security.token.support.ktor.tokenValidationSupport
@@ -23,6 +25,12 @@ import no.nav.security.token.support.ktor.tokenValidationSupport
 fun Application.mainModule(appContext: ApplicationContext = ApplicationContext()) {
     DefaultExports.initialize()
     install(DefaultHeaders)
+
+    install(CORS) {
+        host(appContext.environment.corsAllowedOrigins)
+        allowCredentials = true
+        header(HttpHeaders.ContentType)
+    }
 
     install(ContentNegotiation) {
         jackson {

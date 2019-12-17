@@ -11,10 +11,11 @@ data class Environment(val bootstrapServers: String = getEnvVar("KAFKA_BOOTSTRAP
                        val dbReadOnlyUser: String = getEnvVar("DB_NAME", "test") + "-readonly",
                        val dbUrl: String = "jdbc:postgresql://$dbHost/$dbName",
                        val dbPassword: String = getEnvVar("DB_PASSWORD", "testpassword"),
-                       val dbMountPath: String = getEnvVar("DB_MOUNT_PATH", "notUsedOnLocalhost")
+                       val dbMountPath: String = getEnvVar("DB_MOUNT_PATH", "notUsedOnLocalhost"),
+                       val corsAllowedOrigins: String = getEnvVar("CORS_ALLOWED_ORIGINS")
 )
 
 fun getEnvVar(varName: String, defaultValue: String? = null): String {
-    return System.getenv(varName) ?: defaultValue
-    ?: throw IllegalArgumentException("Variable $varName cannot be empty")
+    val varValue = System.getenv(varName) ?: defaultValue
+    return varValue ?: throw IllegalArgumentException("Variable $varName cannot be empty")
 }
