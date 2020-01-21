@@ -40,7 +40,6 @@ repositories {
     mavenLocal()
 }
 
-
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     compile("no.nav.security:token-validation-ktor:1.1.0")
