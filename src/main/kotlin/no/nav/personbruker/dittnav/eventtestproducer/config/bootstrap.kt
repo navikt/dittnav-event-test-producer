@@ -30,7 +30,6 @@ fun Application.mainModule(appContext: ApplicationContext = ApplicationContext()
         //host(appContext.environment.corsAllowedOrigins)
         anyHost()
         allowCredentials = true
-        allowNonSimpleContentTypes = true
         header(HttpHeaders.ContentType)
     }
 
