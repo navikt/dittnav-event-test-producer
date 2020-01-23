@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val prometheusVersion = "0.6.0"
-val ktorVersion = "1.2.5"
+val ktorVersion = "1.3.0"
 val junitVersion = "5.4.1"
 val kafkaVersion = "2.2.0"
 val confluentVersion = "5.2.0"
@@ -39,7 +39,6 @@ repositories {
     maven("http://packages.confluent.io/maven")
     mavenLocal()
 }
-
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
