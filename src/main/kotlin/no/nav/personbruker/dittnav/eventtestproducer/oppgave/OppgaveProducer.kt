@@ -1,6 +1,8 @@
 package no.nav.personbruker.dittnav.eventtestproducer.oppgave
 
+import no.nav.brukernotifikasjon.schemas.Nokkel
 import no.nav.brukernotifikasjon.schemas.Oppgave
+import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.config.Environment
 import no.nav.personbruker.dittnav.eventtestproducer.config.Kafka
 import no.nav.personbruker.dittnav.eventtestproducer.config.Kafka.oppgaveTopicName
@@ -14,8 +16,8 @@ object OppgaveProducer {
     private val log = LoggerFactory.getLogger(OppgaveProducer::class.java)
 
     fun produceOppgaveEventForIdent(ident: String, dto: ProduceOppgaveDto) {
-        KafkaProducer<String, Oppgave>(Kafka.producerProps(Environment())).use { producer ->
-            producer.send(ProducerRecord(oppgaveTopicName, createOppgaveForIdent(ident, dto)))
+        KafkaProducer<Nokkel, Oppgave>(Kafka.producerProps(Environment())).use { producer ->
+            producer.send(ProducerRecord(oppgaveTopicName, createKeyForEvent(),createOppgaveForIdent(ident, dto)))
         }
         log.info("Har produsert et oppgace-event for identen: $ident")
     }
@@ -25,13 +27,12 @@ object OppgaveProducer {
         val build = Oppgave.newBuilder()
                 .setFodselsnummer(ident)
                 .setGrupperingsId("100$nowInMs")
-                .setEventId("$nowInMs")
-                .setProdusent("DittNAV")
                 .setLink(dto.link)
                 .setTekst(dto.tekst)
                 .setTidspunkt(nowInMs)
-                .setSikkerhetsnivaa(4)
         return build.build()
     }
+
+
 
 }
