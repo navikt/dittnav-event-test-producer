@@ -15,6 +15,7 @@ val postgresVersion = "42.2.5"
 val h2Version = "1.4.199"
 val jacksonVersion = "2.9.9"
 val kluentVersion = "1.52"
+val mockKVersion = "1.9.3"
 
 plugins {
     // Apply the Kotlin JVM plugin to add support for Kotlin on the JVM.
@@ -67,6 +68,8 @@ dependencies {
     testImplementation("io.confluent:kafka-schema-registry:$confluentVersion")
     testImplementation("com.h2database:h2:$h2Version")
     testImplementation("org.amshove.kluent:kluent:$kluentVersion")
+    testCompile("io.ktor:ktor-client-mock:$ktorVersion")
+    testImplementation("io.mockk:mockk:$mockKVersion")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 }
 

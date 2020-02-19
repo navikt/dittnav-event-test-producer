@@ -1,23 +1,24 @@
 package no.nav.personbruker.dittnav.eventtestproducer.oppgave
 
+import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import java.sql.Connection
 import java.sql.ResultSet
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-fun Connection.getAllOppgaveByFodselsnummer(fodselsnummer: String): List<Oppgave> =
+fun Connection.getAllOppgaveByFodselsnummer(innloggetBruker: InnloggetBruker): List<Oppgave> =
         prepareStatement("""SELECT * FROM OPPGAVE WHERE fodselsnummer = ?""")
                 .use {
-                    it.setString(1, fodselsnummer)
+                    it.setString(1, innloggetBruker.getIdentFromToken())
                     it.executeQuery().list {
                         toOppgave()
                     }
                 }
 
-fun Connection.getOppgaveByFodselsnummer(fodselsnummer: String): List<Oppgave> =
+fun Connection.getOppgaveByFodselsnummer(innloggetBruker: InnloggetBruker): List<Oppgave> =
         prepareStatement("""SELECT * FROM OPPGAVE WHERE fodselsnummer = ? AND aktiv = true""")
                 .use {
-                    it.setString(1, fodselsnummer)
+                    it.setString(1, innloggetBruker.getIdentFromToken())
                     it.executeQuery().list {
                         toOppgave()
                     }
