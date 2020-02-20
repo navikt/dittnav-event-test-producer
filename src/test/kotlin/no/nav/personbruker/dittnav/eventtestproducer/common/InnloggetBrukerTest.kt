@@ -28,7 +28,7 @@ internal class InnloggetBrukerTest {
         coEvery { innloggetBruker.token.jwtTokenClaims.getStringClaim("sub") } returns subClaimThatIsNotAnIdent
 
         runBlocking {
-            val actualIdent = innloggetBruker.getIdentFromToken()
+            val actualIdent = innloggetBruker.getIdent()
             actualIdent `should be equal to` expectedIdent
         }
     }
@@ -42,7 +42,7 @@ internal class InnloggetBrukerTest {
         coEvery { innloggetBruker.token.jwtTokenClaims.getStringClaim("sub") } returns expectedIdent
 
         runBlocking {
-            val actualIdent = innloggetBruker.getIdentFromToken()
+            val actualIdent = innloggetBruker.getIdent()
             actualIdent `should be equal to` expectedIdent
         }
     }

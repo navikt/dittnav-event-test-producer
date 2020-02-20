@@ -15,7 +15,7 @@ class InnloggetBruker(val token: JwtToken) {
         return "Bearer " + token.tokenAsString
     }
 
-    fun getIdentFromToken(): String {
+    fun getIdent(): String {
         var ident = token.jwtTokenClaims.getStringClaim("sub")
 
         if (isSubjectContainsOtherCharactersThanDigits(ident)) {

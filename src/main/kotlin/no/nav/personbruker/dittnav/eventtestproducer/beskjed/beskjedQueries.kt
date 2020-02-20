@@ -10,7 +10,7 @@ import java.time.ZonedDateTime
 fun Connection.getAllBeskjedByFodselsnummer(innloggetBruker: InnloggetBruker): List<Beskjed> =
         prepareStatement("""SELECT * FROM BESKJED WHERE fodselsnummer = ?""")
                 .use {
-                    it.setString(1, innloggetBruker.getIdentFromToken())
+                    it.setString(1, innloggetBruker.getIdent())
                     it.executeQuery().list {
                         toBeskjed()
                     }
@@ -19,7 +19,7 @@ fun Connection.getAllBeskjedByFodselsnummer(innloggetBruker: InnloggetBruker): L
 fun Connection.getBeskjedByFodselsnummer(innloggetBruker: InnloggetBruker): List<Beskjed> =
         prepareStatement("""SELECT * FROM BESKJED WHERE fodselsnummer = ? AND aktiv = true""")
                 .use {
-                    it.setString(1, innloggetBruker.getIdentFromToken())
+                    it.setString(1, innloggetBruker.getIdent())
                     it.executeQuery().list {
                         toBeskjed()
                     }

@@ -21,14 +21,14 @@ object BeskjedProducer {
         KafkaProducer<Nokkel, Beskjed>(Kafka.producerProps(Environment())).use { producer ->
             producer.send(ProducerRecord(beskjedTopicName, createKeyForEvent(), createBeskjedForIdent(innloggetBruker, dto)))
         }
-        log.info("Har produsert et beskjeds-event for identen: ${innloggetBruker.getIdentFromToken()}")
+        log.info("Har produsert et beskjeds-event for identen: ${innloggetBruker.getIdent()}")
     }
 
     private fun createBeskjedForIdent(innloggetBruker: InnloggetBruker, dto: ProduceBeskjedDto): Beskjed {
         val nowInMs = Instant.now().toEpochMilli()
         val weekFromNowInMs = Instant.now().plus(7, ChronoUnit.DAYS).toEpochMilli()
         val build = Beskjed.newBuilder()
-                .setFodselsnummer(innloggetBruker.getIdentFromToken())
+                .setFodselsnummer(innloggetBruker.getIdent())
                 .setGrupperingsId("100$nowInMs")
                 .setLink(dto.link)
                 .setTekst(dto.tekst)

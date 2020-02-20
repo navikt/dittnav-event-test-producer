@@ -9,7 +9,7 @@ import java.time.ZonedDateTime
 fun Connection.getAllInnboksByFodselsnummer(innloggetBruker: InnloggetBruker): List<Innboks> =
         prepareStatement("""SELECT * FROM INNBOKS WHERE fodselsnummer = ?""")
                 .use {
-                    it.setString(1, innloggetBruker.getIdentFromToken())
+                    it.setString(1, innloggetBruker.getIdent())
                     it.executeQuery().list {
                         toInnboks()
                     }
@@ -18,7 +18,7 @@ fun Connection.getAllInnboksByFodselsnummer(innloggetBruker: InnloggetBruker): L
 fun Connection.getInnboksByFodselsnummer(innloggetBruker: InnloggetBruker): List<Innboks> =
         prepareStatement("""SELECT * FROM INNBOKS WHERE fodselsnummer = ? AND aktiv = true""")
                 .use {
-                    it.setString(1, innloggetBruker.getIdentFromToken())
+                    it.setString(1, innloggetBruker.getIdent())
                     it.executeQuery().list {
                         toInnboks()
                     }

@@ -18,14 +18,14 @@ object InnboksProducer {
         KafkaProducer<Nokkel, Innboks>(Kafka.producerProps(Environment())).use { producer ->
             producer.send(ProducerRecord(Kafka.innboksTopicName, createKeyForEvent(), createInnboksForIdent(innloggetBruker, dto)))
         }
-        log.info("Har produsert et innboks-event for identen: ${innloggetBruker.getIdentFromToken()}")
+        log.info("Har produsert et innboks-event for identen: ${innloggetBruker.getIdent()}")
     }
 
     private fun createInnboksForIdent(innloggetBruker: InnloggetBruker, dto: ProduceInnboksDto): Innboks {
         val nowInMs = Instant.now().toEpochMilli()
 
         return Innboks.newBuilder()
-                .setFodselsnummer(innloggetBruker.getIdentFromToken())
+                .setFodselsnummer(innloggetBruker.getIdent())
                 .setGrupperingsId("100$nowInMs")
                 .setLink(dto.link)
                 .setTekst(dto.tekst)

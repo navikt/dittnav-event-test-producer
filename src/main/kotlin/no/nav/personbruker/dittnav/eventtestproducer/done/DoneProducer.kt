@@ -20,13 +20,13 @@ object DoneProducer {
     fun produceDoneEventForSpecifiedEvent(innloggetBruker: InnloggetBruker, eventThatsDone: Brukernotifikasjon) {
         val doneEvent = createDoneEvent(innloggetBruker)
         produceDoneEvent(doneEvent, createKeyForEvent(eventThatsDone.eventId))
-        log.info("Har produsert et done-event for identen: ${innloggetBruker.getIdentFromToken()} sitt event med eventId: ${eventThatsDone.eventId}")
+        log.info("Har produsert et done-event for identen: ${innloggetBruker.getIdent()} sitt event med eventId: ${eventThatsDone.eventId}")
     }
 
     fun produceDoneEventForSuppliedEventId(innloggetBruker: InnloggetBruker, eventId: String) {
         val doneEvent = createDoneEvent(innloggetBruker)
         produceDoneEvent(doneEvent, createKeyForEvent(eventId))
-        log.info("Har produsert et done-event for identen: ${innloggetBruker.getIdentFromToken()} sitt event med eventId: $eventId")
+        log.info("Har produsert et done-event for identen: ${innloggetBruker.getIdent()} sitt event med eventId: $eventId")
     }
 
     private fun produceDoneEvent(doneEvent : Done, key: Nokkel) {
@@ -38,7 +38,7 @@ object DoneProducer {
     private fun createDoneEvent(innloggetBruker: InnloggetBruker): Done {
         val nowInMs = Instant.now().toEpochMilli()
         val build = Done.newBuilder()
-                .setFodselsnummer(innloggetBruker.getIdentFromToken())
+                .setFodselsnummer(innloggetBruker.getIdent())
                 .setTidspunkt(nowInMs)
                 .setGrupperingsId("100$nowInMs")
         return build.build()

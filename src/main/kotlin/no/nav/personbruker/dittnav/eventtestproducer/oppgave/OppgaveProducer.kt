@@ -20,13 +20,13 @@ object OppgaveProducer {
         KafkaProducer<Nokkel, Oppgave>(Kafka.producerProps(Environment())).use { producer ->
             producer.send(ProducerRecord(oppgaveTopicName, createKeyForEvent(),createOppgaveForIdent(innloggetBruker, dto)))
         }
-        log.info("Har produsert et oppgace-event for identen: ${innloggetBruker.getIdentFromToken()}")
+        log.info("Har produsert et oppgace-event for identen: ${innloggetBruker.getIdent()}")
     }
 
     private fun createOppgaveForIdent(innloggetBruker: InnloggetBruker, dto: ProduceOppgaveDto): Oppgave {
         val nowInMs = Instant.now().toEpochMilli()
         val build = Oppgave.newBuilder()
-                .setFodselsnummer(innloggetBruker.getIdentFromToken())
+                .setFodselsnummer(innloggetBruker.getIdent())
                 .setGrupperingsId("100$nowInMs")
                 .setLink(dto.link)
                 .setTekst(dto.tekst)
