@@ -1,6 +1,5 @@
 package no.nav.personbruker.dittnav.eventtestproducer.innboks
 
-import io.mockk.coEvery
 import kotlinx.coroutines.runBlocking
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBrukerObjectMother
 import no.nav.personbruker.dittnav.eventtestproducer.common.database.H2Database
@@ -14,10 +13,6 @@ class InnboksQueriesTest {
 
     @Test
     fun `Finn alle cachede Innboks-eventer for fodselsnummer`() {
-        val expectedIdent = "12345"
-
-        coEvery { innloggetBruker.token.jwtTokenClaims.getStringClaim("sub") } returns expectedIdent
-
         runBlocking {
             database.dbQuery { getAllInnboksByFodselsnummer(innloggetBruker) }.size `should be equal to` 3
         }
@@ -25,10 +20,6 @@ class InnboksQueriesTest {
 
     @Test
     fun `Finner kun aktive cachede Innboks-eventer for fodselsnummer`() {
-        val expectedIdent = "12345"
-
-        coEvery { innloggetBruker.token.jwtTokenClaims.getStringClaim("sub") } returns expectedIdent
-
         runBlocking {
             database.dbQuery { getInnboksByFodselsnummer(innloggetBruker) }.size `should be equal to` 2
         }
@@ -36,28 +27,19 @@ class InnboksQueriesTest {
 
     @Test
     fun `Returnerer tom liste hvis Innboks-eventer for fodselsnummer ikke finnes`() {
-        val expectedIdent = "dummyIdent"
-        val subClaimThatIsNotAnIdent = "dummyClaimThatIsNotAnIdent"
-
-        coEvery { innloggetBruker.token.jwtTokenClaims.getStringClaim("pid") } returns expectedIdent
-        coEvery { innloggetBruker.token.jwtTokenClaims.getStringClaim("sub") } returns subClaimThatIsNotAnIdent
+        val brukerUtenEventer = InnloggetBrukerObjectMother.createInnloggetBrukerWithSubject("456")
 
         runBlocking {
-            database.dbQuery { getInnboksByFodselsnummer(innloggetBruker) }.`should be empty`()
+            database.dbQuery { getInnboksByFodselsnummer(brukerUtenEventer) }.`should be empty`()
         }
     }
 
-
     @Test
     fun `Returnerer tom liste hvis Innboks-eventer hvis tom fodselsnummer`() {
-        val expectedIdent = ""
-        val subClaimThatIsNotAnIdent = "dummyClaimThatIsNotAnIdent"
-
-        coEvery { innloggetBruker.token.jwtTokenClaims.getStringClaim("pid") } returns expectedIdent
-        coEvery { innloggetBruker.token.jwtTokenClaims.getStringClaim("sub") } returns subClaimThatIsNotAnIdent
+        val brukerUtenFodselsnummer = InnloggetBrukerObjectMother.createInnloggetBrukerWithSubject("")
 
         runBlocking {
-            database.dbQuery { getInnboksByFodselsnummer(innloggetBruker) }.`should be empty`()
+            database.dbQuery { getInnboksByFodselsnummer(brukerUtenFodselsnummer) }.`should be empty`()
         }
     }
 }

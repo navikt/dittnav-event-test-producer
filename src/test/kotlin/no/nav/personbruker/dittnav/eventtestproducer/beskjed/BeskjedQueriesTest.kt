@@ -1,11 +1,11 @@
 package no.nav.personbruker.dittnav.eventtestproducer.beskjed
 
-import io.mockk.coEvery
 import kotlinx.coroutines.runBlocking
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBrukerObjectMother
 import no.nav.personbruker.dittnav.eventtestproducer.common.database.H2Database
+import org.amshove.kluent.`should be empty`
+import org.amshove.kluent.`should be equal to`
 import org.junit.jupiter.api.Test
-import org.amshove.kluent.*
 
 class BeskjedQueriesTest {
 
@@ -14,10 +14,6 @@ class BeskjedQueriesTest {
 
     @Test
     fun `Finn alle cachede Beskjed-eventer for fodselsnummer`() {
-        val expectedIdent = "12345"
-
-        coEvery { innloggetBruker.token.jwtTokenClaims.getStringClaim("sub") } returns expectedIdent
-
         runBlocking {
             database.dbQuery { getAllBeskjedByFodselsnummer(innloggetBruker) }.size `should be equal to` 3
         }
@@ -25,10 +21,6 @@ class BeskjedQueriesTest {
 
     @Test
     fun `Finner kun aktive cachede Beskjed-eventer for fodselsnummer`() {
-        val expectedIdent = "12345"
-
-        coEvery { innloggetBruker.token.jwtTokenClaims.getStringClaim("sub") } returns expectedIdent
-
         runBlocking {
             database.dbQuery { getBeskjedByFodselsnummer(innloggetBruker) }.size `should be equal to` 2
         }
@@ -36,28 +28,20 @@ class BeskjedQueriesTest {
 
     @Test
     fun `Returnerer tom liste hvis Beskjed-eventer for fodselsnummer ikke finnes`() {
-        val expectedIdent = "dummyIdent"
-        val subClaimThatIsNotAnIdent = "dummyClaimThatIsNotAnIdent"
-
-        coEvery { innloggetBruker.token.jwtTokenClaims.getStringClaim("pid") } returns expectedIdent
-        coEvery { innloggetBruker.token.jwtTokenClaims.getStringClaim("sub") } returns subClaimThatIsNotAnIdent
+        val brukerUtenEventer = InnloggetBrukerObjectMother.createInnloggetBrukerWithSubject("456")
 
         runBlocking {
-            database.dbQuery { getBeskjedByFodselsnummer(innloggetBruker) }.`should be empty`()
+            database.dbQuery { getBeskjedByFodselsnummer(brukerUtenEventer) }.`should be empty`()
         }
     }
 
 
     @Test
     fun `Returnerer tom liste hvis Beskjed-eventer hvis tom fodselsnummer`() {
-        val expectedIdent = ""
-        val subClaimThatIsNotAnIdent = "dummyClaimThatIsNotAnIdent"
-
-        coEvery { innloggetBruker.token.jwtTokenClaims.getStringClaim("pid") } returns expectedIdent
-        coEvery { innloggetBruker.token.jwtTokenClaims.getStringClaim("sub") } returns subClaimThatIsNotAnIdent
+        val brukerUtenFodselsnummer = InnloggetBrukerObjectMother.createInnloggetBrukerWithSubject("")
 
         runBlocking {
-            database.dbQuery { getBeskjedByFodselsnummer(innloggetBruker) }.`should be empty`()
+            database.dbQuery { getBeskjedByFodselsnummer(brukerUtenFodselsnummer) }.`should be empty`()
         }
     }
 }
