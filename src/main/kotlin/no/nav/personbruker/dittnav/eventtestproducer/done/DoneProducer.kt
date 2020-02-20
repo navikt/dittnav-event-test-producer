@@ -2,6 +2,7 @@ package no.nav.personbruker.dittnav.eventtestproducer.done
 
 import no.nav.brukernotifikasjon.schemas.Done
 import no.nav.brukernotifikasjon.schemas.Nokkel
+import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.common.database.Brukernotifikasjon
 import no.nav.personbruker.dittnav.eventtestproducer.config.Environment
@@ -16,16 +17,16 @@ object DoneProducer {
 
     private val log = LoggerFactory.getLogger(DoneProducer::class.java)
 
-    fun produceDoneEventForSpecifiedEvent(ident: String, eventThatsDone: Brukernotifikasjon) {
-        val doneEvent = createDoneEvent(ident)
+    fun produceDoneEventForSpecifiedEvent(innloggetBruker: InnloggetBruker, eventThatsDone: Brukernotifikasjon) {
+        val doneEvent = createDoneEvent(innloggetBruker)
         produceDoneEvent(doneEvent, createKeyForEvent(eventThatsDone.eventId))
-        log.info("Har produsert et done-event for identen: $ident sitt event med eventId: ${eventThatsDone.eventId}")
+        log.info("Har produsert et done-event for identen: ${innloggetBruker.getIdent()} sitt event med eventId: ${eventThatsDone.eventId}")
     }
 
-    fun produceDoneEventForSuppliedEventId(ident: String, eventId: String) {
-        val doneEvent = createDoneEvent(ident)
+    fun produceDoneEventForSuppliedEventId(innloggetBruker: InnloggetBruker, eventId: String) {
+        val doneEvent = createDoneEvent(innloggetBruker)
         produceDoneEvent(doneEvent, createKeyForEvent(eventId))
-        log.info("Har produsert et done-event for identen: $ident sitt event med eventId: $eventId")
+        log.info("Har produsert et done-event for identen: ${innloggetBruker.getIdent()} sitt event med eventId: $eventId")
     }
 
     private fun produceDoneEvent(doneEvent : Done, key: Nokkel) {
@@ -34,10 +35,10 @@ object DoneProducer {
         }
     }
 
-    private fun createDoneEvent(ident: String): Done {
+    private fun createDoneEvent(innloggetBruker: InnloggetBruker): Done {
         val nowInMs = Instant.now().toEpochMilli()
         val build = Done.newBuilder()
-                .setFodselsnummer(ident)
+                .setFodselsnummer(innloggetBruker.getIdent())
                 .setTidspunkt(nowInMs)
                 .setGrupperingsId("100$nowInMs")
         return build.build()

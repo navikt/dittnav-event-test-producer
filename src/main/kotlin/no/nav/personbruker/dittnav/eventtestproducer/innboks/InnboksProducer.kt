@@ -7,24 +7,25 @@ import org.apache.kafka.clients.producer.ProducerRecord
 import org.slf4j.LoggerFactory
 import no.nav.brukernotifikasjon.schemas.Innboks
 import no.nav.brukernotifikasjon.schemas.Nokkel
+import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import java.time.Instant
 
 object InnboksProducer {
     private val log = LoggerFactory.getLogger(InnboksProducer::class.java)
 
-    fun produceInnboksEventForIdent(ident: String, dto: ProduceInnboksDto) {
+    fun produceInnboksEventForIdent(innloggetBruker: InnloggetBruker, dto: ProduceInnboksDto) {
         KafkaProducer<Nokkel, Innboks>(Kafka.producerProps(Environment())).use { producer ->
-            producer.send(ProducerRecord(Kafka.innboksTopicName, createKeyForEvent(), createInnboksForIdent(ident, dto)))
+            producer.send(ProducerRecord(Kafka.innboksTopicName, createKeyForEvent(), createInnboksForIdent(innloggetBruker, dto)))
         }
-        log.info("Har produsert et innboks-event for identen: $ident")
+        log.info("Har produsert et innboks-event for identen: ${innloggetBruker.getIdent()}")
     }
 
-    private fun createInnboksForIdent(ident: String, dto: ProduceInnboksDto): Innboks {
+    private fun createInnboksForIdent(innloggetBruker: InnloggetBruker, dto: ProduceInnboksDto): Innboks {
         val nowInMs = Instant.now().toEpochMilli()
 
         return Innboks.newBuilder()
-                .setFodselsnummer(ident)
+                .setFodselsnummer(innloggetBruker.getIdent())
                 .setGrupperingsId("100$nowInMs")
                 .setLink(dto.link)
                 .setTekst(dto.tekst)

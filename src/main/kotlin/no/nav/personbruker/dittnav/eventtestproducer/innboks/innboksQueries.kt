@@ -1,23 +1,24 @@
 package no.nav.personbruker.dittnav.eventtestproducer.innboks
 
+import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import java.sql.Connection
 import java.sql.ResultSet
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-fun Connection.getAllInnboksByFodselsnummer(fodselsnummer: String): List<Innboks> =
+fun Connection.getAllInnboksByFodselsnummer(innloggetBruker: InnloggetBruker): List<Innboks> =
         prepareStatement("""SELECT * FROM INNBOKS WHERE fodselsnummer = ?""")
                 .use {
-                    it.setString(1, fodselsnummer)
+                    it.setString(1, innloggetBruker.getIdent())
                     it.executeQuery().list {
                         toInnboks()
                     }
                 }
 
-fun Connection.getInnboksByFodselsnummer(fodselsnummer: String): List<Innboks> =
+fun Connection.getInnboksByFodselsnummer(innloggetBruker: InnloggetBruker): List<Innboks> =
         prepareStatement("""SELECT * FROM INNBOKS WHERE fodselsnummer = ? AND aktiv = true""")
                 .use {
-                    it.setString(1, fodselsnummer)
+                    it.setString(1, innloggetBruker.getIdent())
                     it.executeQuery().list {
                         toInnboks()
                     }

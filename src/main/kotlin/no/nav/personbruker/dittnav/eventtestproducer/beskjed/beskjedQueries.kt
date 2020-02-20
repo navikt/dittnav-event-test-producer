@@ -1,24 +1,25 @@
 package no.nav.personbruker.dittnav.eventtestproducer.beskjed
 
 import Beskjed
+import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import java.sql.Connection
 import java.sql.ResultSet
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-fun Connection.getAllBeskjedByFodselsnummer(fodselsnummer: String): List<Beskjed> =
+fun Connection.getAllBeskjedByFodselsnummer(innloggetBruker: InnloggetBruker): List<Beskjed> =
         prepareStatement("""SELECT * FROM BESKJED WHERE fodselsnummer = ?""")
                 .use {
-                    it.setString(1, fodselsnummer)
+                    it.setString(1, innloggetBruker.getIdent())
                     it.executeQuery().list {
                         toBeskjed()
                     }
                 }
 
-fun Connection.getBeskjedByFodselsnummer(fodselsnummer: String): List<Beskjed> =
+fun Connection.getBeskjedByFodselsnummer(innloggetBruker: InnloggetBruker): List<Beskjed> =
         prepareStatement("""SELECT * FROM BESKJED WHERE fodselsnummer = ? AND aktiv = true""")
                 .use {
-                    it.setString(1, fodselsnummer)
+                    it.setString(1, innloggetBruker.getIdent())
                     it.executeQuery().list {
                         toBeskjed()
                     }
