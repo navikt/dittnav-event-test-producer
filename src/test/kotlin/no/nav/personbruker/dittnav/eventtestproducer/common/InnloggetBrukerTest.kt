@@ -14,7 +14,7 @@ internal class InnloggetBrukerTest {
         val expectedToken = "Bearer dummyToken"
 
         runBlocking {
-            val actualToken = innloggetBruker.getBearerToken()
+            val actualToken = innloggetBruker.generateAuthenticationHeader()
             actualToken `should be equal to` expectedToken
         }
     }

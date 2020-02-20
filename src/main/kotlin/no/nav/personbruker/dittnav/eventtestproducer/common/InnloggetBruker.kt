@@ -9,29 +9,31 @@ import no.nav.security.token.support.ktor.OIDCValidationContextPrincipal
 
 class InnloggetBruker(val token: JwtToken) {
 
-    fun getBearerToken(): String {
+    private val allowOnlyDigits = """\d*""".toRegex()
+
+    fun generateAuthenticationHeader(): String {
         return "Bearer " + token.tokenAsString
     }
 
     fun getIdentFromToken(): String {
-        val ident = token.jwtTokenClaims.getStringClaim("sub")
+        var ident = token.jwtTokenClaims.getStringClaim("sub")
 
-        if (isClaimElevenDigitsOrLess(ident)) {
-            return ident
+        if (isSubjectContainsOtherCharactersThanDigits(ident)) {
+            ident = token.jwtTokenClaims.getStringClaim("pid")
         }
-        return token.jwtTokenClaims.getStringClaim("pid")
+        return ident
     }
 
-    private fun isClaimElevenDigitsOrLess(ident: String): Boolean {
-        val regex = """\d{1,11}""".toRegex()
-        return regex.matches(ident)
+    private fun isSubjectContainsOtherCharactersThanDigits(ident: String): Boolean {
+        return !allowOnlyDigits.matches(ident)
     }
 }
 
-val PipelineContext<Unit, ApplicationCall>.innloggetBruker: InnloggetBruker get() =
-    call.authentication.principal<OIDCValidationContextPrincipal>()
-            ?.context
-            ?.firstValidToken
-            ?.map { token -> InnloggetBruker(token) }
-            ?.get()
-            ?: throw Exception("Det ble ikke funnet noe token. Dette skal ikke kunne skje.")
+val PipelineContext<Unit, ApplicationCall>.innloggetBruker: InnloggetBruker
+    get() =
+        call.authentication.principal<OIDCValidationContextPrincipal>()
+                ?.context
+                ?.firstValidToken
+                ?.map { token -> InnloggetBruker(token) }
+                ?.get()
+                ?: throw Exception("Det ble ikke funnet noe token. Dette skal ikke kunne skje.")
