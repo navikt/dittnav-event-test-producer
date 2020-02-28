@@ -8,7 +8,6 @@ import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.config.SaslConfigs
 import org.apache.kafka.common.config.SslConfigs
-import org.apache.kafka.common.serialization.StringSerializer
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.InetSocketAddress
@@ -27,7 +26,7 @@ object Kafka {
             put(SaslConfigs.SASL_MECHANISM, "PLAIN")
             put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_PLAINTEXT")
             put(SaslConfigs.SASL_JAAS_CONFIG,
-                    """org.apache.kafka.common.security.plain.PlainLoginModule required username="${env.username}" password="${env.password}";""")
+                    """org.apache.kafka.common.security.plain.PlainLoginModule required username="${env.systemUserName}" password="${env.systemUserPassword}";""")
             System.getenv("NAV_TRUSTSTORE_PATH")?.let {
                 put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_SSL")
                 put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, File(it).absolutePath)

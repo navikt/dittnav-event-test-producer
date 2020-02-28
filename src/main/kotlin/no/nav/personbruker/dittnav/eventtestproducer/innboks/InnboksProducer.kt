@@ -12,11 +12,15 @@ import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import java.time.Instant
 
 object InnboksProducer {
+
     private val log = LoggerFactory.getLogger(InnboksProducer::class.java)
+    private val env = Environment()
 
     fun produceInnboksEventForIdent(innloggetBruker: InnloggetBruker, dto: ProduceInnboksDto) {
+        val key = createKeyForEvent(env.systemUserName)
+        val value = createInnboksForIdent(innloggetBruker, dto)
         KafkaProducer<Nokkel, Innboks>(Kafka.producerProps(Environment())).use { producer ->
-            producer.send(ProducerRecord(Kafka.innboksTopicName, createKeyForEvent(), createInnboksForIdent(innloggetBruker, dto)))
+            producer.send(ProducerRecord(Kafka.innboksTopicName, key, value))
         }
         log.info("Har produsert et innboks-event for identen: ${innloggetBruker.getIdent()}")
     }

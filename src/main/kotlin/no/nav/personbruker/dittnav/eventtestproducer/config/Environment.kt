@@ -2,8 +2,8 @@ package no.nav.personbruker.dittnav.eventtestproducer.config
 
 data class Environment(val bootstrapServers: String = getEnvVar("KAFKA_BOOTSTRAP_SERVERS", "localhost:29092"),
                        val schemaRegistryUrl: String = getEnvVar("KAFKA_SCHEMAREGISTRY_SERVERS", "http://localhost:8081"),
-                       val username: String = getEnvVar("FSS_SYSTEMUSER_USERNAME", "username"),
-                       val password: String = getEnvVar("FSS_SYSTEMUSER_PASSWORD", "password"),
+                       val systemUserName: String = getEnvVar("FSS_SYSTEMUSER_USERNAME", "username"),
+                       val systemUserPassword: String = getEnvVar("FSS_SYSTEMUSER_PASSWORD", "password"),
                        val groupId: String = getEnvVar("GROUP_ID", "dittnav_events"),
                        val dbHost: String = getEnvVar("DB_HOST", "localhost:5432"),
                        val dbName: String = getEnvVar("DB_NAME", "dittnav-event-cache-preprod"),
