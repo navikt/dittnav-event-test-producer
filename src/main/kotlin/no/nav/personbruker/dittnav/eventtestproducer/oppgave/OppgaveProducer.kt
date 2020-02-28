@@ -31,6 +31,7 @@ object OppgaveProducer {
                 .setLink(dto.link)
                 .setTekst(dto.tekst)
                 .setTidspunkt(nowInMs)
+                .setSikkerhetsnivaa(innloggetBruker.getInnloggingsnivaa())
         return build.build()
     }
 

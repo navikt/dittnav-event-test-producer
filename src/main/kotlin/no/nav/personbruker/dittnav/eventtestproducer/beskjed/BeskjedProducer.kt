@@ -34,6 +34,7 @@ object BeskjedProducer {
                 .setTekst(dto.tekst)
                 .setTidspunkt(nowInMs)
                 .setSynligFremTil(weekFromNowInMs)
+                .setSikkerhetsnivaa(innloggetBruker.getInnloggingsnivaa())
         return build.build()
     }
 

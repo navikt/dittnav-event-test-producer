@@ -30,6 +30,7 @@ object InnboksProducer {
                 .setLink(dto.link)
                 .setTekst(dto.tekst)
                 .setTidspunkt(nowInMs)
+                .setSikkerhetsnivaa(innloggetBruker.getInnloggingsnivaa())
                 .build()
     }
   }

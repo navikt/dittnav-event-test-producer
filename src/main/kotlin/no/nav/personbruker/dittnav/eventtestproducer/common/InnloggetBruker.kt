@@ -24,6 +24,16 @@ class InnloggetBruker(val token: JwtToken) {
         return ident
     }
 
+    fun getInnloggingsnivaa(): Int {
+        val innloggingsnivaaClaim = token.jwtTokenClaims.getStringClaim("acr")
+
+        return when (innloggingsnivaaClaim) {
+            "Level3" -> 3
+            "Level4" -> 4
+            else -> throw Exception("Innloggingsnivå ble ikke funnet. Dette skal ikke kunne skje.")
+        }
+    }
+
     private fun isSubjectContainsOtherCharactersThanDigits(ident: String): Boolean {
         return !allowOnlyDigits.matches(ident)
     }
