@@ -17,20 +17,23 @@ object DoneProducer {
 
     private val log = LoggerFactory.getLogger(DoneProducer::class.java)
 
+    private val env = Environment()
+
     fun produceDoneEventForSpecifiedEvent(innloggetBruker: InnloggetBruker, eventThatsDone: Brukernotifikasjon) {
         val doneEvent = createDoneEvent(innloggetBruker)
-        produceDoneEvent(doneEvent, createKeyForEvent(eventThatsDone.eventId))
+        produceDoneEvent(doneEvent, createKeyForEvent(eventThatsDone.eventId, env.systemUserName))
         log.info("Har produsert et done-event for identen: ${innloggetBruker.getIdent()} sitt event med eventId: ${eventThatsDone.eventId}")
     }
 
     fun produceDoneEventForSuppliedEventId(innloggetBruker: InnloggetBruker, eventId: String) {
+        val key = createKeyForEvent(eventId, env.systemUserName)
         val doneEvent = createDoneEvent(innloggetBruker)
-        produceDoneEvent(doneEvent, createKeyForEvent(eventId))
+        produceDoneEvent(doneEvent, key)
         log.info("Har produsert et done-event for identen: ${innloggetBruker.getIdent()} sitt event med eventId: $eventId")
     }
 
-    private fun produceDoneEvent(doneEvent : Done, key: Nokkel) {
-        KafkaProducer<Nokkel, Done>(Kafka.producerProps(Environment())).use { producer ->
+    private fun produceDoneEvent(doneEvent: Done, key: Nokkel) {
+        KafkaProducer<Nokkel, Done>(Kafka.producerProps(env)).use { producer ->
             producer.send(ProducerRecord(doneTopicName, key, doneEvent))
         }
     }

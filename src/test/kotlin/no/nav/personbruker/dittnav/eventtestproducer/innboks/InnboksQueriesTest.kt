@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 
 class InnboksQueriesTest {
     private val database = H2Database()
-    private val innloggetBruker = InnloggetBrukerObjectMother.createInnloggetBruker()
+    private val innloggetBruker = InnloggetBrukerObjectMother.createInnloggetBrukerMedInnloggingsnivaa4()
 
     @Test
     fun `Finn alle cachede Innboks-eventer for fodselsnummer`() {

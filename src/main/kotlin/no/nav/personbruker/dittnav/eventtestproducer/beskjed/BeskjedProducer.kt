@@ -16,10 +16,13 @@ import java.time.temporal.ChronoUnit
 object BeskjedProducer {
 
     private val log = LoggerFactory.getLogger(BeskjedProducer::class.java)
+    val env = Environment()
 
     fun produceBeskjedEventForIdent(innloggetBruker: InnloggetBruker, dto: ProduceBeskjedDto) {
-        KafkaProducer<Nokkel, Beskjed>(Kafka.producerProps(Environment())).use { producer ->
-            producer.send(ProducerRecord(beskjedTopicName, createKeyForEvent(), createBeskjedForIdent(innloggetBruker, dto)))
+        KafkaProducer<Nokkel, Beskjed>(Kafka.producerProps(env)).use { producer ->
+            val key = createKeyForEvent(env.systemUserName)
+            val value = createBeskjedForIdent(innloggetBruker, dto)
+            producer.send(ProducerRecord(beskjedTopicName, key, value))
         }
         log.info("Har produsert et beskjeds-event for identen: ${innloggetBruker.getIdent()}")
     }
@@ -34,6 +37,7 @@ object BeskjedProducer {
                 .setTekst(dto.tekst)
                 .setTidspunkt(nowInMs)
                 .setSynligFremTil(weekFromNowInMs)
+                .setSikkerhetsnivaa(innloggetBruker.getInnloggingsnivaa())
         return build.build()
     }
 

@@ -15,10 +15,13 @@ import java.time.Instant
 object OppgaveProducer {
 
     private val log = LoggerFactory.getLogger(OppgaveProducer::class.java)
+    private val env = Environment()
 
     fun produceOppgaveEventForIdent(innloggetBruker: InnloggetBruker, dto: ProduceOppgaveDto) {
+        val key = createKeyForEvent(env.systemUserName)
+        val value = createOppgaveForIdent(innloggetBruker, dto)
         KafkaProducer<Nokkel, Oppgave>(Kafka.producerProps(Environment())).use { producer ->
-            producer.send(ProducerRecord(oppgaveTopicName, createKeyForEvent(),createOppgaveForIdent(innloggetBruker, dto)))
+            producer.send(ProducerRecord(oppgaveTopicName, key, value))
         }
         log.info("Har produsert et oppgace-event for identen: ${innloggetBruker.getIdent()}")
     }
@@ -31,9 +34,9 @@ object OppgaveProducer {
                 .setLink(dto.link)
                 .setTekst(dto.tekst)
                 .setTidspunkt(nowInMs)
+                .setSikkerhetsnivaa(innloggetBruker.getInnloggingsnivaa())
         return build.build()
     }
-
 
 
 }
