@@ -58,8 +58,8 @@ internal class InnloggetBrukerTest {
 
     @Test
     fun `should return innloggingsnivaa for nivaa 3`() {
-        val brukerPaaNivaa4 = InnloggetBrukerObjectMother.createInnloggetBrukerMedInnloggingsnivaa3()
-        brukerPaaNivaa4.getInnloggingsnivaa() `should equal` 3
+        val brukerPaaNivaa3 = InnloggetBrukerObjectMother.createInnloggetBrukerMedInnloggingsnivaa3()
+        brukerPaaNivaa3.getInnloggingsnivaa() `should equal` 3
     }
 
     @Test
