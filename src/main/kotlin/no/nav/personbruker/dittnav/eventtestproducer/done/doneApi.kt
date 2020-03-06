@@ -2,9 +2,8 @@ package no.nav.personbruker.dittnav.eventtestproducer.done
 
 import io.ktor.routing.Route
 import io.ktor.routing.post
-import no.nav.personbruker.dittnav.eventtestproducer.config.respond
-import no.nav.personbruker.dittnav.eventtestproducer.config.respondForParameterType
 import no.nav.personbruker.dittnav.eventtestproducer.common.innloggetBruker
+import no.nav.personbruker.dittnav.eventtestproducer.config.respond
 
 fun Route.doneApi(doneEventService: DoneEventService) {
 
@@ -12,13 +11,6 @@ fun Route.doneApi(doneEventService: DoneEventService) {
         respond {
             doneEventService.markAllBrukernotifikasjonerAsDone(innloggetBruker)
             "Done-eventer er produsert for alle identen: ${innloggetBruker.getIdent()} sine brukernotifikasjoner."
-        }
-    }
-
-    post("/produce/done") {
-        respondForParameterType<ProduceDoneDto> { doneDto ->
-            doneEventService.markEventAsDone(innloggetBruker, doneDto.eventId)
-            "Done-event er produsert for identen: ${innloggetBruker.getIdent()} sitt event med eventID: ${doneDto.eventId}."
         }
     }
 

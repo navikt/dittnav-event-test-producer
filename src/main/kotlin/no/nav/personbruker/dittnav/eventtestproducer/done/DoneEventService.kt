@@ -22,7 +22,4 @@ class DoneEventService(
         }
     }
 
-    fun markEventAsDone(innloggetBruker: InnloggetBruker, eventId : String) {
-        DoneProducer.produceDoneEventForSuppliedEventId(innloggetBruker, eventId)
-    }
 }
