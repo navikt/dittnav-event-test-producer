@@ -1,6 +1,5 @@
 package no.nav.personbruker.dittnav.eventtestproducer.common
 
-import no.nav.personbruker.dittnav.eventtestproducer.config.getEnvVar
 import no.nav.security.token.support.core.jwt.JwtToken
 import no.nav.security.token.support.ktor.OIDCValidationContextPrincipal
 
@@ -11,7 +10,7 @@ object InnloggetBrukerFactory {
     private val oidcIdentityClaimName = "OIDC_CLAIM_CONTAINING_THE_IDENTITY"
 
     init {
-        val identityClaimFromEnvVariable = getEnvVar(oidcIdentityClaimName, defaultClaim.claimName)
+        val identityClaimFromEnvVariable = System.getenv(oidcIdentityClaimName) ?: defaultClaim.claimName
         IDENT_CLAIM = IdentityClaim.fromClaimName(identityClaimFromEnvVariable)
     }
 
