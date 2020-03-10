@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 class OppgaveQueriesTest {
 
     private val database = H2Database()
-    private val innloggetBruker = InnloggetBrukerObjectMother.createInnloggetBrukerMedInnloggingsnivaa4()
+    private val innloggetBruker = InnloggetBrukerObjectMother.createInnloggetBruker()
 
     @Test
     fun `Finn alle cachede Oppgave-eventer for fodselsnummer`() {
@@ -27,7 +27,7 @@ class OppgaveQueriesTest {
 
     @Test
     fun `Returnerer tom liste hvis Oppgave-eventer for fodselsnummer ikke finnes`() {
-        val bruker = InnloggetBrukerObjectMother.createInnloggetBrukerWithSubject("456")
+        val bruker = InnloggetBrukerObjectMother.createInnloggetBruker("456")
 
         runBlocking {
             database.dbQuery { getOppgaveByFodselsnummer(bruker) }.isEmpty()
@@ -36,7 +36,7 @@ class OppgaveQueriesTest {
 
     @Test
     fun `Returnerer tom liste hvis Oppgave-eventer hvis tom fodselsnummer`() {
-        val brukerUtenFodselsnummer = InnloggetBrukerObjectMother.createInnloggetBrukerWithSubject("")
+        val brukerUtenFodselsnummer = InnloggetBrukerObjectMother.createInnloggetBruker("")
 
         runBlocking {
             database.dbQuery { getOppgaveByFodselsnummer(brukerUtenFodselsnummer) }.isEmpty()

@@ -23,18 +23,18 @@ object OppgaveProducer {
         KafkaProducer<Nokkel, Oppgave>(Kafka.producerProps(Environment())).use { producer ->
             producer.send(ProducerRecord(oppgaveTopicName, key, value))
         }
-        log.info("Har produsert et oppgace-event for identen: ${innloggetBruker.getIdent()}")
+        log.info("Har produsert et oppgace-event for for brukeren: $innloggetBruker")
     }
 
     private fun createOppgaveForIdent(innloggetBruker: InnloggetBruker, dto: ProduceOppgaveDto): Oppgave {
         val nowInMs = Instant.now().toEpochMilli()
         val build = Oppgave.newBuilder()
-                .setFodselsnummer(innloggetBruker.getIdent())
+                .setFodselsnummer(innloggetBruker.ident)
                 .setGrupperingsId("100$nowInMs")
                 .setLink(dto.link)
                 .setTekst(dto.tekst)
                 .setTidspunkt(nowInMs)
-                .setSikkerhetsnivaa(innloggetBruker.getInnloggingsnivaa())
+                .setSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)
         return build.build()
     }
 

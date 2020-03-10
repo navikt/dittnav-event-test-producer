@@ -9,7 +9,7 @@ fun Route.innboksApi() {
     post("/produce/innboks") {
         respondForParameterType<ProduceInnboksDto> { innboksDto ->
             InnboksProducer.produceInnboksEventForIdent(innloggetBruker, innboksDto)
-            "Et innboks-event for identen: ${innloggetBruker.getIdent()} har blitt lagt på kafka."
+            "Et innboks-event for for brukeren: $innloggetBruker har blitt lagt på kafka."
         }
     }
 }

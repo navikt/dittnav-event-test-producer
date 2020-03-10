@@ -16,6 +16,9 @@ val h2Version = "1.4.199"
 val jacksonVersion = "2.9.9"
 val kluentVersion = "1.52"
 val mockKVersion = "1.9.3"
+val jjwtVersion = "0.11.0"
+val bcproVersion = "1.64"
+val navTokenValidator = "1.1.0"
 
 plugins {
     // Apply the Kotlin JVM plugin to add support for Kotlin on the JVM.
@@ -43,7 +46,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    compile("no.nav.security:token-validation-ktor:1.1.0")
+    compile("no.nav.security:token-validation-ktor:$navTokenValidator")
     compile("no.nav:vault-jdbc:$vaultJdbcVersion")
     compile("com.zaxxer:HikariCP:$hikariCPVersion")
     compile("org.postgresql:postgresql:$postgresVersion")
@@ -71,6 +74,10 @@ dependencies {
     testCompile("io.ktor:ktor-client-mock:$ktorVersion")
     testImplementation("io.mockk:mockk:$mockKVersion")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+    testCompile("io.jsonwebtoken:jjwt-api:$jjwtVersion")
+    testRuntime("io.jsonwebtoken:jjwt-impl:$jjwtVersion")
+    testRuntime("io.jsonwebtoken:jjwt-jackson:$jjwtVersion")
+    testRuntime("org.bouncycastle:bcprov-jdk15on:$bcproVersion")
 }
 
 application {
@@ -94,6 +101,7 @@ tasks {
 
     register("runServer", JavaExec::class) {
         environment("CORS_ALLOWED_ORIGINS", "localhost:9002")
+        environment("OIDC_CLAIM_CONTAINING_THE_IDENTITY", "pid")
 
         main = application.mainClassName
         classpath = sourceSets["main"].runtimeClasspath

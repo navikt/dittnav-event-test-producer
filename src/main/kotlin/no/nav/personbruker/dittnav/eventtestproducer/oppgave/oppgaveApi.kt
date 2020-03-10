@@ -10,7 +10,7 @@ fun Route.oppgaveApi() {
     post("/produce/oppgave") {
         respondForParameterType<ProduceOppgaveDto> { oppgaveDto ->
             OppgaveProducer.produceOppgaveEventForIdent(innloggetBruker, oppgaveDto)
-            "Et oppgave-event for identen: ${innloggetBruker.getIdent()} har blitt lagt på kafka."
+            "Et oppgave-event for for brukeren: $innloggetBruker har blitt lagt på kafka."
         }
     }
 

@@ -10,7 +10,7 @@ fun Route.doneApi(doneEventService: DoneEventService) {
     post("/produce/done/all") {
         respond {
             doneEventService.markAllBrukernotifikasjonerAsDone(innloggetBruker)
-            "Done-eventer er produsert for alle identen: ${innloggetBruker.getIdent()} sine brukernotifikasjoner."
+            "Done-eventer er produsert for alle for brukeren: $innloggetBruker sine brukernotifikasjoner."
         }
     }
 

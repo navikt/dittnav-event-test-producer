@@ -24,20 +24,20 @@ object BeskjedProducer {
             val value = createBeskjedForIdent(innloggetBruker, dto)
             producer.send(ProducerRecord(beskjedTopicName, key, value))
         }
-        log.info("Har produsert et beskjeds-event for identen: ${innloggetBruker.getIdent()}")
+        log.info("Har produsert et beskjeds-event for for brukeren: $innloggetBruker")
     }
 
     private fun createBeskjedForIdent(innloggetBruker: InnloggetBruker, dto: ProduceBeskjedDto): Beskjed {
         val nowInMs = Instant.now().toEpochMilli()
         val weekFromNowInMs = Instant.now().plus(7, ChronoUnit.DAYS).toEpochMilli()
         val build = Beskjed.newBuilder()
-                .setFodselsnummer(innloggetBruker.getIdent())
+                .setFodselsnummer(innloggetBruker.ident)
                 .setGrupperingsId("100$nowInMs")
                 .setLink(dto.link)
                 .setTekst(dto.tekst)
                 .setTidspunkt(nowInMs)
                 .setSynligFremTil(weekFromNowInMs)
-                .setSikkerhetsnivaa(innloggetBruker.getInnloggingsnivaa())
+                .setSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)
         return build.build()
     }
 
