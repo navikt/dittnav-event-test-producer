@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 class BeskjedQueriesTest {
 
     private val database = H2Database()
-    private val innloggetBruker = InnloggetBrukerObjectMother.createInnloggetBrukerMedInnloggingsnivaa4()
+    private val innloggetBruker = InnloggetBrukerObjectMother.createInnloggetBruker()
 
     @Test
     fun `Finn alle cachede Beskjed-eventer for fodselsnummer`() {
@@ -28,7 +28,7 @@ class BeskjedQueriesTest {
 
     @Test
     fun `Returnerer tom liste hvis Beskjed-eventer for fodselsnummer ikke finnes`() {
-        val brukerUtenEventer = InnloggetBrukerObjectMother.createInnloggetBrukerWithSubject("456")
+        val brukerUtenEventer = InnloggetBrukerObjectMother.createInnloggetBruker("456")
 
         runBlocking {
             database.dbQuery { getBeskjedByFodselsnummer(brukerUtenEventer) }.`should be empty`()
@@ -38,7 +38,7 @@ class BeskjedQueriesTest {
 
     @Test
     fun `Returnerer tom liste hvis Beskjed-eventer hvis tom fodselsnummer`() {
-        val brukerUtenFodselsnummer = InnloggetBrukerObjectMother.createInnloggetBrukerWithSubject("")
+        val brukerUtenFodselsnummer = InnloggetBrukerObjectMother.createInnloggetBruker("")
 
         runBlocking {
             database.dbQuery { getBeskjedByFodselsnummer(brukerUtenFodselsnummer) }.`should be empty`()

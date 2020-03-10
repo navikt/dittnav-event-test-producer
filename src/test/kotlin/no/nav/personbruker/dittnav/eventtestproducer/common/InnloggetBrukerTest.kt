@@ -1,73 +1,43 @@
 package no.nav.personbruker.dittnav.eventtestproducer.common
 
-import io.mockk.coEvery
-import kotlinx.coroutines.runBlocking
 import org.amshove.kluent.`should be equal to`
-import org.amshove.kluent.`should equal`
-import org.amshove.kluent.`should throw`
-import org.amshove.kluent.invoking
+import org.amshove.kluent.`should contain`
+import org.amshove.kluent.`should not contain`
+import org.amshove.kluent.shouldNotBeNullOrBlank
 import org.junit.jupiter.api.Test
 
 internal class InnloggetBrukerTest {
 
-    private val innloggetBruker = InnloggetBrukerObjectMother.createInnloggetBrukerMedInnloggingsnivaa4()
-
     @Test
-    fun `should return string with Bearer token`() {
-        val expectedToken = "Bearer dummyToken"
+    fun `should return expected values`() {
+        val expectedIdent = "12345"
+        val expectedInnloggingsnivaa = 4
 
-        runBlocking {
-            val actualToken = innloggetBruker.generateAuthenticationHeader()
-            actualToken `should be equal to` expectedToken
-        }
+        val innloggetbruker = InnloggetBrukerObjectMother.createInnloggetBruker(expectedIdent, expectedInnloggingsnivaa)
+
+        innloggetbruker.ident `should be equal to` expectedIdent
+        innloggetbruker.innloggingsnivaa `should be equal to` expectedInnloggingsnivaa
+        innloggetbruker.token.shouldNotBeNullOrBlank()
     }
 
     @Test
-    fun `should return string with ident from pid token claim`() {
-        val expectedIdent = "dummyIdent"
-        val subClaimThatIsNotAnIdent = "dummyClaimThatIsNotAnIdent"
+    fun `should create authentication header`() {
+        val innloggetBruker = InnloggetBrukerObjectMother.createInnloggetBruker()
 
-        coEvery { innloggetBruker.token.jwtTokenClaims.getStringClaim("pid") } returns expectedIdent
-        coEvery { innloggetBruker.token.jwtTokenClaims.getStringClaim("sub") } returns subClaimThatIsNotAnIdent
+        val generatedAuthHeader = innloggetBruker.createAuthenticationHeader()
 
-        runBlocking {
-            val actualIdent = innloggetBruker.getIdent()
-            actualIdent `should be equal to` expectedIdent
-        }
+        generatedAuthHeader `should be equal to` "Bearer ${innloggetBruker.token}"
     }
 
     @Test
-    fun `should return string with ident from sub token claim`() {
-        val expectedIdent = "123"
-        val pidClaimThatIsNotAnIdent = "dummyClaimThatIsNotAnIdent"
+    fun `should not include sensitive values in the output for the toString method`() {
+        val innloggetBruker = InnloggetBrukerObjectMother.createInnloggetBruker()
 
-        coEvery { innloggetBruker.token.jwtTokenClaims.getStringClaim("pid") } returns pidClaimThatIsNotAnIdent
-        coEvery { innloggetBruker.token.jwtTokenClaims.getStringClaim("sub") } returns expectedIdent
+        val outputOfToString = innloggetBruker.toString()
 
-        runBlocking {
-            val actualIdent = innloggetBruker.getIdent()
-            actualIdent `should be equal to` expectedIdent
-        }
-    }
-
-    @Test
-    fun `should return innloggingsnivaa for nivaa 4`() {
-        val brukerPaaNivaa4 = InnloggetBrukerObjectMother.createInnloggetBrukerMedInnloggingsnivaa4()
-        brukerPaaNivaa4.getInnloggingsnivaa() `should equal` 4
-    }
-
-    @Test
-    fun `should return innloggingsnivaa for nivaa 3`() {
-        val brukerPaaNivaa3 = InnloggetBrukerObjectMother.createInnloggetBrukerMedInnloggingsnivaa3()
-        brukerPaaNivaa3.getInnloggingsnivaa() `should equal` 3
-    }
-
-    @Test
-    fun `should throw error if innloggingsnivaa not present`() {
-        val brukerUtenInnloggingsnivaa = InnloggetBrukerObjectMother.createInnloggetBrukerUtenInnloggingsnivaa()
-        invoking {
-            brukerUtenInnloggingsnivaa.getInnloggingsnivaa()
-        } `should throw` Exception::class
+        outputOfToString `should contain`(innloggetBruker.innloggingsnivaa.toString())
+        outputOfToString `should not contain`(innloggetBruker.ident)
+        outputOfToString `should not contain`(innloggetBruker.token)
     }
 
 }
