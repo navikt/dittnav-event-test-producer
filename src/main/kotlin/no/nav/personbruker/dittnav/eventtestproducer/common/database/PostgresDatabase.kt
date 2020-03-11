@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import no.nav.personbruker.dittnav.eventtestproducer.config.ConfigUtil
 import no.nav.personbruker.dittnav.eventtestproducer.config.Environment
+import no.nav.personbruker.dittnav.eventtestproducer.config.getEnvVar
 import no.nav.vault.jdbc.hikaricp.HikariCPVaultUtil
 import javax.sql.DataSource
 
@@ -27,26 +28,27 @@ class PostgresDatabase(env: Environment) : Database {
     }
 
     private fun createConnectionForLocalDbWithDbUser(env: Environment): HikariDataSource {
-        return PostgresDatabase.Companion.hikariFromLocalDb(env, env.dbUser)
+        return hikariFromLocalDb(env, env.dbUser)
     }
 
     private fun createConnectionViaVaultWithDbUser(env: Environment): HikariDataSource {
-        return PostgresDatabase.Companion.hikariDatasourceViaVault(env, env.dbReadOnlyUser)
+        return hikariDatasourceViaVault(env, env.dbReadOnlyUser)
     }
 
     companion object {
 
         fun hikariFromLocalDb(env: Environment, dbUser: String): HikariDataSource {
-            val config = PostgresDatabase.Companion.hikariCommonConfig(env).apply {
+            val dbPassword: String = getEnvVar("DB_PASSWORD")
+            val config = hikariCommonConfig(env).apply {
                 username = dbUser
-                password = env.dbPassword
+                password = dbPassword
                 validate()
             }
             return HikariDataSource(config)
         }
 
         fun hikariDatasourceViaVault(env: Environment, dbUser: String): HikariDataSource {
-            var config = PostgresDatabase.Companion.hikariCommonConfig(env)
+            val config = hikariCommonConfig(env)
             config.validate()
             return HikariCPVaultUtil.createHikariDataSourceWithVaultIntegration(config, env.dbMountPath, dbUser)
         }
