@@ -10,7 +10,6 @@ data class Environment(val bootstrapServers: String = getEnvVar("KAFKA_BOOTSTRAP
                        val dbUser: String = getEnvVar("DB_NAME") + "-user",
                        val dbReadOnlyUser: String = getEnvVar("DB_NAME") + "-readonly",
                        val dbUrl: String = "jdbc:postgresql://$dbHost/$dbName",
-                       val dbPassword: String = getEnvVar("DB_PASSWORD"),
                        val dbMountPath: String = getEnvVar("DB_MOUNT_PATH"),
                        val corsAllowedOrigins: String = getEnvVar("CORS_ALLOWED_ORIGINS")
 )
