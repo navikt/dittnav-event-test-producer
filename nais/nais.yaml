@@ -20,7 +20,10 @@ spec:
     min: 1
     max: 1
   webproxy: true
-  ingresses: {{ingresses}}
+  ingresses:
+{{#each ingresses}}
+  - "{{this}}"
+{{/each}}
   vault:
     enabled: true
   resources:
