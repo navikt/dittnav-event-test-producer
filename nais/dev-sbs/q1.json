@@ -1,5 +1,6 @@
 {
   "namespace": "q1",
+  "environment": "dev",
   "ingresses": [
     "https://www-q1.nav.no/person/dittnav-event-test-producer",
     "https://dittnav-event-test-producer-q1.dev-sbs.nais.io"

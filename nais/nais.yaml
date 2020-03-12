@@ -26,6 +26,10 @@ spec:
 {{/each}}
   vault:
     enabled: true
+    paths:
+      # Managed secrets
+      - kvPath: /serviceuser/data/{{environment}}/srvdn-e-t-producer
+        mountPath: /secret/serviceuser
   resources:
     limits:
       cpu: 500m
