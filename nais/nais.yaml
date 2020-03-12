@@ -26,6 +26,11 @@ spec:
 {{/each}}
   vault:
     enabled: true
+    paths:
+      - kvPath: /kv/{{cluster}}/sbs/dittnav-event-test-producer/{{namespace}}
+        mountPath: /var/run/secrets/nais.io/vault
+      - kvPath: /serviceuser/data/{{environment}}/srvdn-e-t-producer
+        mountPath: /secret/serviceuser
   resources:
     limits:
       cpu: 500m
