@@ -5,6 +5,7 @@ import no.nav.brukernotifikasjon.schemas.Nokkel
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.config.Environment
+import no.nav.personbruker.dittnav.eventtestproducer.config.EventType
 import no.nav.personbruker.dittnav.eventtestproducer.config.Kafka
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerRecord
@@ -14,7 +15,7 @@ import java.time.Instant
 class InnboksProducer(private val env: Environment) {
 
     private val log = LoggerFactory.getLogger(InnboksProducer::class.java)
-    private val kafkaProducer = KafkaProducer<Nokkel, Innboks>(Kafka.producerProps(env))
+    private val kafkaProducer = KafkaProducer<Nokkel, Innboks>(Kafka.producerProps(env, EventType.INNBOKS))
 
     fun produceInnboksEventForIdent(innloggetBruker: InnloggetBruker, dto: ProduceInnboksDto) {
         val key = createKeyForEvent(env.systemUserName)

@@ -5,6 +5,7 @@ import no.nav.brukernotifikasjon.schemas.Oppgave
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.config.Environment
+import no.nav.personbruker.dittnav.eventtestproducer.config.EventType
 import no.nav.personbruker.dittnav.eventtestproducer.config.Kafka
 import no.nav.personbruker.dittnav.eventtestproducer.config.Kafka.oppgaveTopicName
 import org.apache.kafka.clients.producer.KafkaProducer
@@ -15,7 +16,7 @@ import java.time.Instant
 class OppgaveProducer(private val env: Environment) {
 
     private val log = LoggerFactory.getLogger(OppgaveProducer::class.java)
-    private val kafkaProducer = KafkaProducer<Nokkel, Oppgave>(Kafka.producerProps(env))
+    private val kafkaProducer = KafkaProducer<Nokkel, Oppgave>(Kafka.producerProps(env, EventType.OPPGAVE))
 
     fun produceOppgaveEventForIdent(innloggetBruker: InnloggetBruker, dto: ProduceOppgaveDto) {
         val key = createKeyForEvent(env.systemUserName)

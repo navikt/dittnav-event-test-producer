@@ -4,7 +4,6 @@ data class Environment(val bootstrapServers: String = getEnvVar("KAFKA_BOOTSTRAP
                        val schemaRegistryUrl: String = getEnvVar("KAFKA_SCHEMAREGISTRY_SERVERS"),
                        val systemUserName: String = getEnvVar("SERVICEUSER_USERNAME"),
                        val systemUserPassword: String = getEnvVar("SERVICEUSER_PASSWORD"),
-                       val groupId: String = getEnvVar("GROUP_ID"),
                        val dbHost: String = getEnvVar("DB_HOST"),
                        val dbName: String = getEnvVar("DB_NAME"),
                        val dbUser: String = "$dbName-user",

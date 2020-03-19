@@ -6,6 +6,7 @@ import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.common.database.Brukernotifikasjon
 import no.nav.personbruker.dittnav.eventtestproducer.config.Environment
+import no.nav.personbruker.dittnav.eventtestproducer.config.EventType
 import no.nav.personbruker.dittnav.eventtestproducer.config.Kafka
 import no.nav.personbruker.dittnav.eventtestproducer.config.Kafka.doneTopicName
 import org.apache.kafka.clients.producer.KafkaProducer
@@ -16,7 +17,7 @@ import java.time.Instant
 class DoneProducer(private val env: Environment) {
 
     private val log = LoggerFactory.getLogger(DoneProducer::class.java)
-    private val kafkaProducer = KafkaProducer<Nokkel, Done>(Kafka.producerProps(env))
+    private val kafkaProducer = KafkaProducer<Nokkel, Done>(Kafka.producerProps(env, EventType.DONE))
 
     fun produceDoneEventForSpecifiedEvent(innloggetBruker: InnloggetBruker, eventThatsDone: Brukernotifikasjon) {
         val doneEvent = createDoneEvent(innloggetBruker)

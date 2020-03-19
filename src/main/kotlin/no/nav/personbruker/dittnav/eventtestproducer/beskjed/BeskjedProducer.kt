@@ -5,6 +5,7 @@ import no.nav.brukernotifikasjon.schemas.Nokkel
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.config.Environment
+import no.nav.personbruker.dittnav.eventtestproducer.config.EventType
 import no.nav.personbruker.dittnav.eventtestproducer.config.Kafka
 import no.nav.personbruker.dittnav.eventtestproducer.config.Kafka.beskjedTopicName
 import org.apache.kafka.clients.producer.KafkaProducer
@@ -17,7 +18,7 @@ class BeskjedProducer(private val env: Environment) {
 
     private val log = LoggerFactory.getLogger(BeskjedProducer::class.java)
 
-    private val kafkaProducer = KafkaProducer<Nokkel, Beskjed>(Kafka.producerProps(env))
+    private val kafkaProducer = KafkaProducer<Nokkel, Beskjed>(Kafka.producerProps(env, EventType.BESKJED))
 
     fun produceBeskjedEventForIdent(innloggetBruker: InnloggetBruker, dto: ProduceBeskjedDto) {
         val key = createKeyForEvent(env.systemUserName)
