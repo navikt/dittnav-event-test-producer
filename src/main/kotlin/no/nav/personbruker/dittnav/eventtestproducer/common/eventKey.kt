@@ -1,13 +1,11 @@
 package no.nav.personbruker.dittnav.eventtestproducer.common
 
 import no.nav.brukernotifikasjon.schemas.Nokkel
-import java.time.Instant
+import java.util.*
 
 fun createKeyForEvent(systemUserName: String): Nokkel {
-    val nowInMs = Instant.now().toEpochMilli()
-
     return Nokkel.newBuilder()
-            .setEventId("$nowInMs")
+            .setEventId(UUID.randomUUID().toString())
             .setSystembruker(systemUserName)
             .build()
 }
