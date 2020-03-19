@@ -24,7 +24,7 @@ class ProduserEventerForYtelestest {
 
     private val antallEventer = 50000
 
-//    @Test
+    @Test
     fun `produser 50000 oppgaver og beskjeder, og et tilhorende done-event for hver av de`() {
         produserBeskjeder()
         produserOppgave()
@@ -83,7 +83,7 @@ class ProduserEventerForYtelestest {
         val stop = Instant.now()
         val tidbrukt = stop.minusMillis(start.toEpochMilli()).toEpochMilli()
         val tidbruktISekunder = tidbrukt / 1000
-        println("Gjenbrukt kafka-produsent med venting, produseringen tok: $tidbruktISekunder sekunder.\\n")
+        println("Gjenbrukt kafka-produsent med venting, produseringen tok: $tidbruktISekunder sekunder.\n")
     }
 
     private fun createPropertiesForTestEnvironment(): Environment {
