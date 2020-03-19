@@ -13,18 +13,34 @@ import org.slf4j.LoggerFactory
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
-object BeskjedProducer {
+class BeskjedProducer(private val env: Environment) {
 
     private val log = LoggerFactory.getLogger(BeskjedProducer::class.java)
-    val env = Environment()
+
+    private val kafkaProducer = KafkaProducer<Nokkel, Beskjed>(Kafka.producerProps(env))
 
     fun produceBeskjedEventForIdent(innloggetBruker: InnloggetBruker, dto: ProduceBeskjedDto) {
-        KafkaProducer<Nokkel, Beskjed>(Kafka.producerProps(env)).use { producer ->
-            val key = createKeyForEvent(env.systemUserName)
-            val value = createBeskjedForIdent(innloggetBruker, dto)
-            producer.send(ProducerRecord(beskjedTopicName, key, value))
+        val key = createKeyForEvent(env.systemUserName)
+        val value = createBeskjedForIdent(innloggetBruker, dto)
+
+        try {
+            kafkaProducer.send(ProducerRecord(beskjedTopicName, key, value))
+            log.info("Har produsert et beskjed-event for for brukeren: $innloggetBruker")
+
+        } catch (e: Exception) {
+            log.error("Det skjedde en feil ved produsering av et event for brukeren $innloggetBruker", e)
         }
-        log.info("Har produsert et beskjeds-event for for brukeren: $innloggetBruker")
+
+    }
+
+    fun close() {
+        try {
+            kafkaProducer.close()
+            log.info("Produsenten er lukket.")
+
+        } catch (e: Exception) {
+            log.warn("Klarte ikke å lukke produsenten. Det kan være venter som ikke ble produsert.")
+        }
     }
 
     private fun createBeskjedForIdent(innloggetBruker: InnloggetBruker, dto: ProduceBeskjedDto): Beskjed {

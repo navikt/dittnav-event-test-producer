@@ -13,21 +13,31 @@ import org.apache.kafka.clients.producer.ProducerRecord
 import org.slf4j.LoggerFactory
 import java.time.Instant
 
-object DoneProducer {
+class DoneProducer(private val env: Environment) {
 
     private val log = LoggerFactory.getLogger(DoneProducer::class.java)
-
-    private val env = Environment()
+    private val kafkaProducer = KafkaProducer<Nokkel, Done>(Kafka.producerProps(env))
 
     fun produceDoneEventForSpecifiedEvent(innloggetBruker: InnloggetBruker, eventThatsDone: Brukernotifikasjon) {
         val doneEvent = createDoneEvent(innloggetBruker)
-        produceDoneEvent(doneEvent, createKeyForEvent(eventThatsDone.eventId, env.systemUserName))
-        log.info("Har produsert et done-event for for brukeren: $innloggetBruker sitt event med eventId: ${eventThatsDone.eventId}")
+        val key = createKeyForEvent(eventThatsDone.eventId, env.systemUserName)
+
+        try {
+            kafkaProducer.send(ProducerRecord(doneTopicName, key, doneEvent))
+            log.info("Har produsert et done-event for eventet med nøkkel $key")
+
+        } catch (e: Exception) {
+            log.error("Det skjedde en feil ved produsering av et event for brukeren $innloggetBruker", e)
+        }
     }
 
-    private fun produceDoneEvent(doneEvent: Done, key: Nokkel) {
-        KafkaProducer<Nokkel, Done>(Kafka.producerProps(env)).use { producer ->
-            producer.send(ProducerRecord(doneTopicName, key, doneEvent))
+    fun close() {
+        try {
+            kafkaProducer.close()
+            log.info("Produsenten er lukket.")
+
+        } catch (e: Exception) {
+            log.warn("Klarte ikke å lukke produsenten. Det kan være venter som ikke ble produsert.")
         }
     }
 
