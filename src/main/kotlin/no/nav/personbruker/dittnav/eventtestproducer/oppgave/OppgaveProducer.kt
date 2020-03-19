@@ -22,14 +22,16 @@ class OppgaveProducer(private val env: Environment) {
         val key = createKeyForEvent(env.systemUserName)
         val value = createOppgaveForIdent(innloggetBruker, dto)
 
+        produceEvent(innloggetBruker, key, value)
+    }
+
+    fun produceEvent(innloggetBruker: InnloggetBruker, key: Nokkel, oppgave: Oppgave) {
         try {
-            kafkaProducer.send(ProducerRecord(oppgaveTopicName, key, value))
-            log.info("Har produsert et oppgace-event for for brukeren: $innloggetBruker")
+            kafkaProducer.send(ProducerRecord(oppgaveTopicName, key, oppgave))
 
         } catch (e: Exception) {
             log.error("Det skjedde en feil ved produsering av et event for brukeren $innloggetBruker", e)
         }
-
     }
 
     fun close() {
@@ -42,7 +44,7 @@ class OppgaveProducer(private val env: Environment) {
         }
     }
 
-    private fun createOppgaveForIdent(innloggetBruker: InnloggetBruker, dto: ProduceOppgaveDto): Oppgave {
+    fun createOppgaveForIdent(innloggetBruker: InnloggetBruker, dto: ProduceOppgaveDto): Oppgave {
         val nowInMs = Instant.now().toEpochMilli()
         val build = Oppgave.newBuilder()
                 .setFodselsnummer(innloggetBruker.ident)

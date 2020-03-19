@@ -23,9 +23,12 @@ class DoneProducer(private val env: Environment) {
         val doneEvent = createDoneEvent(innloggetBruker)
         val key = createKeyForEvent(eventThatsDone.eventId, env.systemUserName)
 
+        produceEvent(innloggetBruker, key, doneEvent)
+    }
+
+    fun produceEvent(innloggetBruker: InnloggetBruker, key: Nokkel, doneEvent: Done) {
         try {
             kafkaProducer.send(ProducerRecord(doneTopicName, key, doneEvent))
-            log.info("Har produsert et done-event for eventet med nøkkel $key")
 
         } catch (e: Exception) {
             log.error("Det skjedde en feil ved produsering av et event for brukeren $innloggetBruker", e)
@@ -42,7 +45,7 @@ class DoneProducer(private val env: Environment) {
         }
     }
 
-    private fun createDoneEvent(innloggetBruker: InnloggetBruker): Done {
+    fun createDoneEvent(innloggetBruker: InnloggetBruker): Done {
         val nowInMs = Instant.now().toEpochMilli()
         val build = Done.newBuilder()
                 .setFodselsnummer(innloggetBruker.ident)

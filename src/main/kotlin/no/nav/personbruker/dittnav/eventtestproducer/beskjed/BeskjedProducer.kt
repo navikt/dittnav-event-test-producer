@@ -24,14 +24,16 @@ class BeskjedProducer(private val env: Environment) {
         val key = createKeyForEvent(env.systemUserName)
         val value = createBeskjedForIdent(innloggetBruker, dto)
 
+        produceEvent(innloggetBruker, key, value)
+    }
+
+    fun produceEvent(innloggetBruker: InnloggetBruker, key: Nokkel, beskjed: Beskjed) {
         try {
-            kafkaProducer.send(ProducerRecord(beskjedTopicName, key, value))
-            log.info("Har produsert et beskjed-event for for brukeren: $innloggetBruker")
+            kafkaProducer.send(ProducerRecord(beskjedTopicName, key, beskjed))
 
         } catch (e: Exception) {
             log.error("Det skjedde en feil ved produsering av et event for brukeren $innloggetBruker", e)
         }
-
     }
 
     fun close() {
@@ -44,7 +46,7 @@ class BeskjedProducer(private val env: Environment) {
         }
     }
 
-    private fun createBeskjedForIdent(innloggetBruker: InnloggetBruker, dto: ProduceBeskjedDto): Beskjed {
+    fun createBeskjedForIdent(innloggetBruker: InnloggetBruker, dto: ProduceBeskjedDto): Beskjed {
         val nowInMs = Instant.now().toEpochMilli()
         val weekFromNowInMs = Instant.now().plus(7, ChronoUnit.DAYS).toEpochMilli()
         val build = Beskjed.newBuilder()
