@@ -38,7 +38,7 @@ class ProduserEventerForYtelestest {
         val beskjedProducer = BeskjedProducer(env)
         val start = Instant.now()
         for (i in 1..antallEventer) {
-            val key = createKeyForEvent("$i", dummySystembruker)
+            val key = createKeyForEvent("b-$i", dummySystembruker)
             brukteKeys.add(key)
             val beskjed = ProduceBeskjedDto("Beskjedtekst $i", "https://beskjed-$i")
             val value = beskjedProducer.createBeskjedForIdent(bruker, beskjed)
@@ -56,7 +56,7 @@ class ProduserEventerForYtelestest {
         val oppgaveProducer = OppgaveProducer(env)
         val start = Instant.now()
         for (i in 1..antallEventer) {
-            val key = createKeyForEvent("$i", dummySystembruker)
+            val key = createKeyForEvent("o-$i", dummySystembruker)
             brukteKeys.add(key)
             val oppgave = ProduceOppgaveDto("Oppgavetekst $i", "https://oppgave-$i")
             val value = oppgaveProducer.createOppgaveForIdent(bruker, oppgave)
