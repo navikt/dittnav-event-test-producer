@@ -75,6 +75,10 @@ class ProduserEventerForYtelestest {
             val value = doneProducer.createDoneEvent(bruker)
             doneProducer.produceEvent(bruker, key, value)
             counter++
+            if (counter % 10000 == 0) {
+                println("Har produsert done-event nummer $counter tar en liten pause")
+                Thread.sleep(1000)
+            }
         }
         counter `should be equal to` (antallEventer * 2)
     }
