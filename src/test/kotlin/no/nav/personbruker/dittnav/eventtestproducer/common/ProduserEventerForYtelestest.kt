@@ -70,7 +70,9 @@ class ProduserEventerForYtelestest {
     }
 
     private fun produceDoneEventsForAlleBeskjederOgOppgaver() {
+        println("Produserer ${brukteKeys.size} done-eventer, en til hver beskjed og oppgave")
         var counter = 0
+        val start = Instant.now()
         brukteKeys.forEach { key ->
             val value = doneProducer.createDoneEvent(bruker)
             doneProducer.produceEvent(bruker, key, value)
@@ -80,6 +82,7 @@ class ProduserEventerForYtelestest {
                 Thread.sleep(1000)
             }
         }
+        beregnBruktTid(start)
         counter `should be equal to` (antallEventer * 2)
     }
 
