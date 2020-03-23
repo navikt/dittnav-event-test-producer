@@ -24,7 +24,7 @@ class ProduserEventerForYtelestest {
 
     private val antallEventer = 50000
 
-    @Test
+//    @Test
     fun `produser 50000 oppgaver og beskjeder, og et tilhorende done-event for hver av de`() {
         produserBeskjeder()
         produserOppgave()
