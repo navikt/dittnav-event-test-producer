@@ -3,21 +3,24 @@ package no.nav.personbruker.dittnav.eventtestproducer.ytelsestesting
 import no.nav.personbruker.dittnav.eventtestproducer.beskjed.BeskjedProducer
 import no.nav.personbruker.dittnav.eventtestproducer.config.Environment
 import no.nav.personbruker.dittnav.eventtestproducer.done.DoneProducer
+import no.nav.personbruker.dittnav.eventtestproducer.innboks.InnboksProducer
 import no.nav.personbruker.dittnav.eventtestproducer.oppgave.OppgaveProducer
-import org.junit.jupiter.api.Test
 
 internal class TestDataServiceTest {
 
     private val env = createPropertiesForTestEnvironment()
 
     private val doneProducer = DoneProducer(env)
-    private val oppgaveProducer = OppgaveProducer(env)
     private val beskjedProducer = BeskjedProducer(env)
+    private val innboksProducer = InnboksProducer(env)
+    private val oppgaveProducer = OppgaveProducer(env)
 
 //    @Test
     fun produserTestCase() {
-        val testDataService = TestDataService(doneProducer, beskjedProducer, oppgaveProducer)
-        testDataService.produserTestCase()
+        val testDataService = TestDataService(doneProducer, beskjedProducer, oppgaveProducer, innboksProducer)
+        testDataService.produserBeskjederOgTilhorendeDoneEventer()
+        testDataService.produserOppgaveOgTilhorendeDoneEventer()
+        testDataService.produserInnboksOgTilhorendeDoneEventer()
     }
 
 

@@ -8,10 +8,22 @@ import io.ktor.routing.post
 
 fun Route.ytelsestestApi(testDataService: TestDataService) {
 
-    post("/produce/testeventer") {
-        testDataService.produserTestCase()
+    post("/produce/test/beskjed") {
+        testDataService.produserBeskjederOgTilhorendeDoneEventer()
 
-        call.respondText(text = "Har produsert test-eventer", contentType = ContentType.Text.Plain)
+        call.respondText(text = "Har produsert beskjed-test-eventer", contentType = ContentType.Text.Plain)
+    }
+
+    post("/produce/test/oppgave") {
+        testDataService.produserOppgaveOgTilhorendeDoneEventer()
+
+        call.respondText(text = "Har produsert oppgave-test-eventer", contentType = ContentType.Text.Plain)
+    }
+
+    post("/produce/test/innboks") {
+        testDataService.produserInnboksOgTilhorendeDoneEventer()
+
+        call.respondText(text = "Har produsert innboks-test-eventer", contentType = ContentType.Text.Plain)
     }
 
 }

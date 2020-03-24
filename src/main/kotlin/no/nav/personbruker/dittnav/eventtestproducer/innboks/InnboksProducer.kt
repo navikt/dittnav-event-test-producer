@@ -21,14 +21,16 @@ class InnboksProducer(private val env: Environment) {
         val key = createKeyForEvent(env.systemUserName)
         val value = createInnboksForIdent(innloggetBruker, dto)
 
+        produceEvent(innloggetBruker, key, value)
+    }
+
+    fun produceEvent(innloggetBruker: InnloggetBruker, key: Nokkel, value: Innboks) {
         try {
             kafkaProducer.send(ProducerRecord(Kafka.innboksTopicName, key, value))
-            log.info("Har produsert et innboks-event for for brukeren: $innloggetBruker")
 
         } catch (e: Exception) {
             log.error("Det skjedde en feil ved produsering av et event for brukeren $innloggetBruker", e)
         }
-
     }
 
     fun close() {
@@ -41,7 +43,7 @@ class InnboksProducer(private val env: Environment) {
         }
     }
 
-    private fun createInnboksForIdent(innloggetBruker: InnloggetBruker, dto: ProduceInnboksDto): Innboks {
+    fun createInnboksForIdent(innloggetBruker: InnloggetBruker, dto: ProduceInnboksDto): Innboks {
         val nowInMs = Instant.now().toEpochMilli()
 
         return Innboks.newBuilder()

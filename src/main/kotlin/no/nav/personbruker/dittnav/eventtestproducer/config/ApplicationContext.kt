@@ -18,6 +18,6 @@ class ApplicationContext {
     val innboksProducer = InnboksProducer(environment)
     val doneProducer = DoneProducer(environment)
     val doneEventService = DoneEventService(database, doneProducer)
-    val testDataService = TestDataService(doneProducer, beskjedProducer, oppgaveProducer)
+    val testDataService = TestDataService(doneProducer, beskjedProducer, oppgaveProducer, innboksProducer)
 
 }
