@@ -56,7 +56,6 @@ fun Application.mainModule(appContext: ApplicationContext = ApplicationContext()
             beskjedApi(appContext.beskjedProducer)
             innboksApi(appContext.innboksProducer)
             doneApi(appContext.doneEventService)
-            ytelsestestApi(appContext.testDataService)
         }
     }
 
