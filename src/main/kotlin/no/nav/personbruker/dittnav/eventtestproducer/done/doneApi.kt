@@ -9,8 +9,8 @@ fun Route.doneApi(doneEventService: DoneEventService) {
 
     post("/produce/done/all") {
         respond {
-//            doneEventService.markAllBrukernotifikasjonerAsDone(innloggetBruker)
-            "Midlertidig deaktivert grunnet ytelsestesting."
+            doneEventService.markAllBrukernotifikasjonerAsDone(innloggetBruker)
+            "Done-eventer er produsert for alle for brukeren: $innloggetBruker sine brukernotifikasjoner."
         }
     }
 

@@ -9,8 +9,8 @@ fun Route.oppgaveApi(oppgaveProducer: OppgaveProducer) {
 
     post("/produce/oppgave") {
         respondForParameterType<ProduceOppgaveDto> { oppgaveDto ->
-//            oppgaveProducer.produceOppgaveEventForIdent(innloggetBruker, oppgaveDto)
-            "Midlertidig deaktivert grunnet ytelsestesting."
+            oppgaveProducer.produceOppgaveEventForIdent(innloggetBruker, oppgaveDto)
+            "Et oppgave-event for for brukeren: $innloggetBruker har blitt lagt på kafka."
         }
     }
 
