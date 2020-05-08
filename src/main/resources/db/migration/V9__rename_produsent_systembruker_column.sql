@@ -1,0 +1,3 @@
+ALTER TABLE BESKJED RENAME COLUMN produsent TO systembruker;
+ALTER TABLE INNBOKS RENAME COLUMN produsent TO systembruker;
+ALTER TABLE OPPGAVE RENAME COLUMN produsent TO systembruker;

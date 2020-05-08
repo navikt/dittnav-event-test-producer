@@ -27,7 +27,7 @@ fun Connection.getInnboksByFodselsnummer(innloggetBruker: InnloggetBruker): List
 private fun ResultSet.toInnboks(): Innboks {
     return Innboks(
             id = getInt("id"),
-            produsent = getString("produsent"),
+            systembruker = getString("systembruker"),
             eventTidspunkt = ZonedDateTime.ofInstant(getTimestamp("eventTidspunkt").toInstant(), ZoneId.of("Europe/Oslo")),
             fodselsnummer = getString("fodselsnummer"),
             eventId = getString("eventId"),

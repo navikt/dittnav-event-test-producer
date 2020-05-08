@@ -28,7 +28,7 @@ fun Connection.getBeskjedByFodselsnummer(innloggetBruker: InnloggetBruker): List
 private fun ResultSet.toBeskjed(): Beskjed {
     return Beskjed(
             id = getInt("id"),
-            produsent = getString("produsent"),
+            systembruker = getString("systembruker"),
             eventTidspunkt = ZonedDateTime.ofInstant(getTimestamp("eventTidspunkt").toInstant(), ZoneId.of("Europe/Oslo")),
             fodselsnummer = getString("fodselsnummer"),
             eventId = getString("eventId"),
