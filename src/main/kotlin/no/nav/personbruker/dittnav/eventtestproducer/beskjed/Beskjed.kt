@@ -8,7 +8,7 @@ data class Beskjed(
         override val eventId: String,
         override val eventTidspunkt: ZonedDateTime,
         override val id: Int?,
-        override val produsent: String,
+        override val systembruker: String,
         override val sikkerhetsnivaa: Int,
         override val sistOppdatert: ZonedDateTime,
         override val tekst: String,

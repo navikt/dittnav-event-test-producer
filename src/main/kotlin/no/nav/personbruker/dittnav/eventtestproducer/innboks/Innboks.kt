@@ -5,7 +5,7 @@ import java.time.ZonedDateTime
 
 data class Innboks (
         override val id: Int,
-        override val produsent: String,
+        override val systembruker: String,
         override val eventTidspunkt: ZonedDateTime,
         override val fodselsnummer: String,
         override val eventId: String,
