@@ -15,4 +15,21 @@ data class Oppgave(
         override val sistOppdatert: ZonedDateTime,
         override val tekst: String,
         override val link: String
-) : Brukernotifikasjon
+) : Brukernotifikasjon {
+
+    override fun toString(): String {
+        return "Oppgave(" +
+                "id=$id, " +
+                "systembruker=***, " +
+                "eventId=$eventId, " +
+                "eventTidspunkt=$eventTidspunkt, " +
+                "fodselsnummer=***, " +
+                "grupperingsId=$grupperingsId, " +
+                "tekst=***, " +
+                "link=***, " +
+                "sikkerhetsnivaa=$sikkerhetsnivaa, " +
+                "sistOppdatert=$sistOppdatert, " +
+                "aktiv=$aktiv"
+    }
+
+}
