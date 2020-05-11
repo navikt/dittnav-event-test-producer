@@ -2,31 +2,35 @@ import no.nav.personbruker.dittnav.eventtestproducer.common.database.Brukernotif
 import java.time.ZonedDateTime
 
 data class Beskjed(
-        override val aktiv: Boolean,
+        override val id: Int,
+        val uid: String,
         override val fodselsnummer: String,
         override val grupperingsId: String,
         override val eventId: String,
         override val eventTidspunkt: ZonedDateTime,
-        override val id: Int?,
         override val systembruker: String,
         override val sikkerhetsnivaa: Int,
         override val sistOppdatert: ZonedDateTime,
+        val synligFremTil: ZonedDateTime?,
         override val tekst: String,
-        override val link: String
+        override val link: String,
+        override val aktiv: Boolean
 ) : Brukernotifikasjon {
 
     override fun toString(): String {
         return "Beskjed(" +
                 "id=$id, " +
-                "systembruker=***, " +
-                "eventId=$eventId, " +
-                "eventTidspunkt=$eventTidspunkt, " +
+                "uid=$uid, " +
                 "fodselsnummer=***, " +
                 "grupperingsId=$grupperingsId, " +
-                "tekst=***, " +
-                "link=***, " +
+                "eventId=$eventId, " +
+                "eventTidspunkt=$eventTidspunkt, " +
+                "systembruker=***, " +
                 "sikkerhetsnivaa=$sikkerhetsnivaa, " +
                 "sistOppdatert=$sistOppdatert, " +
+                "synligFremTil=$synligFremTil, " +
+                "tekst=***, " +
+                "link=***, " +
                 "aktiv=$aktiv"
     }
 }
