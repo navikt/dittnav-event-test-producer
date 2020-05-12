@@ -1,6 +1,8 @@
 package no.nav.personbruker.dittnav.eventtestproducer.oppgave
 
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
+import no.nav.personbruker.dittnav.eventtestproducer.common.database.getUtcTimeStamp
+import no.nav.personbruker.dittnav.eventtestproducer.common.database.map
 import java.sql.Connection
 import java.sql.ResultSet
 import java.time.ZoneId
@@ -10,16 +12,16 @@ fun Connection.getAllOppgaveByFodselsnummer(innloggetBruker: InnloggetBruker): L
         prepareStatement("""SELECT * FROM OPPGAVE WHERE fodselsnummer = ?""")
                 .use {
                     it.setString(1, innloggetBruker.ident)
-                    it.executeQuery().list {
+                    it.executeQuery().map {
                         toOppgave()
                     }
                 }
 
-fun Connection.getOppgaveByFodselsnummer(innloggetBruker: InnloggetBruker): List<Oppgave> =
+fun Connection.getAktivOppgaveByFodselsnummer(innloggetBruker: InnloggetBruker): List<Oppgave> =
         prepareStatement("""SELECT * FROM OPPGAVE WHERE fodselsnummer = ? AND aktiv = true""")
                 .use {
                     it.setString(1, innloggetBruker.ident)
-                    it.executeQuery().list {
+                    it.executeQuery().map {
                         toOppgave()
                     }
                 }
@@ -28,21 +30,14 @@ private fun ResultSet.toOppgave(): Oppgave {
     return Oppgave(
             id = getInt("id"),
             systembruker = getString("systembruker"),
-            eventTidspunkt = ZonedDateTime.ofInstant(getTimestamp("eventTidspunkt").toInstant(), ZoneId.of("Europe/Oslo")),
+            eventTidspunkt = ZonedDateTime.ofInstant(getUtcTimeStamp("eventTidspunkt").toInstant(), ZoneId.of("Europe/Oslo")),
             fodselsnummer = getString("fodselsnummer"),
             eventId = getString("eventId"),
             grupperingsId = getString("grupperingsId"),
             tekst = getString("tekst"),
             link = getString("link"),
             sikkerhetsnivaa = getInt("sikkerhetsnivaa"),
-            sistOppdatert = ZonedDateTime.ofInstant(getTimestamp("sistOppdatert").toInstant(), ZoneId.of("Europe/Oslo")),
+            sistOppdatert = ZonedDateTime.ofInstant(getUtcTimeStamp("sistOppdatert").toInstant(), ZoneId.of("Europe/Oslo")),
             aktiv = getBoolean("aktiv")
     )
 }
-
-private fun <T> ResultSet.list(result: ResultSet.() -> T): List<T> =
-        mutableListOf<T>().apply {
-            while (next()) {
-                add(result())
-            }
-        }

@@ -21,9 +21,9 @@ data class Innboks (
         return "Innboks(" +
                 "id=$id, " +
                 "systembruker=***, " +
-                "eventId=$eventId, " +
                 "eventTidspunkt=$eventTidspunkt, " +
                 "fodselsnummer=***, " +
+                "eventId=$eventId, " +
                 "grupperingsId=$grupperingsId, " +
                 "tekst=***, " +
                 "link=***, " +
@@ -31,5 +31,4 @@ data class Innboks (
                 "sistOppdatert=$sistOppdatert, " +
                 "aktiv=$aktiv"
     }
-    
 }

@@ -3,7 +3,7 @@ package no.nav.personbruker.dittnav.eventtestproducer.common.database
 import java.time.ZonedDateTime
 
 interface Brukernotifikasjon {
-    val id: Int?
+    val id: Int
     val systembruker: String
     val eventTidspunkt: ZonedDateTime
     val fodselsnummer: String
