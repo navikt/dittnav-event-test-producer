@@ -1,11 +1,11 @@
 package no.nav.personbruker.dittnav.eventtestproducer.done
 
 import kotlinx.coroutines.runBlocking
-import no.nav.personbruker.dittnav.eventtestproducer.beskjed.getBeskjedByFodselsnummer
-import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.database.Database
-import no.nav.personbruker.dittnav.eventtestproducer.innboks.getInnboksByFodselsnummer
-import no.nav.personbruker.dittnav.eventtestproducer.oppgave.getOppgaveByFodselsnummer
+import no.nav.personbruker.dittnav.eventtestproducer.beskjed.getAktivBeskjedByFodselsnummer
+import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
+import no.nav.personbruker.dittnav.eventtestproducer.innboks.getAktivInnboksByFodselsnummer
+import no.nav.personbruker.dittnav.eventtestproducer.oppgave.getAktivOppgaveByFodselsnummer
 
 class DoneEventService(
         private val database: Database,
@@ -13,9 +13,9 @@ class DoneEventService(
 ) {
 
     fun markAllBrukernotifikasjonerAsDone(innloggetBruker: InnloggetBruker) = runBlocking {
-        val beskjed = database.dbQuery { getBeskjedByFodselsnummer(innloggetBruker) }
-        val oppgaver = database.dbQuery { getOppgaveByFodselsnummer(innloggetBruker) }
-        val innboks = database.dbQuery { getInnboksByFodselsnummer(innloggetBruker) }
+        val beskjed = database.dbQuery { getAktivBeskjedByFodselsnummer(innloggetBruker) }
+        val oppgaver = database.dbQuery { getAktivOppgaveByFodselsnummer(innloggetBruker) }
+        val innboks = database.dbQuery { getAktivInnboksByFodselsnummer(innloggetBruker) }
 
         val alleBrukernotifikasjoner = beskjed + oppgaver + innboks
 

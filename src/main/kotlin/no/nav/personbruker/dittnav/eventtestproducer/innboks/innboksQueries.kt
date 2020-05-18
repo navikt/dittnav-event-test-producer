@@ -1,6 +1,8 @@
 package no.nav.personbruker.dittnav.eventtestproducer.innboks
 
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
+import no.nav.personbruker.dittnav.eventtestproducer.common.database.getUtcTimeStamp
+import no.nav.personbruker.dittnav.eventtestproducer.common.database.map
 import java.sql.Connection
 import java.sql.ResultSet
 import java.time.ZoneId
@@ -10,16 +12,16 @@ fun Connection.getAllInnboksByFodselsnummer(innloggetBruker: InnloggetBruker): L
         prepareStatement("""SELECT * FROM INNBOKS WHERE fodselsnummer = ?""")
                 .use {
                     it.setString(1, innloggetBruker.ident)
-                    it.executeQuery().list {
+                    it.executeQuery().map {
                         toInnboks()
                     }
                 }
 
-fun Connection.getInnboksByFodselsnummer(innloggetBruker: InnloggetBruker): List<Innboks> =
+fun Connection.getAktivInnboksByFodselsnummer(innloggetBruker: InnloggetBruker): List<Innboks> =
         prepareStatement("""SELECT * FROM INNBOKS WHERE fodselsnummer = ? AND aktiv = true""")
                 .use {
                     it.setString(1, innloggetBruker.ident)
-                    it.executeQuery().list {
+                    it.executeQuery().map {
                         toInnboks()
                     }
                 }
@@ -27,22 +29,15 @@ fun Connection.getInnboksByFodselsnummer(innloggetBruker: InnloggetBruker): List
 private fun ResultSet.toInnboks(): Innboks {
     return Innboks(
             id = getInt("id"),
-            produsent = getString("produsent"),
-            eventTidspunkt = ZonedDateTime.ofInstant(getTimestamp("eventTidspunkt").toInstant(), ZoneId.of("Europe/Oslo")),
+            systembruker = getString("systembruker"),
+            eventTidspunkt = ZonedDateTime.ofInstant(getUtcTimeStamp("eventTidspunkt").toInstant(), ZoneId.of("Europe/Oslo")),
             fodselsnummer = getString("fodselsnummer"),
             eventId = getString("eventId"),
             grupperingsId = getString("grupperingsId"),
             tekst = getString("tekst"),
             link = getString("link"),
             sikkerhetsnivaa = getInt("sikkerhetsnivaa"),
-            sistOppdatert = ZonedDateTime.ofInstant(getTimestamp("sistOppdatert").toInstant(), ZoneId.of("Europe/Oslo")),
+            sistOppdatert = ZonedDateTime.ofInstant(getUtcTimeStamp("sistOppdatert").toInstant(), ZoneId.of("Europe/Oslo")),
             aktiv = getBoolean("aktiv")
     )
 }
-
-private fun <T> ResultSet.list(result: ResultSet.() -> T): List<T> =
-        mutableListOf<T>().apply {
-            while (next()) {
-                add(result())
-            }
-        }

@@ -4,12 +4,35 @@ import kotlinx.coroutines.runBlocking
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBrukerObjectMother
 import no.nav.personbruker.dittnav.eventtestproducer.common.database.H2Database
 import org.amshove.kluent.`should be equal to`
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class OppgaveQueriesTest {
 
     private val database = H2Database()
     private val innloggetBruker = InnloggetBrukerObjectMother.createInnloggetBruker()
+
+    private val oppgave1 = OppgaveObjectMother.createOppgave(id = 1, eventId = "123", fodselsnummer = innloggetBruker.ident, aktiv = true)
+    private val oppgave2 = OppgaveObjectMother.createOppgave(id = 2, eventId = "345", fodselsnummer = innloggetBruker.ident, aktiv = true)
+    private val oppgave3 = OppgaveObjectMother.createOppgave(id = 3, eventId = "567", fodselsnummer = innloggetBruker.ident, aktiv = false)
+    private val oppgave4 = OppgaveObjectMother.createOppgave(id = 4, eventId = "789", fodselsnummer = "54321", aktiv = true)
+
+    @BeforeAll
+    fun `populer testdata`() {
+        runBlocking {
+            database.dbQuery { createOppgave(listOf(oppgave1, oppgave2, oppgave3, oppgave4)) }
+        }
+    }
+
+    @AfterAll
+    fun `slett testdata`() {
+        runBlocking {
+            database.dbQuery { deleteOppgave(listOf(oppgave1, oppgave2, oppgave3, oppgave4)) }
+        }
+    }
 
     @Test
     fun `Finn alle cachede Oppgave-eventer for fodselsnummer`() {
@@ -21,7 +44,7 @@ class OppgaveQueriesTest {
     @Test
     fun `Finn alle aktive cachede Oppgave-eventer for fodselsnummer`() {
         runBlocking {
-            database.dbQuery { getOppgaveByFodselsnummer(innloggetBruker) }.size `should be equal to` 2
+            database.dbQuery { getAktivOppgaveByFodselsnummer(innloggetBruker) }.size `should be equal to` 2
         }
     }
 
@@ -30,7 +53,7 @@ class OppgaveQueriesTest {
         val bruker = InnloggetBrukerObjectMother.createInnloggetBruker("456")
 
         runBlocking {
-            database.dbQuery { getOppgaveByFodselsnummer(bruker) }.isEmpty()
+            database.dbQuery { getAktivOppgaveByFodselsnummer(bruker) }.isEmpty()
         }
     }
 
@@ -39,7 +62,7 @@ class OppgaveQueriesTest {
         val brukerUtenFodselsnummer = InnloggetBrukerObjectMother.createInnloggetBruker("")
 
         runBlocking {
-            database.dbQuery { getOppgaveByFodselsnummer(brukerUtenFodselsnummer) }.isEmpty()
+            database.dbQuery { getAktivOppgaveByFodselsnummer(brukerUtenFodselsnummer) }.isEmpty()
         }
     }
 }

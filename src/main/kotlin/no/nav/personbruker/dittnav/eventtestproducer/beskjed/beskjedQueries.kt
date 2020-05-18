@@ -2,6 +2,9 @@ package no.nav.personbruker.dittnav.eventtestproducer.beskjed
 
 import Beskjed
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
+import no.nav.personbruker.dittnav.eventtestproducer.common.database.getNullableZonedDateTime
+import no.nav.personbruker.dittnav.eventtestproducer.common.database.getUtcTimeStamp
+import no.nav.personbruker.dittnav.eventtestproducer.common.database.map
 import java.sql.Connection
 import java.sql.ResultSet
 import java.time.ZoneId
@@ -11,39 +14,34 @@ fun Connection.getAllBeskjedByFodselsnummer(innloggetBruker: InnloggetBruker): L
         prepareStatement("""SELECT * FROM BESKJED WHERE fodselsnummer = ?""")
                 .use {
                     it.setString(1, innloggetBruker.ident)
-                    it.executeQuery().list {
+                    it.executeQuery().map {
                         toBeskjed()
                     }
                 }
 
-fun Connection.getBeskjedByFodselsnummer(innloggetBruker: InnloggetBruker): List<Beskjed> =
+fun Connection.getAktivBeskjedByFodselsnummer(innloggetBruker: InnloggetBruker): List<Beskjed> =
         prepareStatement("""SELECT * FROM BESKJED WHERE fodselsnummer = ? AND aktiv = true""")
                 .use {
                     it.setString(1, innloggetBruker.ident)
-                    it.executeQuery().list {
+                    it.executeQuery().map {
                         toBeskjed()
                     }
                 }
 
-private fun ResultSet.toBeskjed(): Beskjed {
+fun ResultSet.toBeskjed(): Beskjed {
     return Beskjed(
             id = getInt("id"),
-            produsent = getString("produsent"),
-            eventTidspunkt = ZonedDateTime.ofInstant(getTimestamp("eventTidspunkt").toInstant(), ZoneId.of("Europe/Oslo")),
+            uid = getString("uid"),
             fodselsnummer = getString("fodselsnummer"),
-            eventId = getString("eventId"),
             grupperingsId = getString("grupperingsId"),
+            eventId = getString("eventId"),
+            eventTidspunkt = ZonedDateTime.ofInstant(getUtcTimeStamp("eventTidspunkt").toInstant(), ZoneId.of("Europe/Oslo")),
+            systembruker = getString("systembruker"),
+            sikkerhetsnivaa = getInt("sikkerhetsnivaa"),
+            sistOppdatert = ZonedDateTime.ofInstant(getUtcTimeStamp("sistOppdatert").toInstant(), ZoneId.of("Europe/Oslo")),
+            synligFremTil = getNullableZonedDateTime("synligFremTil"),
             tekst = getString("tekst"),
             link = getString("link"),
-            sikkerhetsnivaa = getInt("sikkerhetsnivaa"),
-            sistOppdatert = ZonedDateTime.ofInstant(getTimestamp("sistOppdatert").toInstant(), ZoneId.of("Europe/Oslo")),
             aktiv = getBoolean("aktiv")
     )
 }
-
-private fun <T> ResultSet.list(result: ResultSet.() -> T): List<T> =
-        mutableListOf<T>().apply {
-            while (next()) {
-                add(result())
-            }
-        }

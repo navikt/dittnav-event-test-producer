@@ -68,5 +68,4 @@ class PostgresDatabase(env: Environment) : Database {
             return config
         }
     }
-
 }

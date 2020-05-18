@@ -5,7 +5,7 @@ import java.time.ZonedDateTime
 
 data class Innboks (
         override val id: Int,
-        override val produsent: String,
+        override val systembruker: String,
         override val eventTidspunkt: ZonedDateTime,
         override val fodselsnummer: String,
         override val eventId: String,
@@ -15,4 +15,20 @@ data class Innboks (
         override val sikkerhetsnivaa: Int,
         override val sistOppdatert: ZonedDateTime,
         override val aktiv: Boolean
-) : Brukernotifikasjon
+) : Brukernotifikasjon {
+
+    override fun toString(): String {
+        return "Innboks(" +
+                "id=$id, " +
+                "systembruker=***, " +
+                "eventTidspunkt=$eventTidspunkt, " +
+                "fodselsnummer=***, " +
+                "eventId=$eventId, " +
+                "grupperingsId=$grupperingsId, " +
+                "tekst=***, " +
+                "link=***, " +
+                "sikkerhetsnivaa=$sikkerhetsnivaa, " +
+                "sistOppdatert=$sistOppdatert, " +
+                "aktiv=$aktiv"
+    }
+}
