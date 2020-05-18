@@ -22,7 +22,7 @@ class TestDataService(
     private val log = LoggerFactory.getLogger(TestDataService::class.java)
 
     private val bruker = InnloggetBruker("88888", 4, "dummyToken")
-    private val dummySystembruker = "test-producer"
+    private val dummySystembruker = "dittnav"
 
     private val antallEventer = 50000
 
