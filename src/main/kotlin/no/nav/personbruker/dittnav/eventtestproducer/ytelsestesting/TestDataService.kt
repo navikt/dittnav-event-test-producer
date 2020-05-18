@@ -36,7 +36,7 @@ class TestDataService(
             val doneEvent = doneProducer.createDoneEvent(bruker)
             doneProducer.produceEvent(bruker, key, doneEvent)
             beskjedProducer.produceEvent(bruker, key, beskjedEvent)
-            if (i % 5000 == 0) {
+            if (isShouldTakeASmallBreakAndLogProgress(i)) {
                 log.info("Har produsert beskjed nummer $i tar en liten pause")
                 Thread.sleep(1000)
             }
@@ -54,7 +54,7 @@ class TestDataService(
             oppgaveProducer.produceEvent(bruker, key, oppgaveEvent)
             val doneEvent = doneProducer.createDoneEvent(bruker)
             doneProducer.produceEvent(bruker, key, doneEvent)
-            if (i % 5000 == 0) {
+            if (isShouldTakeASmallBreakAndLogProgress(i)) {
                 log.info("Har produsert oppgave nummer $i tar en liten pause")
                 Thread.sleep(1000)
             }
@@ -72,7 +72,7 @@ class TestDataService(
             innboksProducer.produceEvent(bruker, key, innboksEvent)
             val doneEvent = doneProducer.createDoneEvent(bruker)
             doneProducer.produceEvent(bruker, key, doneEvent)
-            if (i % 5000 == 0) {
+            if (isShouldTakeASmallBreakAndLogProgress(i)) {
                 log.info("Har produsert innboks-event nummer $i tar en liten pause")
                 Thread.sleep(1000)
             }
@@ -86,5 +86,7 @@ class TestDataService(
         val tidbruktISekunder = tidbrukt / 1000
         log.info("Gjenbrukt kafka-produsent med venting, produseringen tok: $tidbruktISekunder sekunder.\n")
     }
+
+    private fun isShouldTakeASmallBreakAndLogProgress(i: Int) = i % (antallEventer/10) == 0
 
 }
