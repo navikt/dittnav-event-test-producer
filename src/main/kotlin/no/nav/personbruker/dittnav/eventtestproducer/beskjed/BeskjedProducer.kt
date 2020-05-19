@@ -5,6 +5,7 @@ import no.nav.brukernotifikasjon.schemas.Nokkel
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.config.Environment
+import no.nav.personbruker.dittnav.eventtestproducer.config.EventType
 import no.nav.personbruker.dittnav.eventtestproducer.config.Kafka
 import no.nav.personbruker.dittnav.eventtestproducer.config.Kafka.beskjedTopicName
 import org.apache.kafka.clients.producer.KafkaProducer
@@ -13,21 +14,39 @@ import org.slf4j.LoggerFactory
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
-object BeskjedProducer {
+class BeskjedProducer(private val env: Environment) {
 
     private val log = LoggerFactory.getLogger(BeskjedProducer::class.java)
-    val env = Environment()
+
+    private val kafkaProducer = KafkaProducer<Nokkel, Beskjed>(Kafka.producerProps(env, EventType.BESKJED))
 
     fun produceBeskjedEventForIdent(innloggetBruker: InnloggetBruker, dto: ProduceBeskjedDto) {
-        KafkaProducer<Nokkel, Beskjed>(Kafka.producerProps(env)).use { producer ->
-            val key = createKeyForEvent(env.systemUserName)
-            val value = createBeskjedForIdent(innloggetBruker, dto)
-            producer.send(ProducerRecord(beskjedTopicName, key, value))
-        }
-        log.info("Har produsert et beskjeds-event for for brukeren: $innloggetBruker")
+        val key = createKeyForEvent(env.systemUserName)
+        val value = createBeskjedForIdent(innloggetBruker, dto)
+
+        produceEvent(innloggetBruker, key, value)
     }
 
-    private fun createBeskjedForIdent(innloggetBruker: InnloggetBruker, dto: ProduceBeskjedDto): Beskjed {
+    fun produceEvent(innloggetBruker: InnloggetBruker, key: Nokkel, beskjed: Beskjed) {
+        try {
+            kafkaProducer.send(ProducerRecord(beskjedTopicName, key, beskjed))
+
+        } catch (e: Exception) {
+            log.error("Det skjedde en feil ved produsering av et event for brukeren $innloggetBruker", e)
+        }
+    }
+
+    fun close() {
+        try {
+            kafkaProducer.close()
+            log.info("Produsenten er lukket.")
+
+        } catch (e: Exception) {
+            log.warn("Klarte ikke å lukke produsenten. Det kan være venter som ikke ble produsert.")
+        }
+    }
+
+    fun createBeskjedForIdent(innloggetBruker: InnloggetBruker, dto: ProduceBeskjedDto): Beskjed {
         val nowInMs = Instant.now().toEpochMilli()
         val weekFromNowInMs = Instant.now().plus(7, ChronoUnit.DAYS).toEpochMilli()
         val build = Beskjed.newBuilder()

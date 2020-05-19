@@ -5,6 +5,7 @@ import no.nav.brukernotifikasjon.schemas.Oppgave
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.config.Environment
+import no.nav.personbruker.dittnav.eventtestproducer.config.EventType
 import no.nav.personbruker.dittnav.eventtestproducer.config.Kafka
 import no.nav.personbruker.dittnav.eventtestproducer.config.Kafka.oppgaveTopicName
 import org.apache.kafka.clients.producer.KafkaProducer
@@ -12,21 +13,38 @@ import org.apache.kafka.clients.producer.ProducerRecord
 import org.slf4j.LoggerFactory
 import java.time.Instant
 
-object OppgaveProducer {
+class OppgaveProducer(private val env: Environment) {
 
     private val log = LoggerFactory.getLogger(OppgaveProducer::class.java)
-    private val env = Environment()
+    private val kafkaProducer = KafkaProducer<Nokkel, Oppgave>(Kafka.producerProps(env, EventType.OPPGAVE))
 
     fun produceOppgaveEventForIdent(innloggetBruker: InnloggetBruker, dto: ProduceOppgaveDto) {
         val key = createKeyForEvent(env.systemUserName)
         val value = createOppgaveForIdent(innloggetBruker, dto)
-        KafkaProducer<Nokkel, Oppgave>(Kafka.producerProps(Environment())).use { producer ->
-            producer.send(ProducerRecord(oppgaveTopicName, key, value))
-        }
-        log.info("Har produsert et oppgace-event for for brukeren: $innloggetBruker")
+
+        produceEvent(innloggetBruker, key, value)
     }
 
-    private fun createOppgaveForIdent(innloggetBruker: InnloggetBruker, dto: ProduceOppgaveDto): Oppgave {
+    fun produceEvent(innloggetBruker: InnloggetBruker, key: Nokkel, oppgave: Oppgave) {
+        try {
+            kafkaProducer.send(ProducerRecord(oppgaveTopicName, key, oppgave))
+
+        } catch (e: Exception) {
+            log.error("Det skjedde en feil ved produsering av et event for brukeren $innloggetBruker", e)
+        }
+    }
+
+    fun close() {
+        try {
+            kafkaProducer.close()
+            log.info("Produsenten er lukket.")
+
+        } catch (e: Exception) {
+            log.warn("Klarte ikke å lukke produsenten. Det kan være venter som ikke ble produsert.")
+        }
+    }
+
+    fun createOppgaveForIdent(innloggetBruker: InnloggetBruker, dto: ProduceOppgaveDto): Oppgave {
         val nowInMs = Instant.now().toEpochMilli()
         val build = Oppgave.newBuilder()
                 .setFodselsnummer(innloggetBruker.ident)
@@ -37,6 +55,5 @@ object OppgaveProducer {
                 .setSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)
         return build.build()
     }
-
 
 }

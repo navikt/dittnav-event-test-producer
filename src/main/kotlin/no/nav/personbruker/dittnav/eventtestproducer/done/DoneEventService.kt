@@ -8,7 +8,9 @@ import no.nav.personbruker.dittnav.eventtestproducer.innboks.getAktivInnboksByFo
 import no.nav.personbruker.dittnav.eventtestproducer.oppgave.getAktivOppgaveByFodselsnummer
 
 class DoneEventService(
-        private val database: Database) {
+        private val database: Database,
+        private val doneProducer: DoneProducer
+) {
 
     fun markAllBrukernotifikasjonerAsDone(innloggetBruker: InnloggetBruker) = runBlocking {
         val beskjed = database.dbQuery { getAktivBeskjedByFodselsnummer(innloggetBruker) }
@@ -18,7 +20,7 @@ class DoneEventService(
         val alleBrukernotifikasjoner = beskjed + oppgaver + innboks
 
         alleBrukernotifikasjoner.forEach { brukernotifikasjon ->
-            DoneProducer.produceDoneEventForSpecifiedEvent(innloggetBruker, brukernotifikasjon)
+            doneProducer.produceDoneEventForSpecifiedEvent(innloggetBruker, brukernotifikasjon)
         }
     }
 

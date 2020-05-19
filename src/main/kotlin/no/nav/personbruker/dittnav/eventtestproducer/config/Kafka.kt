@@ -15,6 +15,8 @@ import java.util.*
 
 object Kafka {
 
+    val log = LoggerFactory.getLogger(Kafka::class.java)
+
     val doneTopicName = "aapen-brukernotifikasjon-done-v1"
     val beskjedTopicName = "aapen-brukernotifikasjon-nyBeskjed-v1"
     val innboksTopicName = "aapen-brukernotifikasjon-nyInnboks-v1"
@@ -35,11 +37,12 @@ object Kafka {
         }
     }
 
-    fun producerProps(env: Environment): Properties {
+    fun producerProps(env: Environment, eventTypeToProduce: EventType): Properties {
+        val clientId = "${getHostname(InetSocketAddress(0))}-${eventTypeToProduce.eventType}"
         return Properties().apply {
             put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, env.bootstrapServers)
             put(KafkaAvroDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG, env.schemaRegistryUrl)
-            put(ConsumerConfig.CLIENT_ID_CONFIG, env.groupId + getHostname(InetSocketAddress(0)))
+            put(ConsumerConfig.CLIENT_ID_CONFIG, clientId)
             put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer::class.java)
             put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer::class.java)
             if (ConfigUtil.isCurrentlyRunningOnNais()) {
@@ -48,5 +51,4 @@ object Kafka {
         }
     }
 
-    val log = LoggerFactory.getLogger(Kafka::class.java)
 }

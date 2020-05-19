@@ -6,17 +6,16 @@ import no.nav.personbruker.dittnav.eventtestproducer.config.ConfigUtil
 import no.nav.personbruker.dittnav.eventtestproducer.config.Environment
 import no.nav.personbruker.dittnav.eventtestproducer.config.getEnvVar
 import no.nav.vault.jdbc.hikaricp.HikariCPVaultUtil
-import javax.sql.DataSource
 
 class PostgresDatabase(env: Environment) : Database {
 
-    private val envDataSource: DataSource
+    private val envDataSource: HikariDataSource
 
     init {
         envDataSource = createCorrectConnectionForEnvironment(env)
     }
 
-    override val dataSource: DataSource
+    override val dataSource: HikariDataSource
         get() = envDataSource
 
 
