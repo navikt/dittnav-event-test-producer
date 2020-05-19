@@ -1,5 +1,6 @@
 package no.nav.personbruker.dittnav.eventtestproducer.ytelsestesting
 
+import kotlinx.coroutines.delay
 import no.nav.personbruker.dittnav.eventtestproducer.beskjed.BeskjedProducer
 import no.nav.personbruker.dittnav.eventtestproducer.beskjed.ProduceBeskjedDto
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
@@ -26,7 +27,7 @@ class TestDataService(
 
     private val antallEventer = 50000
 
-    fun produserBeskjederOgTilhorendeDoneEventer() {
+    suspend fun produserBeskjederOgTilhorendeDoneEventer() {
         log.info("Produserer $antallEventer beskjeder")
         val start = Instant.now()
         for (i in 1..antallEventer) {
@@ -38,13 +39,13 @@ class TestDataService(
             beskjedProducer.produceEvent(bruker, key, beskjedEvent)
             if (isShouldTakeASmallBreakAndLogProgress(i)) {
                 log.info("Har produsert beskjed nummer $i tar en liten pause")
-                Thread.sleep(1000)
+                delay(1000)
             }
         }
         beregnBruktTid(start)
     }
 
-    fun produserOppgaveOgTilhorendeDoneEventer() {
+    suspend fun produserOppgaveOgTilhorendeDoneEventer() {
         log.info("Produserer $antallEventer oppgaver")
         val start = Instant.now()
         for (i in 1..antallEventer) {
@@ -56,13 +57,13 @@ class TestDataService(
             doneProducer.produceEvent(bruker, key, doneEvent)
             if (isShouldTakeASmallBreakAndLogProgress(i)) {
                 log.info("Har produsert oppgave nummer $i tar en liten pause")
-                Thread.sleep(1000)
+                delay(1000)
             }
         }
         beregnBruktTid(start)
     }
 
-    fun produserInnboksOgTilhorendeDoneEventer() {
+    suspend fun produserInnboksOgTilhorendeDoneEventer() {
         log.info("Produserer $antallEventer innboks-eventer")
         val start = Instant.now()
         for (i in 1..antallEventer) {
@@ -74,7 +75,7 @@ class TestDataService(
             doneProducer.produceEvent(bruker, key, doneEvent)
             if (isShouldTakeASmallBreakAndLogProgress(i)) {
                 log.info("Har produsert innboks-event nummer $i tar en liten pause")
-                Thread.sleep(1000)
+                delay(1000)
             }
         }
         beregnBruktTid(start)
