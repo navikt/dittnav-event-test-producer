@@ -22,7 +22,7 @@ import no.nav.personbruker.dittnav.eventtestproducer.common.healthApi
 import no.nav.personbruker.dittnav.eventtestproducer.done.doneApi
 import no.nav.personbruker.dittnav.eventtestproducer.innboks.innboksApi
 import no.nav.personbruker.dittnav.eventtestproducer.oppgave.oppgaveApi
-import no.nav.personbruker.dittnav.eventtestproducer.ytelsestesting.ytelsestestApi
+import no.nav.personbruker.dittnav.eventtestproducer.statusOppdatering.statusOppdateringApi
 import no.nav.security.token.support.ktor.tokenValidationSupport
 
 @KtorExperimentalAPI
@@ -56,6 +56,7 @@ fun Application.mainModule(appContext: ApplicationContext = ApplicationContext()
             beskjedApi(appContext.beskjedProducer)
             innboksApi(appContext.innboksProducer)
             doneApi(appContext.doneEventService)
+            statusOppdateringApi(appContext.statusOppdateringProducer)
         }
     }
 
@@ -73,5 +74,6 @@ private fun Application.configureShutdownHook(appContext: ApplicationContext) {
         appContext.doneProducer.close()
         appContext.innboksProducer.close()
         appContext.oppgaveProducer.close()
+        appContext.statusOppdateringProducer.close()
     }
 }
