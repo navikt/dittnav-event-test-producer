@@ -6,6 +6,7 @@ import no.nav.personbruker.dittnav.eventtestproducer.config.Environment
 import no.nav.personbruker.dittnav.eventtestproducer.done.DoneProducer
 import no.nav.personbruker.dittnav.eventtestproducer.innboks.InnboksProducer
 import no.nav.personbruker.dittnav.eventtestproducer.oppgave.OppgaveProducer
+import no.nav.personbruker.dittnav.eventtestproducer.statusOppdatering.StatusOppdateringProducer
 import org.junit.jupiter.api.Test
 
 internal class TestDataServiceTest {
@@ -16,14 +17,16 @@ internal class TestDataServiceTest {
     private val beskjedProducer = BeskjedProducer(env)
     private val innboksProducer = InnboksProducer(env)
     private val oppgaveProducer = OppgaveProducer(env)
+    private val statusOppdateringProducer = StatusOppdateringProducer(env)
 
-  //  @Test
+    // @Test
     fun produserTestCase() {
-        val testDataService = TestDataService(doneProducer, beskjedProducer, oppgaveProducer, innboksProducer)
+        val testDataService = TestDataService(doneProducer, beskjedProducer, oppgaveProducer, innboksProducer, statusOppdateringProducer)
         runBlocking {
             testDataService.produserBeskjederOgTilhorendeDoneEventer()
             testDataService.produserOppgaveOgTilhorendeDoneEventer()
             testDataService.produserInnboksOgTilhorendeDoneEventer()
+            testDataService.produserStatusOppdateringsEventer()
         }
     }
 

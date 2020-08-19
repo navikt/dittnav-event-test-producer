@@ -10,6 +10,8 @@ import no.nav.personbruker.dittnav.eventtestproducer.innboks.InnboksProducer
 import no.nav.personbruker.dittnav.eventtestproducer.innboks.ProduceInnboksDto
 import no.nav.personbruker.dittnav.eventtestproducer.oppgave.OppgaveProducer
 import no.nav.personbruker.dittnav.eventtestproducer.oppgave.ProduceOppgaveDto
+import no.nav.personbruker.dittnav.eventtestproducer.statusOppdatering.ProduceStatusOppdateringDto
+import no.nav.personbruker.dittnav.eventtestproducer.statusOppdatering.StatusOppdateringProducer
 import org.slf4j.LoggerFactory
 import java.time.Instant
 
@@ -17,7 +19,8 @@ class TestDataService(
         private val doneProducer: DoneProducer,
         private val beskjedProducer: BeskjedProducer,
         private val oppgaveProducer: OppgaveProducer,
-        private val innboksProducer: InnboksProducer
+        private val innboksProducer: InnboksProducer,
+        private val statusOppdateringProducer: StatusOppdateringProducer
 ) {
 
     private val log = LoggerFactory.getLogger(TestDataService::class.java)
@@ -81,6 +84,22 @@ class TestDataService(
         beregnBruktTid(start)
     }
 
+    suspend fun produserStatusOppdateringsEventer() {
+        log.info("Produserer $antallEventer StatusOppdatering-eventer")
+        val start = Instant.now()
+        for (i in 1..antallEventer) {
+            val key = createKeyForEvent("i-$i", dummySystembruker)
+            val dto = ProduceStatusOppdateringDto("dummyLink_$i", "SENDT", "dummyStatusIntern_$i", "dummySakstema_$i")
+            val statusOppdateringEvent = statusOppdateringProducer.createStatusOppdateringForIdent(bruker, dto)
+            statusOppdateringProducer.produceEvent(bruker, key, statusOppdateringEvent)
+            if (isShouldTakeASmallBreakAndLogProgress(i)) {
+                log.info("Har produsert StatusOppdatering-event nummer $i tar en liten pause")
+                delay(1000)
+            }
+        }
+        beregnBruktTid(start)
+    }
+
     private fun beregnBruktTid(start: Instant) {
         val stop = Instant.now()
         val tidbrukt = stop.minusMillis(start.toEpochMilli()).toEpochMilli()
@@ -88,6 +107,6 @@ class TestDataService(
         log.info("Gjenbrukt kafka-produsent med venting, produseringen tok: $tidbruktISekunder sekunder.\n")
     }
 
-    private fun isShouldTakeASmallBreakAndLogProgress(i: Int) = i % (antallEventer/10) == 0
+    private fun isShouldTakeASmallBreakAndLogProgress(i: Int) = i % (antallEventer / 10) == 0
 
 }
