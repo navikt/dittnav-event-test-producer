@@ -27,7 +27,7 @@ fun Route.ytelsestestApi(testDataService: TestDataService) {
     }
 
     post("/produce/test/statusoppdatering") {
-        testDataService.produserStatusOppdateringsEventer()
+        testDataService.produserStatusoppdateringsEventer()
 
         call.respondText(text = "Har produsert statusoppdatering-test-eventer", contentType = ContentType.Text.Plain)
     }

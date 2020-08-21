@@ -1,8 +1,8 @@
-package no.nav.personbruker.dittnav.eventtestproducer.statusOppdatering
+package no.nav.personbruker.dittnav.eventtestproducer.statusoppdatering
 
 import java.time.ZonedDateTime
 
-data class StatusOppdatering(
+data class Statusoppdatering(
         val id: Int,
         val systembruker: String,
         val eventId: String,
@@ -17,7 +17,7 @@ data class StatusOppdatering(
         val sakstema: String
 ) {
     override fun toString(): String {
-        return "StatusOppdatering(" +
+        return "Statusoppdatering(" +
                 "id=$id, " +
                 "systembruker=***, " +
                 "eventId=$eventId, " +

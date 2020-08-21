@@ -7,7 +7,7 @@ import no.nav.personbruker.dittnav.eventtestproducer.done.DoneEventService
 import no.nav.personbruker.dittnav.eventtestproducer.done.DoneProducer
 import no.nav.personbruker.dittnav.eventtestproducer.innboks.InnboksProducer
 import no.nav.personbruker.dittnav.eventtestproducer.oppgave.OppgaveProducer
-import no.nav.personbruker.dittnav.eventtestproducer.statusOppdatering.StatusOppdateringProducer
+import no.nav.personbruker.dittnav.eventtestproducer.statusoppdatering.StatusoppdateringProducer
 import no.nav.personbruker.dittnav.eventtestproducer.ytelsestesting.TestDataService
 
 class ApplicationContext {
@@ -18,8 +18,8 @@ class ApplicationContext {
     val oppgaveProducer = OppgaveProducer(environment)
     val innboksProducer = InnboksProducer(environment)
     val doneProducer = DoneProducer(environment)
-    val statusOppdateringProducer = StatusOppdateringProducer(environment)
+    val statusoppdateringProducer = StatusoppdateringProducer(environment)
     val doneEventService = DoneEventService(database, doneProducer)
-    val testDataService = TestDataService(doneProducer, beskjedProducer, oppgaveProducer, innboksProducer, statusOppdateringProducer)
+    val testDataService = TestDataService(doneProducer, beskjedProducer, oppgaveProducer, innboksProducer, statusoppdateringProducer)
 
 }

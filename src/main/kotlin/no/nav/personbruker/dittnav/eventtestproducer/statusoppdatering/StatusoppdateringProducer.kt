@@ -1,7 +1,7 @@
-package no.nav.personbruker.dittnav.eventtestproducer.statusOppdatering
+package no.nav.personbruker.dittnav.eventtestproducer.statusoppdatering
 
 import no.nav.brukernotifikasjon.schemas.Nokkel
-import no.nav.brukernotifikasjon.schemas.StatusOppdatering
+import no.nav.brukernotifikasjon.schemas.Statusoppdatering
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.config.Environment
@@ -12,22 +12,22 @@ import org.apache.kafka.clients.producer.ProducerRecord
 import org.slf4j.LoggerFactory
 import java.time.Instant
 
-class StatusOppdateringProducer(private val env: Environment) {
+class StatusoppdateringProducer(private val env: Environment) {
 
-    private val log = LoggerFactory.getLogger(StatusOppdateringProducer::class.java)
+    private val log = LoggerFactory.getLogger(StatusoppdateringProducer::class.java)
 
-    private val kafkaProducer = KafkaProducer<Nokkel, StatusOppdatering>(Kafka.producerProps(env, EventType.STATUSOPPDATERING))
+    private val kafkaProducer = KafkaProducer<Nokkel, Statusoppdatering>(Kafka.producerProps(env, EventType.STATUSOPPDATERING))
 
-    fun produceStatusOppdateringEventForIdent(innloggetBruker: InnloggetBruker, dto: ProduceStatusOppdateringDto) {
+    fun produceStatusoppdateringEventForIdent(innloggetBruker: InnloggetBruker, dto: ProduceStatusoppdateringDto) {
         val key = createKeyForEvent(env.systemUserName)
-        val value = createStatusOppdateringForIdent(innloggetBruker, dto)
+        val value = createStatusoppdateringForIdent(innloggetBruker, dto)
 
         produceEvent(innloggetBruker, key, value)
     }
 
-    fun produceEvent(innloggetBruker: InnloggetBruker, key: Nokkel, statusOppdatering: StatusOppdatering) {
+    fun produceEvent(innloggetBruker: InnloggetBruker, key: Nokkel, statusoppdatering: Statusoppdatering) {
         try {
-            kafkaProducer.send(ProducerRecord(Kafka.statusOppdateringTopicName, key, statusOppdatering))
+            kafkaProducer.send(ProducerRecord(Kafka.statusoppdateringTopicName, key, statusoppdatering))
 
         } catch (e: Exception) {
             log.error("Det skjedde en feil ved produsering av et event for brukeren $innloggetBruker", e)
@@ -44,9 +44,9 @@ class StatusOppdateringProducer(private val env: Environment) {
         }
     }
 
-    fun createStatusOppdateringForIdent(innloggetBruker: InnloggetBruker, dto: ProduceStatusOppdateringDto): StatusOppdatering {
+    fun createStatusoppdateringForIdent(innloggetBruker: InnloggetBruker, dto: ProduceStatusoppdateringDto): Statusoppdatering {
         val nowInMs = Instant.now().toEpochMilli()
-        val build = StatusOppdatering.newBuilder()
+        val build = Statusoppdatering.newBuilder()
                 .setFodselsnummer(innloggetBruker.ident)
                 .setGrupperingsId("100$nowInMs")
                 .setLink(dto.link)
