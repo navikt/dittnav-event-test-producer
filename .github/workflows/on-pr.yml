@@ -1,0 +1,19 @@
+name: Kjør ende-til-ende-tester ved pull-request
+
+on:
+  push:
+    branches:
+      - 'gh-actions-test'
+
+jobs:
+  run-end-to-end-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Sjekk ut koden for dette repo-et'
+        uses: actions/checkout@v2
+      - name: 'Sjekk ut dittnav-docker-compose'
+        uses: actions/checkout@v2
+        with:
+          repository: navikt/dittnav-docker-compose
+      - name: 'Kjører ende-til-ende-tester'
+        uses: navikt/pb-common-gh-actions/run-end-to-end-tests@e2etest-v1
