@@ -61,7 +61,6 @@ fun Application.mainModule(appContext: ApplicationContext = ApplicationContext()
     }
 
     configureShutdownHook(appContext)
-
 }
 
 val PipelineContext<Unit, ApplicationCall>.innloggetBruker: InnloggetBruker
@@ -70,10 +69,10 @@ val PipelineContext<Unit, ApplicationCall>.innloggetBruker: InnloggetBruker
 private fun Application.configureShutdownHook(appContext: ApplicationContext) {
     environment.monitor.subscribe(ApplicationStopPreparing) {
         appContext.database.dataSource.close()
-        appContext.beskjedProducer.close()
-        appContext.doneProducer.close()
-        appContext.innboksProducer.close()
-        appContext.oppgaveProducer.close()
-        appContext.statusoppdateringProducer.close()
+        appContext.kafkaProducerBeskjed.flushAndClose()
+        appContext.kafkaProducerDone.flushAndClose()
+        appContext.kafkaProducerInnboks.flushAndClose()
+        appContext.kafkaProducerOppgave.flushAndClose()
+        appContext.kafkaProducerStatusoppdatering.flushAndClose()
     }
 }

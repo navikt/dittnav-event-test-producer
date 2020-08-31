@@ -5,44 +5,26 @@ import no.nav.brukernotifikasjon.schemas.Nokkel
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.common.database.Brukernotifikasjon
-import no.nav.personbruker.dittnav.eventtestproducer.config.Environment
-import no.nav.personbruker.dittnav.eventtestproducer.config.EventType
-import no.nav.personbruker.dittnav.eventtestproducer.config.Kafka
-import no.nav.personbruker.dittnav.eventtestproducer.config.Kafka.doneTopicName
-import org.apache.kafka.clients.producer.KafkaProducer
-import org.apache.kafka.clients.producer.ProducerRecord
+import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import org.slf4j.LoggerFactory
 import java.time.Instant
 
-class DoneProducer(private val env: Environment) {
+class DoneProducer(private val doneKafkaProducer: KafkaProducerWrapper<Done>, private val systembruker: String) {
 
     private val log = LoggerFactory.getLogger(DoneProducer::class.java)
-    private val kafkaProducer = KafkaProducer<Nokkel, Done>(Kafka.producerProps(env, EventType.DONE))
 
     fun produceDoneEventForSpecifiedEvent(innloggetBruker: InnloggetBruker, eventThatsDone: Brukernotifikasjon) {
-        val doneEvent = createDoneEvent(innloggetBruker)
-        val key = createKeyForEvent(eventThatsDone.eventId, env.systemUserName)
-
-        produceEvent(innloggetBruker, key, doneEvent)
-    }
-
-    fun produceEvent(innloggetBruker: InnloggetBruker, key: Nokkel, doneEvent: Done) {
         try {
-            kafkaProducer.send(ProducerRecord(doneTopicName, key, doneEvent))
-
+            val doneEvent = createDoneEvent(innloggetBruker)
+            val key = createKeyForEvent(eventThatsDone.eventId, systembruker)
+            sendEventToKafka(key, doneEvent)
         } catch (e: Exception) {
             log.error("Det skjedde en feil ved produsering av et event for brukeren $innloggetBruker", e)
         }
     }
 
-    fun close() {
-        try {
-            kafkaProducer.close()
-            log.info("Produsenten er lukket.")
-
-        } catch (e: Exception) {
-            log.warn("Klarte ikke å lukke produsenten. Det kan være venter som ikke ble produsert.")
-        }
+    fun sendEventToKafka(key: Nokkel, event: Done) {
+        doneKafkaProducer.sendEvent(key, event)
     }
 
     fun createDoneEvent(innloggetBruker: InnloggetBruker): Done {

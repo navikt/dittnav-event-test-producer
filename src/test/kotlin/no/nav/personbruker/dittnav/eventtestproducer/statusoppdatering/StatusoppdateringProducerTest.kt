@@ -2,9 +2,10 @@ package no.nav.personbruker.dittnav.eventtestproducer.statusoppdatering
 
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import no.nav.brukernotifikasjon.schemas.Statusoppdatering
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBrukerObjectMother
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
-import no.nav.personbruker.dittnav.eventtestproducer.config.Environment
+import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import org.amshove.kluent.`should be equal to`
 import org.junit.jupiter.api.Test
 
@@ -17,12 +18,13 @@ class StatusoppdateringProducerTest {
     private val sakstema = "dummySakstema"
     private val link = "dummyLink"
     private val innlogetBruker = InnloggetBrukerObjectMother.createInnloggetBruker(fodselsnummer)
+    private val statusoppdateringKafkaProducer = mockk<KafkaProducerWrapper<Statusoppdatering>>()
+    private val statusoppdateringProducer = StatusoppdateringProducer(statusoppdateringKafkaProducer, systembruker)
 
     @Test
     fun `should create statusoppdatering-event`() {
         runBlocking {
-            val statusoppdateringProducer = StatusoppdateringProducer(mockk<Environment>())
-            val statusoppdateringDto = StatusoppdateringDtoObjectMother.createStatusoppdateringDto(link, statusGlobal, statusInternal, sakstema)
+            val statusoppdateringDto = ProduceStatusoppdateringDto(link, statusGlobal, statusInternal, sakstema)
             val statusoppdateringKafkaEvent = statusoppdateringProducer.createStatusoppdateringForIdent(innlogetBruker, statusoppdateringDto)
             statusoppdateringKafkaEvent.getLink() `should be equal to` link
             statusoppdateringKafkaEvent.getStatusGlobal() `should be equal to` statusGlobal
@@ -40,4 +42,5 @@ class StatusoppdateringProducerTest {
             nokkel.getSystembruker() `should be equal to` systembruker
         }
     }
+
 }
