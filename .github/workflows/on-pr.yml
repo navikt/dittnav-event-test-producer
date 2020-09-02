@@ -18,3 +18,5 @@ jobs:
           path: dittnav-docker-compose
       - name: 'Kjører ende-til-ende-tester'
         uses: navikt/pb-common-gh-actions/end-to-end-tests@e2etest-v2
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
