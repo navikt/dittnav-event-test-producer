@@ -20,3 +20,4 @@ jobs:
         uses: navikt/pb-common-gh-actions/end-to-end-tests@e2etest-v3
         with:
           GITHUB_TOKEN: ${{ secrets.DOCKER_PKG_TOKEN }}
+
