@@ -19,7 +19,6 @@ jobs:
           path: dittnav-docker-compose
           token: ${{ secrets.DOCKER_PKG_TOKEN }}
       - name: 'Docker pull and run'
-        uses: actions/checkout@v2
         run: |
           echo "${{ secrets.DOCKER_PKG_TOKEN }}" | docker login --username "x-access-token" --password-stdin https://docker.pkg.github.com
           cd dittnav-docker-compose
