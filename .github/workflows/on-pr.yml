@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: navikt/dittnav-docker-compose
-          ref: fjerne-testcontainers
+          ref: gh-action
           path: dittnav-docker-compose
           token: ${{ secrets.DOCKER_PKG_TOKEN }}
       - name: 'Docker pull and run'
