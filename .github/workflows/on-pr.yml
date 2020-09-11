@@ -18,10 +18,18 @@ jobs:
           ref: gh-action
           path: dittnav-docker-compose
           token: ${{ secrets.DOCKER_PKG_TOKEN }}
-      - name: 'Docker pull and run'
+      - name: 'Pull dittnav-docker-compose'
         run: |
           echo "${{ secrets.DOCKER_PKG_TOKEN }}" | docker login --username "x-access-token" --password-stdin https://docker.pkg.github.com
           cd dittnav-docker-compose
           docker-compose pull
+          cd ..
+      - name: 'Docker build and tag latest'
+        run: |
+          ./gradlew $GRADLE_CMD_BUILD
+          docker build --tag $IMAGE_LATEST .
+      - name: 'Run end-to-end-tests'
+        run: |
+          cd dittnav-docker-compose
           ./gradlew test
 
