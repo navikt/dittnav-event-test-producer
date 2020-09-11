@@ -26,7 +26,10 @@ jobs:
           cd ..
       - name: 'Docker build and tag latest'
         run: |
-          ./gradlew $GRADLE_CMD_BUILD
+          ./gradlew clean build
+          APP_NAME=$(echo $GITHUB_REPOSITORY | rev | cut -f1 -d"/" | rev )
+          IMAGE_BASE="docker.pkg.github.com/$GITHUB_REPOSITORY/$APP_NAME"
+          IMAGE_LATEST="$IMAGE_BASE:latest"
           docker build --tag $IMAGE_LATEST .
       - name: 'Run end-to-end-tests'
         run: |
