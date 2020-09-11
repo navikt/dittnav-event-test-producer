@@ -13,7 +13,7 @@ fun Routing.healthApi(collectorRegistry: CollectorRegistry = CollectorRegistry.d
 
     val pingJsonResponse = """{"ping": "pong"}"""
 
-    get("/isAlive") {
+    get("/isAlivee") {
         call.respondText(text = "ALIVE", contentType = ContentType.Text.Plain)
     }
 
