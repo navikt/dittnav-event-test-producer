@@ -39,3 +39,4 @@ jobs:
           cd dittnav-docker-compose
           ./gradlew test
 
+
