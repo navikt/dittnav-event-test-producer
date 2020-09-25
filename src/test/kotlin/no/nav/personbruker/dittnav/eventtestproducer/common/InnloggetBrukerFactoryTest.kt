@@ -2,7 +2,7 @@ package no.nav.personbruker.dittnav.eventtestproducer.common
 
 import no.nav.personbruker.dittnav.eventtestproducer.common.OIDCValidationContextPrincipalObjectMother.createPrincipalForAzure
 import no.nav.security.token.support.core.context.TokenValidationContext
-import no.nav.security.token.support.ktor.OIDCValidationContextPrincipal
+import no.nav.security.token.support.ktor.TokenValidationContextPrincipal
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should throw`
 import org.amshove.kluent.invoking
@@ -22,7 +22,7 @@ internal class InnloggetBrukerFactoryTest {
     @Test
     fun `should throw exception if the token context is empty`() {
         val context = TokenValidationContext(emptyMap())
-        val principal = OIDCValidationContextPrincipal(context)
+        val principal = TokenValidationContextPrincipal(context)
         invoking {
             InnloggetBrukerFactory.createNewInnloggetBruker(principal)
         } `should throw` NoSuchElementException::class
