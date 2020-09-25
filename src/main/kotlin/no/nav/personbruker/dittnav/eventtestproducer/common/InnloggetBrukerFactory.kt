@@ -1,7 +1,7 @@
 package no.nav.personbruker.dittnav.eventtestproducer.common
 
 import no.nav.security.token.support.core.jwt.JwtToken
-import no.nav.security.token.support.ktor.OIDCValidationContextPrincipal
+import no.nav.security.token.support.ktor.TokenValidationContextPrincipal
 
 object InnloggetBrukerFactory {
 
@@ -14,7 +14,7 @@ object InnloggetBrukerFactory {
         IDENT_CLAIM = IdentityClaim.fromClaimName(identityClaimFromEnvVariable)
     }
 
-    fun createNewInnloggetBruker(principal: OIDCValidationContextPrincipal?): InnloggetBruker {
+    fun createNewInnloggetBruker(principal: TokenValidationContextPrincipal?): InnloggetBruker {
         val token = principal?.context?.firstValidToken?.get()
                 ?: throw Exception("Det ble ikke funnet noe token. Dette skal ikke kunne skje.")
 

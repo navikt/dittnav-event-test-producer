@@ -1,29 +1,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val prometheusVersion = "0.6.0"
-val ktorVersion = "1.3.0"
-val junitVersion = "5.4.1"
-val kafkaVersion = "2.2.0"
-val confluentVersion = "5.2.0"
-val brukernotifikasjonSchemaVersion = "1.2020.08.21-11.27-fa4b5d114d7f"
-val logstashVersion = 5.2
-val logbackVersion = "1.2.3"
-val vaultJdbcVersion = "1.3.1"
-val hikariCPVersion = "3.2.0"
-val postgresVersion = "42.2.5"
-val h2Version = "1.4.199"
-val jacksonVersion = "2.9.9"
-val kluentVersion = "1.52"
-val mockKVersion = "1.9.3"
-val jjwtVersion = "0.11.0"
-val bcproVersion = "1.64"
-val navTokenValidator = "1.1.0"
-
 plugins {
     // Apply the Kotlin JVM plugin to add support for Kotlin on the JVM.
-    val kotlinVersion = "1.3.50"
-    kotlin("jvm").version(kotlinVersion)
-    kotlin("plugin.allopen").version(kotlinVersion)
+    kotlin("jvm").version(Kotlin.version)
+    kotlin("plugin.allopen").version(Kotlin.version)
+
+    id(Shadow.pluginId) version (Shadow.version)
 
     // Apply the application plugin to add support for building a CLI application.
     application
@@ -44,38 +26,39 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    compile("no.nav.security:token-validation-ktor:$navTokenValidator")
-    compile("no.nav:vault-jdbc:$vaultJdbcVersion")
-    compile("com.zaxxer:HikariCP:$hikariCPVersion")
-    compile("org.postgresql:postgresql:$postgresVersion")
-    compile("ch.qos.logback:logback-classic:$logbackVersion")
-    compile("net.logstash.logback:logstash-logback-encoder:$logstashVersion")
-    compile("io.prometheus:simpleclient_common:$prometheusVersion")
-    compile("io.prometheus:simpleclient_hotspot:$prometheusVersion")
-    compile("io.prometheus:simpleclient_logback:$prometheusVersion")
-    compile("io.ktor:ktor-server-netty:$ktorVersion")
-    compile("io.ktor:ktor-auth:$ktorVersion")
-    compile("io.ktor:ktor-auth-jwt:$ktorVersion")
-    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
-    compile("io.ktor:ktor-jackson:$ktorVersion")
-    compile("org.apache.kafka:kafka-clients:$kafkaVersion")
-    compile("io.confluent:kafka-avro-serializer:$confluentVersion")
-    compile("com.github.navikt:brukernotifikasjon-schemas:$brukernotifikasjonSchemaVersion")
-    testCompile("org.junit.jupiter:junit-jupiter-api:$junitVersion")
-    testCompile(kotlin("test-junit5"))
-    testImplementation("no.nav:kafka-embedded-env:2.1.1")
-    testImplementation("org.apache.kafka:kafka_2.12:$kafkaVersion")
-    testImplementation("org.apache.kafka:kafka-streams:$kafkaVersion")
-    testImplementation("io.confluent:kafka-schema-registry:$confluentVersion")
-    testImplementation("com.h2database:h2:$h2Version")
-    testImplementation("org.amshove.kluent:kluent:$kluentVersion")
-    testCompile("io.ktor:ktor-client-mock:$ktorVersion")
-    testImplementation("io.mockk:mockk:$mockKVersion")
-    testRuntime("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
-    testCompile("io.jsonwebtoken:jjwt-api:$jjwtVersion")
-    testRuntime("io.jsonwebtoken:jjwt-impl:$jjwtVersion")
-    testRuntime("io.jsonwebtoken:jjwt-jackson:$jjwtVersion")
-    testRuntime("org.bouncycastle:bcprov-jdk15on:$bcproVersion")
+    implementation(Brukernotifikasjon.schemas)
+    implementation(Hikari.cp)
+    implementation(Jackson.dataTypeJsr310)
+    implementation(Kafka.Apache.clients)
+    implementation(Kafka.Confluent.avroSerializer)
+    implementation(Ktor.auth)
+    implementation(Ktor.authJwt)
+    implementation(Ktor.jackson)
+    implementation(Ktor.serverNetty)
+    implementation(Logback.classic)
+    implementation(Logstash.logbackEncoder)
+    implementation(NAV.tokenValidatorKtor)
+    implementation(NAV.vaultJdbc)
+    implementation(Postgresql.postgresql)
+    implementation(Prometheus.common)
+    implementation(Prometheus.hotspot)
+    implementation(Prometheus.logback)
+
+    testImplementation(kotlin("test-junit5"))
+    testImplementation(Bouncycastle.bcprovJdk15on)
+    testImplementation(H2Database.h2)
+    testImplementation(Jjwt.api)
+    testImplementation(Jjwt.impl)
+    testImplementation(Jjwt.jackson)
+    testImplementation(Junit.api)
+    testImplementation(Junit.engine)
+    testImplementation(Kafka.Apache.kafka_2_12)
+    testImplementation(Kafka.Apache.streams)
+    testImplementation(Kafka.Confluent.schemaRegistry)
+    testImplementation(Kluent.kluent)
+    testImplementation(Ktor.clientMock)
+    testImplementation(Mockk.mockk)
+    testImplementation(NAV.kafkaEmbedded)
 }
 
 application {
@@ -83,13 +66,6 @@ application {
 }
 
 tasks {
-    withType<Jar> {
-        manifest {
-            attributes["Main-Class"] = application.mainClassName
-        }
-        from(configurations.runtime.get().map { if (it.isDirectory) it else zipTree(it) })
-    }
-
     withType<Test> {
         useJUnitPlatform()
         testLogging {
@@ -119,3 +95,5 @@ tasks {
         classpath = sourceSets["main"].runtimeClasspath
     }
 }
+
+apply(plugin = Shadow.pluginId)
