@@ -15,6 +15,7 @@ class OppgaveProducerTest {
     private val systembruker = "x-dittNAV"
     private val link = "dummyLink"
     private val tekst = "dummyTekst"
+    private val grupperingsid = "dummyGrupperingsid"
     private val innlogetBruker = InnloggetBrukerObjectMother.createInnloggetBruker(fodselsnummer)
     private val oppgaveKafkaProducer = mockk<KafkaProducerWrapper<Oppgave>>()
     private val oppgaveProducer = OppgaveProducer(oppgaveKafkaProducer, systembruker)
@@ -22,10 +23,11 @@ class OppgaveProducerTest {
     @Test
     fun `should create oppgave-event`() {
         runBlocking {
-            val oppgaveDto = ProduceOppgaveDto(tekst, link)
+            val oppgaveDto = ProduceOppgaveDto(tekst, link, grupperingsid)
             val oppgaveKafkaEvent = oppgaveProducer.createOppgaveForIdent(innlogetBruker, oppgaveDto)
             oppgaveKafkaEvent.getLink() `should be equal to` link
             oppgaveKafkaEvent.getTekst() `should be equal to` tekst
+            oppgaveKafkaEvent.getGrupperingsId() `should be equal to` grupperingsid
         }
     }
 
