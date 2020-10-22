@@ -4,6 +4,6 @@ class ProduceBeskjedDto(val tekst: String,
                         val link: String,
                         val grupperingsid: String) {
     override fun toString(): String {
-        return "ProduceBeskjedDto{tekst='$tekst', link='$link', grupperingsid=$grupperingsid}"
+        return "ProduceBeskjedDto{tekst='$tekst', link='$link', grupperingsid='$grupperingsid'}"
     }
 }

@@ -69,7 +69,7 @@ class TestDataService(
         val start = Instant.now()
         for (i in 1..antallEventer) {
             val key = createKeyForEvent("i-$i", dummySystembruker)
-            val dto = ProduceInnboksDto("Innbokstekst $i", "https://innboks-$i")
+            val dto = ProduceInnboksDto("Innbokstekst $i", "https://innboks-$i", "grupperingsid-$i")
             val innboksEvent = innboksProducer.createInnboksForIdent(bruker, dto)
             val doneEvent = doneProducer.createDoneEvent(bruker)
             innboksProducer.sendEventToKafka(key, innboksEvent)

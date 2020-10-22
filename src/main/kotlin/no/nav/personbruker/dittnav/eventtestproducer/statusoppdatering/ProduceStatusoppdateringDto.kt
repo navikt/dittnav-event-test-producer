@@ -7,6 +7,6 @@ class ProduceStatusoppdateringDto (val link: String,
                                    val grupperingsid: String)
 {
     override fun toString(): String {
-        return "ProduceStatusoppdateringDto{link='$link', statusGlobal='$statusGlobal', statusIntern='$statusIntern', sakstema='$sakstema', grupperingsid=$grupperingsid}"
+        return "ProduceStatusoppdateringDto{link='$link', statusGlobal='$statusGlobal', statusIntern='$statusIntern', sakstema='$sakstema', grupperingsid='$grupperingsid'}"
     }
 }

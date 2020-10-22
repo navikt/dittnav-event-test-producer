@@ -31,7 +31,7 @@ class InnboksProducer(private val innboksKafkaProducer: KafkaProducerWrapper<Inn
 
         return Innboks.newBuilder()
                 .setFodselsnummer(innloggetBruker.ident)
-                .setGrupperingsId("100$nowInMs")
+                .setGrupperingsId(dto.grupperingsid)
                 .setLink(dto.link)
                 .setTekst(dto.tekst)
                 .setTidspunkt(nowInMs)
