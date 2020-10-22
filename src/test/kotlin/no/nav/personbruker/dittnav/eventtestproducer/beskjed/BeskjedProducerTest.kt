@@ -22,10 +22,11 @@ class BeskjedProducerTest {
     @Test
     fun `should create beskjed-event`() {
         runBlocking {
-            val beskjedDto = ProduceBeskjedDto(tekst, link)
+            val beskjedDto = ProduceBeskjedDto(tekst, link, true)
             val beskjedKafkaEvent = beskjedProducer.createBeskjedForIdent(innlogetBruker, beskjedDto)
             beskjedKafkaEvent.getLink() `should be equal to` link
             beskjedKafkaEvent.getTekst() `should be equal to` tekst
+            beskjedKafkaEvent.getEksternVarsling() `should be equal to` true
         }
     }
 

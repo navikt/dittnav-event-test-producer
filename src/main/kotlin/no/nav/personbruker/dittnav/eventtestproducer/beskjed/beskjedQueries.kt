@@ -42,6 +42,7 @@ fun ResultSet.toBeskjed(): Beskjed {
             synligFremTil = getNullableZonedDateTime("synligFremTil"),
             tekst = getString("tekst"),
             link = getString("link"),
-            aktiv = getBoolean("aktiv")
+            aktiv = getBoolean("aktiv"),
+            eksternVarsling = getBoolean("eksternVarsling")
     )
 }

@@ -22,10 +22,11 @@ class OppgaveProducerTest {
     @Test
     fun `should create oppgave-event`() {
         runBlocking {
-            val oppgaveDto = ProduceOppgaveDto(tekst, link)
+            val oppgaveDto = ProduceOppgaveDto(tekst, link, true)
             val oppgaveKafkaEvent = oppgaveProducer.createOppgaveForIdent(innlogetBruker, oppgaveDto)
             oppgaveKafkaEvent.getLink() `should be equal to` link
             oppgaveKafkaEvent.getTekst() `should be equal to` tekst
+            oppgaveKafkaEvent.getEksternVarsling() `should be equal to` true
         }
     }
 

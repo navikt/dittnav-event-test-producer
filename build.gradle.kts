@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     // Apply the Kotlin JVM plugin to add support for Kotlin on the JVM.
     kotlin("jvm").version(Kotlin.version)
@@ -11,22 +9,17 @@ plugins {
     application
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
-}
-
 repositories {
     // Use jcenter for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
-    maven("http://packages.confluent.io/maven")
+    maven("https://packages.confluent.io/maven")
     mavenLocal()
     maven("https://jitpack.io")
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
-    implementation(Brukernotifikasjon.schemas)
+    implementation("com.github.navikt:brukernotifikasjon-schemas:ekstern-varsling-SNAPSHOT")
     implementation(Hikari.cp)
     implementation(Jackson.dataTypeJsr310)
     implementation(Kafka.Apache.clients)

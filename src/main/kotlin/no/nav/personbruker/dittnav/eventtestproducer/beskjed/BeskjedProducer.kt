@@ -38,6 +38,7 @@ class BeskjedProducer(private val beskjedKafkaProducer: KafkaProducerWrapper<Bes
                 .setTidspunkt(nowInMs)
                 .setSynligFremTil(weekFromNowInMs)
                 .setSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)
+                .setEksternVarsling(dto.eksternVarsling)
         return build.build()
     }
 

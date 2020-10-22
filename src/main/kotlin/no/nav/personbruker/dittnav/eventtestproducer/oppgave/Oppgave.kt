@@ -14,7 +14,8 @@ data class Oppgave(
         override val sistOppdatert: ZonedDateTime,
         override val tekst: String,
         override val link: String,
-        override val aktiv: Boolean
+        override val aktiv: Boolean,
+        val eksternVarsling: Boolean
 ) : Brukernotifikasjon {
 
     override fun toString(): String {
@@ -29,6 +30,7 @@ data class Oppgave(
                 "sistOppdatert=$sistOppdatert, " +
                 "tekst=***, " +
                 "link=***, " +
-                "aktiv=$aktiv"
+                "aktiv=$aktiv, " +
+                "eksternVarsling=$eksternVarsling"
     }
 }

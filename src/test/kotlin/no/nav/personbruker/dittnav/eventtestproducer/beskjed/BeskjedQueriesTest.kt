@@ -18,13 +18,13 @@ class BeskjedQueriesTest {
     private val innloggetBruker = InnloggetBrukerObjectMother.createInnloggetBruker()
 
     private val beskjed1 = BeskjedObjectMother.createBeskjed(id = 1, eventId = "123", fodselsnummer = innloggetBruker.ident,
-            synligFremTil = ZonedDateTime.now().plusHours(1), uid = "11", aktiv = true)
+            synligFremTil = ZonedDateTime.now().plusHours(1), uid = "11", aktiv = true, eksternVarsling = true)
     private val beskjed2 = BeskjedObjectMother.createBeskjed(id = 2, eventId = "124", fodselsnummer = innloggetBruker.ident,
-            synligFremTil = ZonedDateTime.now().plusHours(1), uid = "22", aktiv = true)
+            synligFremTil = ZonedDateTime.now().plusHours(1), uid = "22", aktiv = true, eksternVarsling = true)
     private val beskjed3 = BeskjedObjectMother.createBeskjed(id = 3, eventId = "125", fodselsnummer = innloggetBruker.ident,
-            synligFremTil = ZonedDateTime.now().plusHours(1), uid = "33", aktiv = false)
+            synligFremTil = ZonedDateTime.now().plusHours(1), uid = "33", aktiv = false, eksternVarsling = true)
     private val beskjed4 = BeskjedObjectMother.createBeskjed(id = 4, eventId = "126", fodselsnummer = "54321",
-            synligFremTil = ZonedDateTime.now().plusHours(1), uid = "44", aktiv = true)
+            synligFremTil = ZonedDateTime.now().plusHours(1), uid = "44", aktiv = true, eksternVarsling = true)
 
     @BeforeAll
     fun `populer testdata`() {
