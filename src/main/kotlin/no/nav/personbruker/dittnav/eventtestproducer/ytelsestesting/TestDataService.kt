@@ -33,7 +33,7 @@ class TestDataService(
         val start = Instant.now()
         for (i in 1..antallEventer) {
             val key = createKeyForEvent("b-$i", dummySystembruker)
-            val dto = ProduceBeskjedDto("Beskjedtekst $i", "https://beskjed-$i")
+            val dto = ProduceBeskjedDto("Beskjedtekst $i", "https://beskjed-$i", "grupperingsid-$i")
             val beskjedEvent = beskjedProducer.createBeskjedForIdent(bruker, dto)
             val doneEvent = doneProducer.createDoneEvent(bruker)
             beskjedProducer.sendEventToKafka(key, beskjedEvent)
@@ -51,7 +51,7 @@ class TestDataService(
         val start = Instant.now()
         for (i in 1..antallEventer) {
             val key = createKeyForEvent("o-$i", dummySystembruker)
-            val dto = ProduceOppgaveDto("Oppgavetekst $i", "https://oppgave-$i")
+            val dto = ProduceOppgaveDto("Oppgavetekst $i", "https://oppgave-$i", "grupperingsid-$i")
             val oppgaveEvent = oppgaveProducer.createOppgaveForIdent(bruker, dto)
             val doneEvent = doneProducer.createDoneEvent(bruker)
             oppgaveProducer.sendEventToKafka(key, oppgaveEvent)
@@ -69,7 +69,7 @@ class TestDataService(
         val start = Instant.now()
         for (i in 1..antallEventer) {
             val key = createKeyForEvent("i-$i", dummySystembruker)
-            val dto = ProduceInnboksDto("Innbokstekst $i", "https://innboks-$i")
+            val dto = ProduceInnboksDto("Innbokstekst $i", "https://innboks-$i", "grupperingsid-$i")
             val innboksEvent = innboksProducer.createInnboksForIdent(bruker, dto)
             val doneEvent = doneProducer.createDoneEvent(bruker)
             innboksProducer.sendEventToKafka(key, innboksEvent)
@@ -87,7 +87,7 @@ class TestDataService(
         val start = Instant.now()
         for (i in 1..antallEventer) {
             val key = createKeyForEvent("s-$i", dummySystembruker)
-            val dto = ProduceStatusoppdateringDto("dummyLink_$i", "SENDT", "dummyStatusIntern_$i", "dummySakstema_$i")
+            val dto = ProduceStatusoppdateringDto("dummyLink_$i", "SENDT", "dummyStatusIntern_$i", "dummySakstema_$i", "grupperingsid-$i")
             val statusoppdateringEvent = statusoppdateringProducer.createStatusoppdateringForIdent(bruker, dto)
             val doneEvent = doneProducer.createDoneEvent(bruker)
             statusoppdateringProducer.sendEventToKafka(key, statusoppdateringEvent)

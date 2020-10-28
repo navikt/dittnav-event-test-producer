@@ -17,6 +17,7 @@ class StatusoppdateringProducerTest {
     private val statusInternal = "dummyStatusInternal"
     private val sakstema = "dummySakstema"
     private val link = "dummyLink"
+    private val grupperingsid = "dummyGrupperingsid"
     private val innlogetBruker = InnloggetBrukerObjectMother.createInnloggetBruker(fodselsnummer)
     private val statusoppdateringKafkaProducer = mockk<KafkaProducerWrapper<Statusoppdatering>>()
     private val statusoppdateringProducer = StatusoppdateringProducer(statusoppdateringKafkaProducer, systembruker)
@@ -24,13 +25,14 @@ class StatusoppdateringProducerTest {
     @Test
     fun `should create statusoppdatering-event`() {
         runBlocking {
-            val statusoppdateringDto = ProduceStatusoppdateringDto(link, statusGlobal, statusInternal, sakstema)
+            val statusoppdateringDto = ProduceStatusoppdateringDto(link, statusGlobal, statusInternal, sakstema, grupperingsid)
             val statusoppdateringKafkaEvent = statusoppdateringProducer.createStatusoppdateringForIdent(innlogetBruker, statusoppdateringDto)
             statusoppdateringKafkaEvent.getLink() `should be equal to` link
             statusoppdateringKafkaEvent.getStatusGlobal() `should be equal to` statusGlobal
             statusoppdateringKafkaEvent.getStatusIntern() `should be equal to` statusInternal
             statusoppdateringKafkaEvent.getSakstema() `should be equal to` sakstema
             statusoppdateringKafkaEvent.getFodselsnummer() `should be equal to` fodselsnummer
+            statusoppdateringKafkaEvent.getGrupperingsId() `should be equal to` grupperingsid
         }
     }
 
