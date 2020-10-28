@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.navikt:brukernotifikasjon-schemas:ekstern-varsling-SNAPSHOT")
+    implementation(Brukernotifikasjon.schemas)
     implementation(Hikari.cp)
     implementation(Jackson.dataTypeJsr310)
     implementation(Kafka.Apache.clients)
