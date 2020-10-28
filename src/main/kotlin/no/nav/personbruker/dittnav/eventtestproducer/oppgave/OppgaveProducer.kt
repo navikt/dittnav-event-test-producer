@@ -35,7 +35,7 @@ class OppgaveProducer(private val oppgaveKafkaProducer: KafkaProducerWrapper<Opp
                 .setTekst(dto.tekst)
                 .setTidspunkt(nowInMs)
                 .setSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)
+                .setEksternVarsling(dto.eksternVarsling)
         return build.build()
     }
-
 }

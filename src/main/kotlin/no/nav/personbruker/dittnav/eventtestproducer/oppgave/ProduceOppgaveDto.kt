@@ -2,8 +2,10 @@ package no.nav.personbruker.dittnav.eventtestproducer.oppgave
 
 class ProduceOppgaveDto(val tekst: String,
                         val link: String,
-                        val grupperingsid: String) {
+                        val grupperingsid: String,
+                        val eksternVarsling: Boolean = false) {
     override fun toString(): String {
-        return "ProduceOppgaveDto{tekst='$tekst', link='$link', grupperingsid='$grupperingsid'}"
+        return "ProduceOppgaveDto{tekst='$tekst', link='$link', grupperingsid='$grupperingsid', eksternVarsling='$eksternVarsling'}"
+
     }
 }

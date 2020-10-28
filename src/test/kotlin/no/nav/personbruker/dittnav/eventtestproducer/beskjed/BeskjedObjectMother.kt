@@ -5,7 +5,7 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 
 object BeskjedObjectMother {
-    fun createBeskjed(id: Int, eventId: String, fodselsnummer: String, synligFremTil: ZonedDateTime?, uid: String, aktiv: Boolean): Beskjed {
+    fun createBeskjed(id: Int, eventId: String, fodselsnummer: String, synligFremTil: ZonedDateTime?, uid: String, aktiv: Boolean, eksternVarsling: Boolean): Beskjed {
         return Beskjed(
                 uid = uid,
                 id = id,
@@ -19,6 +19,7 @@ object BeskjedObjectMother {
                 sistOppdatert = ZonedDateTime.now(ZoneId.of("Europe/Oslo")),
                 synligFremTil = synligFremTil,
                 sikkerhetsnivaa = 4,
-                aktiv = aktiv)
+                aktiv = aktiv,
+                eksternVarsling = eksternVarsling)
     }
 }

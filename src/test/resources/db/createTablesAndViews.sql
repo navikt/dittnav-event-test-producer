@@ -15,6 +15,7 @@ create table if not exists beskjed
   aktiv           boolean,
   synligfremtil   timestamp,
   uid             varchar(100),
+  eksternVarsling boolean,
   constraint beskjedeventidprodusent
   unique (eventid, systembruker)
 );
@@ -34,6 +35,7 @@ create table if not exists oppgave
   sikkerhetsnivaa integer,
   sistoppdatert   timestamp,
   aktiv           boolean,
+  eksternVarsling boolean,
   constraint oppgaveeventidprodusent
   unique (eventid, systembruker)
 );

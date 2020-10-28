@@ -14,7 +14,8 @@ data class Beskjed(
         val synligFremTil: ZonedDateTime?,
         override val tekst: String,
         override val link: String,
-        override val aktiv: Boolean
+        override val aktiv: Boolean,
+        val eksternVarsling: Boolean
 ) : Brukernotifikasjon {
 
     override fun toString(): String {
@@ -31,6 +32,7 @@ data class Beskjed(
                 "synligFremTil=$synligFremTil, " +
                 "tekst=***, " +
                 "link=***, " +
-                "aktiv=$aktiv"
+                "aktiv=$aktiv" +
+                "eksternVarsling=$eksternVarsling"
     }
 }

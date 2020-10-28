@@ -38,6 +38,7 @@ private fun ResultSet.toOppgave(): Oppgave {
             link = getString("link"),
             sikkerhetsnivaa = getInt("sikkerhetsnivaa"),
             sistOppdatert = ZonedDateTime.ofInstant(getUtcTimeStamp("sistOppdatert").toInstant(), ZoneId.of("Europe/Oslo")),
-            aktiv = getBoolean("aktiv")
+            aktiv = getBoolean("aktiv"),
+            eksternVarsling = getBoolean("eksternVarsling")
     )
 }
