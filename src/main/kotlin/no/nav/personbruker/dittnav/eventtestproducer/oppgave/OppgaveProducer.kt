@@ -30,7 +30,7 @@ class OppgaveProducer(private val oppgaveKafkaProducer: KafkaProducerWrapper<Opp
         val nowInMs = Instant.now().toEpochMilli()
         val build = Oppgave.newBuilder()
                 .setFodselsnummer(innloggetBruker.ident)
-                .setGrupperingsId("100$nowInMs")
+                .setGrupperingsId(dto.grupperingsid)
                 .setLink(dto.link)
                 .setTekst(dto.tekst)
                 .setTidspunkt(nowInMs)

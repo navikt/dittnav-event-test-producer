@@ -30,7 +30,7 @@ class StatusoppdateringProducer(private val statusoppdateringKafkaProducer: Kafk
         val nowInMs = Instant.now().toEpochMilli()
         val build = Statusoppdatering.newBuilder()
                 .setFodselsnummer(innloggetBruker.ident)
-                .setGrupperingsId("100$nowInMs")
+                .setGrupperingsId(dto.grupperingsid)
                 .setLink(dto.link)
                 .setTidspunkt(nowInMs)
                 .setSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)

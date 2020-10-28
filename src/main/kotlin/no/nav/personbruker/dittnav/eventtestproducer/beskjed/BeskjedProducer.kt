@@ -32,7 +32,7 @@ class BeskjedProducer(private val beskjedKafkaProducer: KafkaProducerWrapper<Bes
         val weekFromNowInMs = Instant.now().plus(7, ChronoUnit.DAYS).toEpochMilli()
         val build = Beskjed.newBuilder()
                 .setFodselsnummer(innloggetBruker.ident)
-                .setGrupperingsId("100$nowInMs")
+                .setGrupperingsId(dto.grupperingsid)
                 .setLink(dto.link)
                 .setTekst(dto.tekst)
                 .setTidspunkt(nowInMs)

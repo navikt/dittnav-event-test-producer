@@ -15,6 +15,7 @@ class InnboksProducerTest {
     private val systembruker = "x-dittNAV"
     private val link = "dummyLink"
     private val tekst = "dummyTekst"
+    private val grupperingsid = "dummyGrupperingsid"
     private val innlogetBruker = InnloggetBrukerObjectMother.createInnloggetBruker(fodselsnummer)
     private val innboksKafkaProducer = mockk<KafkaProducerWrapper<Innboks>>()
     private val innboksProducer = InnboksProducer(innboksKafkaProducer, systembruker)
@@ -22,10 +23,11 @@ class InnboksProducerTest {
     @Test
     fun `should create innboks-event`() {
         runBlocking {
-            val innboksDto = ProduceInnboksDto(tekst, link)
+            val innboksDto = ProduceInnboksDto(tekst, link, grupperingsid)
             val innboksKafkaEvent = innboksProducer.createInnboksForIdent(innlogetBruker, innboksDto)
             innboksKafkaEvent.getLink() `should be equal to` link
             innboksKafkaEvent.getTekst() `should be equal to` tekst
+            innboksKafkaEvent.getGrupperingsId() `should be equal to` grupperingsid
         }
     }
 

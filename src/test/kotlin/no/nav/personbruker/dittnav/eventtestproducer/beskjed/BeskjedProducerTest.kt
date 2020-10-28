@@ -15,6 +15,8 @@ class BeskjedProducerTest {
     private val systembruker = "x-dittNAV"
     private val link = "dummyLink"
     private val tekst = "dummyTekst"
+    private val grupperingsid = "dummyGrupperingsid"
+    private val eksternVarsling = true
     private val innlogetBruker = InnloggetBrukerObjectMother.createInnloggetBruker(fodselsnummer)
     private val beskjedKafkaProducer = mockk<KafkaProducerWrapper<Beskjed>>()
     private val beskjedProducer = BeskjedProducer(beskjedKafkaProducer, systembruker)
@@ -22,10 +24,11 @@ class BeskjedProducerTest {
     @Test
     fun `should create beskjed-event`() {
         runBlocking {
-            val beskjedDto = ProduceBeskjedDto(tekst, link, true)
+            val beskjedDto = ProduceBeskjedDto(tekst, link, grupperingsid, eksternVarsling)
             val beskjedKafkaEvent = beskjedProducer.createBeskjedForIdent(innlogetBruker, beskjedDto)
             beskjedKafkaEvent.getLink() `should be equal to` link
             beskjedKafkaEvent.getTekst() `should be equal to` tekst
+            beskjedKafkaEvent.getGrupperingsId() `should be equal to` grupperingsid
             beskjedKafkaEvent.getEksternVarsling() `should be equal to` true
         }
     }
