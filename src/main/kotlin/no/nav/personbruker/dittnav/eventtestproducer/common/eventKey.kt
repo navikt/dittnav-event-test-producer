@@ -3,16 +3,16 @@ package no.nav.personbruker.dittnav.eventtestproducer.common
 import no.nav.brukernotifikasjon.schemas.Nokkel
 import java.util.*
 
-fun createKeyForEvent(systemUserName: String): Nokkel {
+fun createKeyForEvent(systembruker: String): Nokkel {
     return Nokkel.newBuilder()
             .setEventId(UUID.randomUUID().toString())
-            .setSystembruker(systemUserName)
+            .setSystembruker(systembruker)
             .build()
 }
 
-fun createKeyForEvent(eventId: String, systemUserName: String): Nokkel {
+fun createKeyForEvent(eventId: String, systembruker: String): Nokkel {
     return Nokkel.newBuilder()
             .setEventId(eventId)
-            .setSystembruker(systemUserName)
+            .setSystembruker(systembruker)
             .build()
 }
