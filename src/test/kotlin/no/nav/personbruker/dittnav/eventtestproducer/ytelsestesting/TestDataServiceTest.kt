@@ -34,11 +34,22 @@ internal class TestDataServiceTest {
     private val statusoppdateringProducer = StatusoppdateringProducer(kafkaProducerStatusoppdatering, env.systemUserName)
 
     //@Test
-    fun produserTestCase() {
+    fun produserTestcaseUtenEksternVarsling() {
         val testDataService = TestDataService(doneProducer, beskjedProducer, oppgaveProducer, innboksProducer, statusoppdateringProducer)
         runBlocking {
             testDataService.produserBeskjederOgTilhorendeDoneEventer()
             testDataService.produserOppgaveOgTilhorendeDoneEventer()
+            testDataService.produserInnboksOgTilhorendeDoneEventer()
+            testDataService.produserStatusoppdateringsEventer()
+        }
+    }
+
+    //@Test
+    fun produserTestcaseMedEksternVarsling() {
+        val testDataService = TestDataService(doneProducer, beskjedProducer, oppgaveProducer, innboksProducer, statusoppdateringProducer)
+        runBlocking {
+            testDataService.produserBeskjederOgTilhorendeDoneEventer(eksternVarsling = true)
+            testDataService.produserOppgaveOgTilhorendeDoneEventer(eksternVarsling = true)
             testDataService.produserInnboksOgTilhorendeDoneEventer()
             testDataService.produserStatusoppdateringsEventer()
         }
