@@ -2,11 +2,13 @@ package no.nav.personbruker.dittnav.eventtestproducer.oppgave
 
 import no.nav.brukernotifikasjon.schemas.Nokkel
 import no.nav.brukernotifikasjon.schemas.Oppgave
+import no.nav.brukernotifikasjon.schemas.builders.OppgaveBuilder
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import org.slf4j.LoggerFactory
-import java.time.Instant
+import java.net.URL
+import java.time.LocalDateTime
 
 class OppgaveProducer(private val oppgaveKafkaProducer: KafkaProducerWrapper<Oppgave>, private val systembruker: String) {
 
@@ -27,15 +29,15 @@ class OppgaveProducer(private val oppgaveKafkaProducer: KafkaProducerWrapper<Opp
     }
 
     fun createOppgaveForIdent(innloggetBruker: InnloggetBruker, dto: ProduceOppgaveDto): Oppgave {
-        val nowInMs = Instant.now().toEpochMilli()
-        val build = Oppgave.newBuilder()
-                .setFodselsnummer(innloggetBruker.ident)
-                .setGrupperingsId(dto.grupperingsid)
-                .setLink(dto.link)
-                .setTekst(dto.tekst)
-                .setTidspunkt(nowInMs)
-                .setSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)
-                .setEksternVarsling(dto.eksternVarsling)
+        val now = LocalDateTime.now()
+        val build = OppgaveBuilder()
+                .withFodselsnummer(innloggetBruker.ident)
+                .withGrupperingsId(dto.grupperingsid)
+                .withLink(URL(dto.link))
+                .withTekst(dto.tekst)
+                .withTidspunkt(now)
+                .withSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)
+                .withEksternVarsling(dto.eksternVarsling)
         return build.build()
     }
 }

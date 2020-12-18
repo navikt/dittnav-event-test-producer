@@ -1,8 +1,10 @@
 package no.nav.personbruker.dittnav.eventtestproducer.statusoppdatering
 
+import de.huxhorn.sulky.ulid.ULID
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import no.nav.brukernotifikasjon.schemas.Statusoppdatering
+import no.nav.brukernotifikasjon.schemas.builders.domain.StatusGlobal
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBrukerObjectMother
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
@@ -10,13 +12,13 @@ import org.amshove.kluent.`should be equal to`
 import org.junit.jupiter.api.Test
 
 class StatusoppdateringProducerTest {
-    private val fodselsnummer = "123"
-    private val eventId = "11"
+    private val fodselsnummer = "12345678910"
+    private val eventId = ULID().nextULID()
     private val systembruker = "x-dittNAV"
-    private val statusGlobal = "dummyStatusGlobal"
+    private val statusGlobal = "FERDIG"
     private val statusInternal = "dummyStatusInternal"
     private val sakstema = "dummySakstema"
-    private val link = "dummyLink"
+    private val link = "https://dummy.nav.no"
     private val grupperingsid = "dummyGrupperingsid"
     private val innlogetBruker = InnloggetBrukerObjectMother.createInnloggetBruker(fodselsnummer)
     private val statusoppdateringKafkaProducer = mockk<KafkaProducerWrapper<Statusoppdatering>>()

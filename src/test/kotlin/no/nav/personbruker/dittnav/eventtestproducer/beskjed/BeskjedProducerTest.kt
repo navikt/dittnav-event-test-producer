@@ -1,5 +1,6 @@
 package no.nav.personbruker.dittnav.eventtestproducer.beskjed
 
+import de.huxhorn.sulky.ulid.ULID
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import no.nav.brukernotifikasjon.schemas.Beskjed
@@ -10,10 +11,10 @@ import org.amshove.kluent.`should be equal to`
 import org.junit.jupiter.api.Test
 
 class BeskjedProducerTest {
-    private val fodselsnummer = "123"
-    private val eventId = "11"
+    private val fodselsnummer = "12345678910"
+    private val eventId = ULID().nextULID()
     private val systembruker = "x-dittNAV"
-    private val link = "dummyLink"
+    private val link = "https://dummy.nav.no"
     private val tekst = "dummyTekst"
     private val grupperingsid = "dummyGrupperingsid"
     private val eksternVarsling = true

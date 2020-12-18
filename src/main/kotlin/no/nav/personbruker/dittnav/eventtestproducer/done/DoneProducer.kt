@@ -2,12 +2,13 @@ package no.nav.personbruker.dittnav.eventtestproducer.done
 
 import no.nav.brukernotifikasjon.schemas.Done
 import no.nav.brukernotifikasjon.schemas.Nokkel
+import no.nav.brukernotifikasjon.schemas.builders.DoneBuilder
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.common.database.Brukernotifikasjon
 import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import org.slf4j.LoggerFactory
-import java.time.Instant
+import java.time.LocalDateTime
 
 class DoneProducer(private val doneKafkaProducer: KafkaProducerWrapper<Done>, private val systembruker: String) {
 
@@ -28,11 +29,11 @@ class DoneProducer(private val doneKafkaProducer: KafkaProducerWrapper<Done>, pr
     }
 
     fun createDoneEvent(innloggetBruker: InnloggetBruker): Done {
-        val nowInMs = Instant.now().toEpochMilli()
-        val build = Done.newBuilder()
-                .setFodselsnummer(innloggetBruker.ident)
-                .setTidspunkt(nowInMs)
-                .setGrupperingsId("100$nowInMs")
+        val now = LocalDateTime.now()
+        val build = DoneBuilder()
+                .withFodselsnummer(innloggetBruker.ident)
+                .withTidspunkt(now)
+                .withGrupperingsId("100$now")
         return build.build()
     }
 
