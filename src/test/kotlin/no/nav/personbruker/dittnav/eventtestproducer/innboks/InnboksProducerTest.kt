@@ -3,9 +3,10 @@ package no.nav.personbruker.dittnav.eventtestproducer.innboks
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import no.nav.brukernotifikasjon.schemas.Innboks
+import no.nav.brukernotifikasjon.schemas.Nokkel
+import no.nav.personbruker.dittnav.common.util.kafka.producer.KafkaProducerWrapper
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBrukerObjectMother
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
-import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import org.amshove.kluent.`should be equal to`
 import org.junit.jupiter.api.Test
 import java.util.*
@@ -18,7 +19,7 @@ class InnboksProducerTest {
     private val tekst = "dummyTekst"
     private val grupperingsid = "dummyGrupperingsid"
     private val innlogetBruker = InnloggetBrukerObjectMother.createInnloggetBruker(fodselsnummer)
-    private val innboksKafkaProducer = mockk<KafkaProducerWrapper<Innboks>>()
+    private val innboksKafkaProducer = mockk<KafkaProducerWrapper<Nokkel, Innboks>>()
     private val innboksProducer = InnboksProducer(innboksKafkaProducer, systembruker)
 
     @Test

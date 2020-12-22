@@ -3,9 +3,10 @@ package no.nav.personbruker.dittnav.eventtestproducer.beskjed
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import no.nav.brukernotifikasjon.schemas.Beskjed
+import no.nav.brukernotifikasjon.schemas.Nokkel
+import no.nav.personbruker.dittnav.common.util.kafka.producer.KafkaProducerWrapper
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBrukerObjectMother
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
-import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import org.amshove.kluent.`should be equal to`
 import org.junit.jupiter.api.Test
 import java.util.*
@@ -19,7 +20,7 @@ class BeskjedProducerTest {
     private val grupperingsid = "dummyGrupperingsid"
     private val eksternVarsling = true
     private val innlogetBruker = InnloggetBrukerObjectMother.createInnloggetBruker(fodselsnummer)
-    private val beskjedKafkaProducer = mockk<KafkaProducerWrapper<Beskjed>>()
+    private val beskjedKafkaProducer = mockk<KafkaProducerWrapper<Nokkel, Beskjed>>()
     private val beskjedProducer = BeskjedProducer(beskjedKafkaProducer, systembruker)
 
     @Test

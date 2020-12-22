@@ -2,13 +2,13 @@ package no.nav.personbruker.dittnav.eventtestproducer.innboks
 
 import no.nav.brukernotifikasjon.schemas.Innboks
 import no.nav.brukernotifikasjon.schemas.Nokkel
+import no.nav.personbruker.dittnav.common.util.kafka.producer.KafkaProducerWrapper
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
-import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import org.slf4j.LoggerFactory
 import java.time.Instant
 
-class InnboksProducer(private val innboksKafkaProducer: KafkaProducerWrapper<Innboks>, private val systembruker: String) {
+class InnboksProducer(private val innboksKafkaProducer: KafkaProducerWrapper<Nokkel, Innboks>, private val systembruker: String) {
 
     private val log = LoggerFactory.getLogger(InnboksProducer::class.java)
 

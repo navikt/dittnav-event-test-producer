@@ -4,14 +4,14 @@ import no.nav.brukernotifikasjon.schemas.Nokkel
 import no.nav.brukernotifikasjon.schemas.Statusoppdatering
 import no.nav.brukernotifikasjon.schemas.builders.StatusoppdateringBuilder
 import no.nav.brukernotifikasjon.schemas.builders.domain.StatusGlobal
+import no.nav.personbruker.dittnav.common.util.kafka.producer.KafkaProducerWrapper
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
-import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import org.slf4j.LoggerFactory
 import java.net.URL
 import java.time.LocalDateTime
 
-class StatusoppdateringProducer(private val statusoppdateringKafkaProducer: KafkaProducerWrapper<Statusoppdatering>, private val systembruker: String) {
+class StatusoppdateringProducer(private val statusoppdateringKafkaProducer: KafkaProducerWrapper<Nokkel, Statusoppdatering>, private val systembruker: String) {
 
     private val log = LoggerFactory.getLogger(StatusoppdateringProducer::class.java)
 
