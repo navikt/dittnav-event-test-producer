@@ -1,6 +1,5 @@
 package no.nav.personbruker.dittnav.eventtestproducer.innboks
 
-import de.huxhorn.sulky.ulid.ULID
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import no.nav.brukernotifikasjon.schemas.Innboks
@@ -9,10 +8,11 @@ import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import org.amshove.kluent.`should be equal to`
 import org.junit.jupiter.api.Test
+import java.util.*
 
 class InnboksProducerTest {
     private val fodselsnummer = "12345678910"
-    private val eventId = ULID().nextULID()
+    private val eventId = UUID.randomUUID().toString()
     private val systembruker = "x-dittNAV"
     private val link = "https://dummy.nav.no"
     private val tekst = "dummyTekst"

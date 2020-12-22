@@ -1,19 +1,18 @@
 package no.nav.personbruker.dittnav.eventtestproducer.statusoppdatering
 
-import de.huxhorn.sulky.ulid.ULID
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import no.nav.brukernotifikasjon.schemas.Statusoppdatering
-import no.nav.brukernotifikasjon.schemas.builders.domain.StatusGlobal
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBrukerObjectMother
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import org.amshove.kluent.`should be equal to`
 import org.junit.jupiter.api.Test
+import java.util.*
 
 class StatusoppdateringProducerTest {
     private val fodselsnummer = "12345678910"
-    private val eventId = ULID().nextULID()
+    private val eventId = UUID.randomUUID().toString()
     private val systembruker = "x-dittNAV"
     private val statusGlobal = "FERDIG"
     private val statusInternal = "dummyStatusInternal"

@@ -1,6 +1,5 @@
 package no.nav.personbruker.dittnav.eventtestproducer.oppgave
 
-import de.huxhorn.sulky.ulid.ULID
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import no.nav.brukernotifikasjon.schemas.Oppgave
@@ -14,7 +13,7 @@ import java.util.*
 class OppgaveProducerTest {
 
     private val fodselsnummer = "12345678910"
-    private val eventId = ULID().nextULID()
+    private val eventId = UUID.randomUUID().toString()
     private val systembruker = "x-dittNAV"
     private val link = "https://dummy.nav.no"
     private val tekst = "dummyTekst"
