@@ -2,11 +2,14 @@ package no.nav.personbruker.dittnav.eventtestproducer.statusoppdatering
 
 import no.nav.brukernotifikasjon.schemas.Nokkel
 import no.nav.brukernotifikasjon.schemas.Statusoppdatering
+import no.nav.brukernotifikasjon.schemas.builders.StatusoppdateringBuilder
+import no.nav.brukernotifikasjon.schemas.builders.domain.StatusGlobal
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import org.slf4j.LoggerFactory
-import java.time.Instant
+import java.net.URL
+import java.time.LocalDateTime
 
 class StatusoppdateringProducer(private val statusoppdateringKafkaProducer: KafkaProducerWrapper<Statusoppdatering>, private val systembruker: String) {
 
@@ -27,16 +30,16 @@ class StatusoppdateringProducer(private val statusoppdateringKafkaProducer: Kafk
     }
 
     fun createStatusoppdateringForIdent(innloggetBruker: InnloggetBruker, dto: ProduceStatusoppdateringDto): Statusoppdatering {
-        val nowInMs = Instant.now().toEpochMilli()
-        val build = Statusoppdatering.newBuilder()
-                .setFodselsnummer(innloggetBruker.ident)
-                .setGrupperingsId(dto.grupperingsid)
-                .setLink(dto.link)
-                .setTidspunkt(nowInMs)
-                .setSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)
-                .setStatusGlobal(dto.statusGlobal)
-                .setStatusIntern(dto.statusIntern)
-                .setSakstema(dto.sakstema)
+        val now = LocalDateTime.now()
+        val build = StatusoppdateringBuilder()
+                .withFodselsnummer(innloggetBruker.ident)
+                .withGrupperingsId(dto.grupperingsid)
+                .withLink(URL(dto.link))
+                .withTidspunkt(now)
+                .withSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)
+                .withStatusGlobal(StatusGlobal.valueOf(dto.statusGlobal))
+                .withStatusIntern(dto.statusIntern)
+                .withSakstema(dto.sakstema)
         return build.build()
     }
 

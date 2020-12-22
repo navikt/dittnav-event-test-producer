@@ -8,12 +8,13 @@ import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import org.amshove.kluent.`should be equal to`
 import org.junit.jupiter.api.Test
+import java.util.*
 
 class InnboksProducerTest {
-    private val fodselsnummer = "123"
-    private val eventId = "11"
+    private val fodselsnummer = "12345678910"
+    private val eventId = UUID.randomUUID().toString()
     private val systembruker = "x-dittNAV"
-    private val link = "dummyLink"
+    private val link = "https://dummy.nav.no"
     private val tekst = "dummyTekst"
     private val grupperingsid = "dummyGrupperingsid"
     private val innlogetBruker = InnloggetBrukerObjectMother.createInnloggetBruker(fodselsnummer)

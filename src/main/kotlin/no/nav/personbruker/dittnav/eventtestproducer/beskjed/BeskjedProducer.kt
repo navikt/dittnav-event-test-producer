@@ -2,11 +2,13 @@ package no.nav.personbruker.dittnav.eventtestproducer.beskjed
 
 import no.nav.brukernotifikasjon.schemas.Beskjed
 import no.nav.brukernotifikasjon.schemas.Nokkel
+import no.nav.brukernotifikasjon.schemas.builders.BeskjedBuilder
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import org.slf4j.LoggerFactory
-import java.time.Instant
+import java.net.URL
+import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
 class BeskjedProducer(private val beskjedKafkaProducer: KafkaProducerWrapper<Beskjed>, private val systembruker: String) {
@@ -28,18 +30,17 @@ class BeskjedProducer(private val beskjedKafkaProducer: KafkaProducerWrapper<Bes
     }
 
     fun createBeskjedForIdent(innloggetBruker: InnloggetBruker, dto: ProduceBeskjedDto): Beskjed {
-        val nowInMs = Instant.now().toEpochMilli()
-        val weekFromNowInMs = Instant.now().plus(7, ChronoUnit.DAYS).toEpochMilli()
-        val build = Beskjed.newBuilder()
-                .setFodselsnummer(innloggetBruker.ident)
-                .setGrupperingsId(dto.grupperingsid)
-                .setLink(dto.link)
-                .setTekst(dto.tekst)
-                .setTidspunkt(nowInMs)
-                .setSynligFremTil(weekFromNowInMs)
-                .setSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)
-                .setEksternVarsling(dto.eksternVarsling)
+        val now = LocalDateTime.now()
+        val weekFromNow = now.plus(7, ChronoUnit.DAYS)
+        val build = BeskjedBuilder()
+                .withFodselsnummer(innloggetBruker.ident)
+                .withGrupperingsId(dto.grupperingsid)
+                .withLink(URL(dto.link))
+                .withTekst(dto.tekst)
+                .withTidspunkt(now)
+                .withSynligFremTil(weekFromNow)
+                .withSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)
+                .withEksternVarsling(dto.eksternVarsling)
         return build.build()
     }
-
 }
