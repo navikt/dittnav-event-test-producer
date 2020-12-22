@@ -3,14 +3,14 @@ package no.nav.personbruker.dittnav.eventtestproducer.done
 import no.nav.brukernotifikasjon.schemas.Done
 import no.nav.brukernotifikasjon.schemas.Nokkel
 import no.nav.brukernotifikasjon.schemas.builders.DoneBuilder
+import no.nav.personbruker.dittnav.common.util.kafka.producer.KafkaProducerWrapper
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.common.database.Brukernotifikasjon
-import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import org.slf4j.LoggerFactory
 import java.time.LocalDateTime
 
-class DoneProducer(private val doneKafkaProducer: KafkaProducerWrapper<Done>, private val systembruker: String) {
+class DoneProducer(private val doneKafkaProducer: KafkaProducerWrapper<Nokkel, Done>, private val systembruker: String) {
 
     private val log = LoggerFactory.getLogger(DoneProducer::class.java)
 

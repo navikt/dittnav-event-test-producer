@@ -3,14 +3,14 @@ package no.nav.personbruker.dittnav.eventtestproducer.oppgave
 import no.nav.brukernotifikasjon.schemas.Nokkel
 import no.nav.brukernotifikasjon.schemas.Oppgave
 import no.nav.brukernotifikasjon.schemas.builders.OppgaveBuilder
+import no.nav.personbruker.dittnav.common.util.kafka.producer.KafkaProducerWrapper
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
-import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import org.slf4j.LoggerFactory
 import java.net.URL
 import java.time.LocalDateTime
 
-class OppgaveProducer(private val oppgaveKafkaProducer: KafkaProducerWrapper<Oppgave>, private val systembruker: String) {
+class OppgaveProducer(private val oppgaveKafkaProducer: KafkaProducerWrapper<Nokkel, Oppgave>, private val systembruker: String) {
 
     private val log = LoggerFactory.getLogger(OppgaveProducer::class.java)
 

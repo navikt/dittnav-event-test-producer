@@ -2,10 +2,11 @@ package no.nav.personbruker.dittnav.eventtestproducer.oppgave
 
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import no.nav.brukernotifikasjon.schemas.Nokkel
 import no.nav.brukernotifikasjon.schemas.Oppgave
+import no.nav.personbruker.dittnav.common.util.kafka.producer.KafkaProducerWrapper
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBrukerObjectMother
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
-import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import org.amshove.kluent.`should be equal to`
 import org.junit.jupiter.api.Test
 import java.util.*
@@ -20,7 +21,7 @@ class OppgaveProducerTest {
     private val grupperingsid = "dummyGrupperingsid"
     private val eksternVarsling = true
     private val innlogetBruker = InnloggetBrukerObjectMother.createInnloggetBruker(fodselsnummer)
-    private val oppgaveKafkaProducer = mockk<KafkaProducerWrapper<Oppgave>>()
+    private val oppgaveKafkaProducer = mockk<KafkaProducerWrapper<Nokkel, Oppgave>>()
     private val oppgaveProducer = OppgaveProducer(oppgaveKafkaProducer, systembruker)
 
     @Test
