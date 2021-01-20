@@ -8,6 +8,7 @@ import no.nav.personbruker.dittnav.common.util.kafka.producer.KafkaProducerWrapp
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBrukerObjectMother
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import org.amshove.kluent.`should be equal to`
+import org.amshove.kluent.`should be null`
 import org.junit.jupiter.api.Test
 import java.util.*
 
@@ -33,6 +34,13 @@ class BeskjedProducerTest {
             beskjedKafkaEvent.getGrupperingsId() `should be equal to` grupperingsid
             beskjedKafkaEvent.getEksternVarsling() `should be equal to` true
         }
+    }
+
+    @Test
+    fun `should allow no link value`() {
+        val beskjedDto = ProduceBeskjedDto(tekst, null, grupperingsid, eksternVarsling)
+        val beskjedKafkaEvent = beskjedProducer.createBeskjedForIdent(innlogetBruker, beskjedDto)
+        beskjedKafkaEvent.getLink() `should be equal to` ""
     }
 
     @Test

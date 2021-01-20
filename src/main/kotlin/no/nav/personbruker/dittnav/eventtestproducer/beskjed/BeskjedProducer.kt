@@ -35,12 +35,14 @@ class BeskjedProducer(private val beskjedKafkaProducer: KafkaProducerWrapper<Nok
         val build = BeskjedBuilder()
                 .withFodselsnummer(innloggetBruker.ident)
                 .withGrupperingsId(dto.grupperingsid)
-                .withLink(URL(dto.link))
                 .withTekst(dto.tekst)
                 .withTidspunkt(now)
                 .withSynligFremTil(weekFromNow)
                 .withSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)
                 .withEksternVarsling(dto.eksternVarsling)
+        if(!dto.link.isNullOrBlank()) {
+            build.withLink(URL(dto.link))
+        }
         return build.build()
     }
 }
