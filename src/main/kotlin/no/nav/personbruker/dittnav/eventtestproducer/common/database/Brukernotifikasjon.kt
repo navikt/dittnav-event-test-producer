@@ -13,5 +13,5 @@ interface Brukernotifikasjon {
     val sistOppdatert: ZonedDateTime
     val aktiv: Boolean
     val tekst: String
-    val link: String
+    val link: String?
 }

@@ -13,7 +13,7 @@ data class Beskjed(
         override val sistOppdatert: ZonedDateTime,
         val synligFremTil: ZonedDateTime?,
         override val tekst: String,
-        override val link: String,
+        override val link: String?,
         override val aktiv: Boolean,
         val eksternVarsling: Boolean
 ) : Brukernotifikasjon {
