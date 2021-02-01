@@ -3,7 +3,7 @@ package no.nav.personbruker.dittnav.eventtestproducer.oppgave
 import no.nav.brukernotifikasjon.schemas.Nokkel
 import no.nav.brukernotifikasjon.schemas.Oppgave
 import no.nav.brukernotifikasjon.schemas.builders.OppgaveBuilder
-import no.nav.personbruker.dittnav.common.util.kafka.producer.KafkaProducerWrapper
+import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import org.slf4j.LoggerFactory

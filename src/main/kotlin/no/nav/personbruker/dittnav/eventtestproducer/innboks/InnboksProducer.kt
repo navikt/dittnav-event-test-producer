@@ -2,7 +2,7 @@ package no.nav.personbruker.dittnav.eventtestproducer.innboks
 
 import no.nav.brukernotifikasjon.schemas.Innboks
 import no.nav.brukernotifikasjon.schemas.Nokkel
-import no.nav.personbruker.dittnav.common.util.kafka.producer.KafkaProducerWrapper
+import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import org.slf4j.LoggerFactory
