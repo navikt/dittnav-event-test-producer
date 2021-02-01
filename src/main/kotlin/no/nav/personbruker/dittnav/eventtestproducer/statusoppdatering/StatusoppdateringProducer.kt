@@ -4,7 +4,7 @@ import no.nav.brukernotifikasjon.schemas.Nokkel
 import no.nav.brukernotifikasjon.schemas.Statusoppdatering
 import no.nav.brukernotifikasjon.schemas.builders.StatusoppdateringBuilder
 import no.nav.brukernotifikasjon.schemas.builders.domain.StatusGlobal
-import no.nav.personbruker.dittnav.common.util.kafka.producer.KafkaProducerWrapper
+import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import org.slf4j.LoggerFactory

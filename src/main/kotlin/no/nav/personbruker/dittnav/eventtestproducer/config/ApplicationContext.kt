@@ -1,10 +1,10 @@
 package no.nav.personbruker.dittnav.eventtestproducer.config
 
 import no.nav.brukernotifikasjon.schemas.*
-import no.nav.personbruker.dittnav.common.util.kafka.producer.KafkaProducerWrapper
 import no.nav.personbruker.dittnav.eventtestproducer.beskjed.BeskjedProducer
 import no.nav.personbruker.dittnav.eventtestproducer.common.database.Database
 import no.nav.personbruker.dittnav.eventtestproducer.common.database.PostgresDatabase
+import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import no.nav.personbruker.dittnav.eventtestproducer.done.DoneEventService
 import no.nav.personbruker.dittnav.eventtestproducer.done.DoneProducer
 import no.nav.personbruker.dittnav.eventtestproducer.innboks.InnboksProducer

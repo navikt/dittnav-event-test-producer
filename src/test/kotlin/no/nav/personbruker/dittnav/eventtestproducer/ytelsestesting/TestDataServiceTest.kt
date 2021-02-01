@@ -2,7 +2,7 @@ package no.nav.personbruker.dittnav.eventtestproducer.ytelsestesting
 
 import kotlinx.coroutines.runBlocking
 import no.nav.brukernotifikasjon.schemas.*
-import no.nav.personbruker.dittnav.common.util.kafka.producer.KafkaProducerWrapper
+import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import no.nav.personbruker.dittnav.eventtestproducer.beskjed.BeskjedProducer
 import no.nav.personbruker.dittnav.eventtestproducer.config.Environment
 import no.nav.personbruker.dittnav.eventtestproducer.config.EventType
