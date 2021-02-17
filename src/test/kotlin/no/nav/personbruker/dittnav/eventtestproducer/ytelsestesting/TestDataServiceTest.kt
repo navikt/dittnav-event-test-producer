@@ -33,7 +33,7 @@ internal class TestDataServiceTest {
     private val kafkaProducerStatusoppdatering = KafkaProducerWrapper(Kafka.statusoppdateringTopicName, KafkaProducer<Nokkel, Statusoppdatering>(Kafka.producerProps(env, EventType.STATUSOPPDATERING)))
     private val statusoppdateringProducer = StatusoppdateringProducer(kafkaProducerStatusoppdatering, env.systemUserName)
 
-    @Test
+    //@Test
     fun produserTestcaseUtenEksternVarsling() {
         val testDataService = TestDataService(doneProducer, beskjedProducer, oppgaveProducer, innboksProducer, statusoppdateringProducer)
         runBlocking {
@@ -44,7 +44,7 @@ internal class TestDataServiceTest {
         }
     }
 
-    @Test
+    //@Test
     fun produserTestcaseMedEksternVarsling() {
         val testDataService = TestDataService(doneProducer, beskjedProducer, oppgaveProducer, innboksProducer, statusoppdateringProducer)
         runBlocking {
