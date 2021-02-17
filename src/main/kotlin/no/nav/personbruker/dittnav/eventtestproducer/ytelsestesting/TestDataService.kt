@@ -24,7 +24,7 @@ class TestDataService(
 ) {
 
     private val log = LoggerFactory.getLogger(TestDataService::class.java)
-    val dummySystembruker = "dittnav"
+    val dummySystembruker = "dittnav-event-test-producer"
 
     suspend fun produserBeskjeder(produceDone: Boolean, yTestDto: YTestDto) {
         log.info("Produserer ${yTestDto.antallEventer} beskjeder")
