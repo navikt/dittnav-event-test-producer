@@ -33,25 +33,23 @@ internal class TestDataServiceTest {
     private val kafkaProducerStatusoppdatering = KafkaProducerWrapper(Kafka.statusoppdateringTopicName, KafkaProducer<Nokkel, Statusoppdatering>(Kafka.producerProps(env, EventType.STATUSOPPDATERING)))
     private val statusoppdateringProducer = StatusoppdateringProducer(kafkaProducerStatusoppdatering, env.systemUserName)
 
-    //@Test
+    @Test
     fun produserTestcaseUtenEksternVarsling() {
         val testDataService = TestDataService(doneProducer, beskjedProducer, oppgaveProducer, innboksProducer, statusoppdateringProducer)
         runBlocking {
-            testDataService.produserBeskjederOgTilhorendeDoneEventer()
-            testDataService.produserOppgaveOgTilhorendeDoneEventer()
-            testDataService.produserInnboksOgTilhorendeDoneEventer()
-            testDataService.produserStatusoppdateringsEventer()
+            testDataService.produserBeskjeder(produceDone = true, YTestDto())
+            testDataService.produserOppgaver(produceDone = true, YTestDto())
+            testDataService.produserInnboks(produceDone = true, YTestDto())
+            testDataService.produserStatusoppdateringer(YTestDto())
         }
     }
 
-    //@Test
+    @Test
     fun produserTestcaseMedEksternVarsling() {
         val testDataService = TestDataService(doneProducer, beskjedProducer, oppgaveProducer, innboksProducer, statusoppdateringProducer)
         runBlocking {
-            testDataService.produserBeskjederOgTilhorendeDoneEventer(eksternVarsling = true)
-            testDataService.produserOppgaveOgTilhorendeDoneEventer(eksternVarsling = true)
-            testDataService.produserInnboksOgTilhorendeDoneEventer()
-            testDataService.produserStatusoppdateringsEventer()
+            testDataService.produserBeskjeder(produceDone = false, YTestDto(eksternVarsling = true))
+            testDataService.produserOppgaver(produceDone = false, YTestDto(eksternVarsling = true))
         }
     }
 
