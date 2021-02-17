@@ -23,6 +23,7 @@ import no.nav.personbruker.dittnav.eventtestproducer.done.doneApi
 import no.nav.personbruker.dittnav.eventtestproducer.innboks.innboksApi
 import no.nav.personbruker.dittnav.eventtestproducer.oppgave.oppgaveApi
 import no.nav.personbruker.dittnav.eventtestproducer.statusoppdatering.statusoppdateringApi
+import no.nav.personbruker.dittnav.eventtestproducer.ytelsestesting.ytelsestestApi
 import no.nav.security.token.support.ktor.tokenValidationSupport
 
 @KtorExperimentalAPI
@@ -57,6 +58,7 @@ fun Application.mainModule(appContext: ApplicationContext = ApplicationContext()
             innboksApi(appContext.innboksProducer)
             doneApi(appContext.doneEventService)
             statusoppdateringApi(appContext.statusoppdateringProducer)
+            ytelsestestApi(appContext.testDataService)
         }
     }
 

@@ -1,14 +1,6 @@
 package no.nav.personbruker.dittnav.eventtestproducer.ytelsestesting
 
-import io.ktor.application.call
-import io.ktor.http.ContentType
-import io.ktor.response.respondText
-import io.ktor.routing.Route
-import io.ktor.routing.post
-import no.nav.personbruker.dittnav.eventtestproducer.beskjed.ProduceBeskjedDto
-import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
-import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBrukerFactory
-import no.nav.personbruker.dittnav.eventtestproducer.config.innloggetBruker
+import io.ktor.routing.*
 import no.nav.personbruker.dittnav.eventtestproducer.config.respondForParameterType
 
 fun Route.ytelsestestApi(testDataService: TestDataService) {
