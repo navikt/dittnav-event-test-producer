@@ -14,6 +14,7 @@ import no.nav.personbruker.dittnav.eventtestproducer.statusoppdatering.ProduceSt
 import no.nav.personbruker.dittnav.eventtestproducer.statusoppdatering.StatusoppdateringProducer
 import org.slf4j.LoggerFactory
 import java.time.Instant
+import java.util.*
 
 class TestDataService(
         private val doneProducer: DoneProducer,
@@ -31,7 +32,7 @@ class TestDataService(
         val start = Instant.now()
         val innloggetBruker = InnloggetBruker(yTestDto.ident, 4, "dummyToken")
         for (i in 1..yTestDto.antallEventer) {
-            val key = createKeyForEvent(eventId = "b-$i", systembruker = dummySystembruker)
+            val key = createKeyForEvent(eventId = UUID.randomUUID().toString(), systembruker = dummySystembruker)
             val dto = ProduceBeskjedDto(tekst = "Beskjedtekst $i", link = "https://beskjed-$i", grupperingsid = "grupperingsid-$i", eksternVarsling = yTestDto.eksternVarsling)
             val beskjedEvent = beskjedProducer.createBeskjedForIdent(innloggetBruker, dto)
             beskjedProducer.sendEventToKafka(key, beskjedEvent)
@@ -52,7 +53,7 @@ class TestDataService(
         val start = Instant.now()
         val innloggetBruker = InnloggetBruker(yTestDto.ident, 4, "dummyToken")
         for (i in 1..yTestDto.antallEventer) {
-            val key = createKeyForEvent(eventId = "o-$i", systembruker = dummySystembruker)
+            val key = createKeyForEvent(eventId = UUID.randomUUID().toString(), systembruker = dummySystembruker)
             val dto = ProduceOppgaveDto(tekst = "Oppgavetekst $i", link = "https://oppgave-$i", grupperingsid = "grupperingsid-$i", eksternVarsling = yTestDto.eksternVarsling)
             val oppgaveEvent = oppgaveProducer.createOppgaveForIdent(innloggetBruker, dto)
             oppgaveProducer.sendEventToKafka(key, oppgaveEvent)
