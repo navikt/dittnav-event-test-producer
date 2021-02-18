@@ -5,7 +5,6 @@ import io.ktor.http.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import no.nav.personbruker.dittnav.eventtestproducer.config.innloggetBruker
-import no.nav.personbruker.dittnav.eventtestproducer.config.respondForParameterType
 
 fun Route.beskjedApi(beskjedProducer: BeskjedProducer) {
 
