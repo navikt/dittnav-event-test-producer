@@ -10,9 +10,8 @@ fun Route.beskjedApi(beskjedProducer: BeskjedProducer) {
 
     get("/produce/test/beskjed") {
         val beskjedDto = createTestEventMedEksternVarslingAktivert()
-//        beskjedProducer.produceBeskjedEventForIdent(innloggetBruker, beskjedDto)
-//        var message = "Beskjed med ekstern-varsling aktivet har blitt produsert, med følgende tekst: '${beskjedDto.tekst}'."
-        val message = "Dette er foreløpig kun dry-run. Men dette skal etterhvert produsere en beskjed."
+        beskjedProducer.produceBeskjedEventForIdent(innloggetBruker, beskjedDto)
+        val message = "Beskjed med ekstern-varsling aktivet har blitt produsert, med følgende tekst: '${beskjedDto.tekst}'."
         call.respondText(text = message, contentType = ContentType.Text.Plain)
     }
 
