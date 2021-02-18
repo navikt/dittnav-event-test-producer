@@ -10,6 +10,7 @@ import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import org.slf4j.LoggerFactory
 import java.net.URL
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 class StatusoppdateringProducer(private val statusoppdateringKafkaProducer: KafkaProducerWrapper<Nokkel, Statusoppdatering>, private val systembruker: String) {
 
@@ -30,7 +31,7 @@ class StatusoppdateringProducer(private val statusoppdateringKafkaProducer: Kafk
     }
 
     fun createStatusoppdateringForIdent(innloggetBruker: InnloggetBruker, dto: ProduceStatusoppdateringDto): Statusoppdatering {
-        val now = LocalDateTime.now()
+        val now = LocalDateTime.now(ZoneOffset.UTC)
         val build = StatusoppdateringBuilder()
                 .withFodselsnummer(innloggetBruker.ident)
                 .withGrupperingsId(dto.grupperingsid)

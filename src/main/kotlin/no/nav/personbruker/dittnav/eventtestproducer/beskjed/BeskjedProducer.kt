@@ -9,6 +9,7 @@ import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerW
 import org.slf4j.LoggerFactory
 import java.net.URL
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 
 class BeskjedProducer(private val beskjedKafkaProducer: KafkaProducerWrapper<Nokkel, Beskjed>, private val systembruker: String) {
@@ -30,7 +31,7 @@ class BeskjedProducer(private val beskjedKafkaProducer: KafkaProducerWrapper<Nok
     }
 
     fun createBeskjedForIdent(innloggetBruker: InnloggetBruker, dto: ProduceBeskjedDto): Beskjed {
-        val now = LocalDateTime.now()
+        val now = LocalDateTime.now(ZoneOffset.UTC)
         val weekFromNow = now.plus(7, ChronoUnit.DAYS)
         val build = BeskjedBuilder()
                 .withFodselsnummer(innloggetBruker.ident)

@@ -9,6 +9,7 @@ import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.common.database.Brukernotifikasjon
 import org.slf4j.LoggerFactory
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 class DoneProducer(private val doneKafkaProducer: KafkaProducerWrapper<Nokkel, Done>, private val systembruker: String) {
 
@@ -29,7 +30,7 @@ class DoneProducer(private val doneKafkaProducer: KafkaProducerWrapper<Nokkel, D
     }
 
     fun createDoneEvent(innloggetBruker: InnloggetBruker): Done {
-        val now = LocalDateTime.now()
+        val now = LocalDateTime.now(ZoneOffset.UTC)
         val build = DoneBuilder()
                 .withFodselsnummer(innloggetBruker.ident)
                 .withTidspunkt(now)
