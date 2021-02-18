@@ -19,7 +19,7 @@ spec:
   prometheus:
     path: /person/dittnav-event-test-producer/metrics
   replicas:
-    min: 1
+    min: 0
     max: 1
   webproxy: true
   ingresses:
