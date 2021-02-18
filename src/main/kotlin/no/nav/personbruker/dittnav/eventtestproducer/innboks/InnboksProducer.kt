@@ -6,7 +6,8 @@ import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerW
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import org.slf4j.LoggerFactory
-import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 class InnboksProducer(private val innboksKafkaProducer: KafkaProducerWrapper<Nokkel, Innboks>, private val systembruker: String) {
 
@@ -27,7 +28,7 @@ class InnboksProducer(private val innboksKafkaProducer: KafkaProducerWrapper<Nok
     }
 
     fun createInnboksForIdent(innloggetBruker: InnloggetBruker, dto: ProduceInnboksDto): Innboks {
-        val nowInMs = Instant.now().toEpochMilli()
+        val nowInMs = LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()
 
         return Innboks.newBuilder()
                 .setFodselsnummer(innloggetBruker.ident)

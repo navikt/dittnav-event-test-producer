@@ -9,6 +9,7 @@ import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import org.slf4j.LoggerFactory
 import java.net.URL
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 class OppgaveProducer(private val oppgaveKafkaProducer: KafkaProducerWrapper<Nokkel, Oppgave>, private val systembruker: String) {
 
@@ -29,7 +30,7 @@ class OppgaveProducer(private val oppgaveKafkaProducer: KafkaProducerWrapper<Nok
     }
 
     fun createOppgaveForIdent(innloggetBruker: InnloggetBruker, dto: ProduceOppgaveDto): Oppgave {
-        val now = LocalDateTime.now()
+        val now = LocalDateTime.now(ZoneOffset.UTC)
         val build = OppgaveBuilder()
                 .withFodselsnummer(innloggetBruker.ident)
                 .withGrupperingsId(dto.grupperingsid)

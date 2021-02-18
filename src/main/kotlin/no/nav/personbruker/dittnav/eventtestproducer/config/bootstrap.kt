@@ -3,27 +3,18 @@ package no.nav.personbruker.dittnav.eventtestproducer.config
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import io.ktor.application.*
-import io.ktor.auth.Authentication
-import io.ktor.auth.authenticate
-import io.ktor.auth.authentication
-import io.ktor.features.CORS
-import io.ktor.features.ContentNegotiation
-import io.ktor.features.DefaultHeaders
-import io.ktor.http.HttpHeaders
-import io.ktor.jackson.jackson
-import io.ktor.routing.routing
-import io.ktor.util.KtorExperimentalAPI
-import io.ktor.util.pipeline.PipelineContext
+import io.ktor.auth.*
+import io.ktor.features.*
+import io.ktor.http.*
+import io.ktor.jackson.*
+import io.ktor.routing.*
+import io.ktor.util.*
+import io.ktor.util.pipeline.*
 import io.prometheus.client.hotspot.DefaultExports
 import no.nav.personbruker.dittnav.eventtestproducer.beskjed.beskjedApi
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBrukerFactory
 import no.nav.personbruker.dittnav.eventtestproducer.common.healthApi
-import no.nav.personbruker.dittnav.eventtestproducer.done.doneApi
-import no.nav.personbruker.dittnav.eventtestproducer.innboks.innboksApi
-import no.nav.personbruker.dittnav.eventtestproducer.oppgave.oppgaveApi
-import no.nav.personbruker.dittnav.eventtestproducer.statusoppdatering.statusoppdateringApi
-import no.nav.personbruker.dittnav.eventtestproducer.ytelsestesting.ytelsestestApi
 import no.nav.security.token.support.ktor.tokenValidationSupport
 
 @KtorExperimentalAPI
@@ -53,12 +44,7 @@ fun Application.mainModule(appContext: ApplicationContext = ApplicationContext()
     routing {
         healthApi()
         authenticate {
-            oppgaveApi(appContext.oppgaveProducer)
             beskjedApi(appContext.beskjedProducer)
-            innboksApi(appContext.innboksProducer)
-            doneApi(appContext.doneEventService)
-            statusoppdateringApi(appContext.statusoppdateringProducer)
-            ytelsestestApi(appContext.testDataService)
         }
     }
 
