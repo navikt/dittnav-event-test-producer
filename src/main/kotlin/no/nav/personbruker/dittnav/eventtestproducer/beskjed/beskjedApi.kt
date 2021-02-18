@@ -1,25 +1,17 @@
 package no.nav.personbruker.dittnav.eventtestproducer.beskjed
 
-import io.ktor.application.*
-import io.ktor.http.*
-import io.ktor.response.*
-import io.ktor.routing.*
+import io.ktor.routing.Route
+import io.ktor.routing.post
 import no.nav.personbruker.dittnav.eventtestproducer.config.innloggetBruker
+import no.nav.personbruker.dittnav.eventtestproducer.config.respondForParameterType
 
 fun Route.beskjedApi(beskjedProducer: BeskjedProducer) {
 
-    get("/produce/test/beskjed") {
-        val beskjedDto = createTestEventMedEksternVarslingAktivert()
-        beskjedProducer.produceBeskjedEventForIdent(innloggetBruker, beskjedDto)
-        val message = "Beskjed med ekstern-varsling aktivet har blitt produsert, med følgende tekst: '${beskjedDto.tekst}'."
-        call.respondText(text = message, contentType = ContentType.Text.Plain)
+    post("/produce/beskjed") {
+        respondForParameterType<ProduceBeskjedDto> { beskjedDto ->
+            beskjedProducer.produceBeskjedEventForIdent(innloggetBruker, beskjedDto)
+            "Et beskjed-event for brukeren: $innloggetBruker har blitt lagt på kafka."
+        }
     }
 
-}
-
-private fun createTestEventMedEksternVarslingAktivert(): ProduceBeskjedDto {
-    val tekst = "Dette er en test-beskjed for å sjekke at ekstern-varsling fungerer."
-    val link = "https://tjenester.nav.no/saksoversikt"
-    val grupperingsid = "123"
-    return ProduceBeskjedDto(tekst, link, grupperingsid, true)
 }
