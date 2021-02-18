@@ -14,6 +14,7 @@ import no.nav.personbruker.dittnav.eventtestproducer.statusoppdatering.ProduceSt
 import no.nav.personbruker.dittnav.eventtestproducer.statusoppdatering.StatusoppdateringProducer
 import org.slf4j.LoggerFactory
 import java.time.Instant
+import java.util.*
 
 class TestDataService(
         private val doneProducer: DoneProducer,
@@ -24,21 +25,22 @@ class TestDataService(
 ) {
 
     private val log = LoggerFactory.getLogger(TestDataService::class.java)
-    private val bruker = InnloggetBruker("88888", 4, "dummyToken")
-    private val dummySystembruker = "dittnav"
-    private val antallEventer = 50000
+    val dummySystembruker = "dittnav-event-test-producer"
 
-    suspend fun produserBeskjederOgTilhorendeDoneEventer(eksternVarsling: Boolean = false) {
-        log.info("Produserer $antallEventer beskjeder")
+    suspend fun produserBeskjeder(produceDone: Boolean, yTestDto: YTestDto) {
+        log.info("Produserer ${yTestDto.antallEventer} beskjeder")
         val start = Instant.now()
-        for (i in 1..antallEventer) {
-            val key = createKeyForEvent(eventId = "b-$i", systembruker = dummySystembruker)
-            val dto = ProduceBeskjedDto(tekst = "Beskjedtekst $i", link = "https://beskjed-$i", grupperingsid = "grupperingsid-$i", eksternVarsling = eksternVarsling)
-            val beskjedEvent = beskjedProducer.createBeskjedForIdent(bruker, dto)
-            val doneEvent = doneProducer.createDoneEvent(bruker)
+        val innloggetBruker = InnloggetBruker(yTestDto.ident, 4, "dummyToken")
+        for (i in 1..yTestDto.antallEventer) {
+            val key = createKeyForEvent(eventId = UUID.randomUUID().toString(), systembruker = dummySystembruker)
+            val dto = ProduceBeskjedDto(tekst = "Beskjedtekst $i", link = "https://beskjed-$i", grupperingsid = "grupperingsid-$i", eksternVarsling = yTestDto.eksternVarsling)
+            val beskjedEvent = beskjedProducer.createBeskjedForIdent(innloggetBruker, dto)
             beskjedProducer.sendEventToKafka(key, beskjedEvent)
-            doneProducer.sendEventToKafka(key, doneEvent)
-            if (isShouldTakeASmallBreakAndLogProgress(i)) {
+            if(produceDone) {
+                val doneEvent = doneProducer.createDoneEvent(innloggetBruker)
+                doneProducer.sendEventToKafka(key, doneEvent)
+            }
+            if (isShouldTakeASmallBreakAndLogProgress(i, yTestDto.antallEventer)) {
                 log.info("Har produsert beskjed nummer $i tar en liten pause")
                 delay(1000)
             }
@@ -46,17 +48,20 @@ class TestDataService(
         beregnBruktTid(start)
     }
 
-    suspend fun produserOppgaveOgTilhorendeDoneEventer(eksternVarsling: Boolean = false) {
-        log.info("Produserer $antallEventer oppgaver")
+    suspend fun produserOppgaver(produceDone: Boolean, yTestDto: YTestDto) {
+        log.info("Produserer ${yTestDto.antallEventer} oppgaver")
         val start = Instant.now()
-        for (i in 1..antallEventer) {
-            val key = createKeyForEvent(eventId = "o-$i", systembruker = dummySystembruker)
-            val dto = ProduceOppgaveDto(tekst = "Oppgavetekst $i", link = "https://oppgave-$i", grupperingsid = "grupperingsid-$i", eksternVarsling = eksternVarsling)
-            val oppgaveEvent = oppgaveProducer.createOppgaveForIdent(bruker, dto)
-            val doneEvent = doneProducer.createDoneEvent(bruker)
+        val innloggetBruker = InnloggetBruker(yTestDto.ident, 4, "dummyToken")
+        for (i in 1..yTestDto.antallEventer) {
+            val key = createKeyForEvent(eventId = UUID.randomUUID().toString(), systembruker = dummySystembruker)
+            val dto = ProduceOppgaveDto(tekst = "Oppgavetekst $i", link = "https://oppgave-$i", grupperingsid = "grupperingsid-$i", eksternVarsling = yTestDto.eksternVarsling)
+            val oppgaveEvent = oppgaveProducer.createOppgaveForIdent(innloggetBruker, dto)
             oppgaveProducer.sendEventToKafka(key, oppgaveEvent)
-            doneProducer.sendEventToKafka(key, doneEvent)
-            if (isShouldTakeASmallBreakAndLogProgress(i)) {
+            if(produceDone) {
+                val doneEvent = doneProducer.createDoneEvent(innloggetBruker)
+                doneProducer.sendEventToKafka(key, doneEvent)
+            }
+            if (isShouldTakeASmallBreakAndLogProgress(i, yTestDto.antallEventer)) {
                 log.info("Har produsert oppgave nummer $i tar en liten pause")
                 delay(1000)
             }
@@ -64,17 +69,20 @@ class TestDataService(
         beregnBruktTid(start)
     }
 
-    suspend fun produserInnboksOgTilhorendeDoneEventer() {
-        log.info("Produserer $antallEventer innboks-eventer")
+    suspend fun produserInnboks(produceDone: Boolean, yTestDto: YTestDto) {
+        log.info("Produserer ${yTestDto.antallEventer} innboks-eventer")
         val start = Instant.now()
-        for (i in 1..antallEventer) {
+        val innloggetBruker = InnloggetBruker(yTestDto.ident, 4, "dummyToken")
+        for (i in 1..yTestDto.antallEventer) {
             val key = createKeyForEvent("i-$i", dummySystembruker)
             val dto = ProduceInnboksDto("Innbokstekst $i", "https://innboks-$i", "grupperingsid-$i")
-            val innboksEvent = innboksProducer.createInnboksForIdent(bruker, dto)
-            val doneEvent = doneProducer.createDoneEvent(bruker)
+            val innboksEvent = innboksProducer.createInnboksForIdent(innloggetBruker, dto)
             innboksProducer.sendEventToKafka(key, innboksEvent)
-            doneProducer.sendEventToKafka(key, doneEvent)
-            if (isShouldTakeASmallBreakAndLogProgress(i)) {
+            if(produceDone) {
+                val doneEvent = doneProducer.createDoneEvent(innloggetBruker)
+                doneProducer.sendEventToKafka(key, doneEvent)
+            }
+            if (isShouldTakeASmallBreakAndLogProgress(i, yTestDto.antallEventer)) {
                 log.info("Har produsert innboks-event nummer $i tar en liten pause")
                 delay(1000)
             }
@@ -82,15 +90,16 @@ class TestDataService(
         beregnBruktTid(start)
     }
 
-    suspend fun produserStatusoppdateringsEventer() {
-        log.info("Produserer $antallEventer Statusoppdatering-eventer")
+    suspend fun produserStatusoppdateringer(yTestDto: YTestDto) {
+        log.info("Produserer ${yTestDto.antallEventer} Statusoppdatering-eventer")
         val start = Instant.now()
-        for (i in 1..antallEventer) {
+        val innloggetBruker = InnloggetBruker(yTestDto.ident, 4, "dummyToken")
+        for (i in 1..yTestDto.antallEventer) {
             val key = createKeyForEvent("s-$i", dummySystembruker)
-            val dto = ProduceStatusoppdateringDto("dummyLink_$i", "SENDT", "dummyStatusIntern_$i", "dummySakstema_$i", "grupperingsid-$i")
-            val statusoppdateringEvent = statusoppdateringProducer.createStatusoppdateringForIdent(bruker, dto)
+            val dto = ProduceStatusoppdateringDto("https://dummyLink_$i", "SENDT", "dummyStatusIntern_$i", "dummySakstema_$i", "grupperingsid-$i")
+            val statusoppdateringEvent = statusoppdateringProducer.createStatusoppdateringForIdent(innloggetBruker, dto)
             statusoppdateringProducer.sendEventToKafka(key, statusoppdateringEvent)
-            if (isShouldTakeASmallBreakAndLogProgress(i)) {
+            if (isShouldTakeASmallBreakAndLogProgress(i, yTestDto.antallEventer)) {
                 log.info("Har produsert Statusoppdatering-event nummer $i tar en liten pause")
                 delay(1000)
             }
@@ -105,6 +114,6 @@ class TestDataService(
         log.info("Gjenbrukt kafka-produsent med venting, produseringen tok: $tidbruktISekunder sekunder.\n")
     }
 
-    private fun isShouldTakeASmallBreakAndLogProgress(i: Int) = i % (antallEventer / 10) == 0
+    private fun isShouldTakeASmallBreakAndLogProgress(i: Int, antallEventer: Int) = i % (antallEventer / 10) == 0
 
 }
