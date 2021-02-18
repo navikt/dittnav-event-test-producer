@@ -68,22 +68,11 @@ tasks {
     }
 
     register("runServer", JavaExec::class) {
-        environment("CORS_ALLOWED_ORIGINS", "localhost:9002")
-
-        environment("OIDC_CLAIM_CONTAINING_THE_IDENTITY", "pid")
-        environment("OIDC_ISSUER", "http://localhost:9000")
-        environment("OIDC_DISCOVERY_URL", "http://localhost:9000/.well-known/openid-configuration")
-        environment("OIDC_ACCEPTED_AUDIENCE", "stubOidcClient")
-
-        environment("KAFKA_BOOTSTRAP_SERVERS", "localhost:29092")
-        environment("KAFKA_SCHEMAREGISTRY_SERVERS", "http://localhost:8081")
-        environment("SERVICEUSER_USERNAME", "username")
-        environment("SERVICEUSER_PASSWORD", "password")
-
-        environment("DB_HOST", "localhost:5432")
-        environment("DB_NAME", "dittnav-event-cache-preprod")
-        environment("DB_PASSWORD", "testpassword")
-        environment("DB_MOUNT_PATH", "notUsedOnLocalhost")
+        println("Setting default environment variables for running with DittNAV docker-compose")
+        DockerComposeDefaults.environomentVariables.forEach { (name, value) ->
+            println("Setting the environment variable $name")
+            environment(name, value)
+        }
 
         main = application.mainClassName
         classpath = sourceSets["main"].runtimeClasspath
