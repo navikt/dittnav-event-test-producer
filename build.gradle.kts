@@ -2,9 +2,9 @@ plugins {
     // Apply the Kotlin JVM plugin to add support for Kotlin on the JVM.
     kotlin("jvm").version(Kotlin.version)
     kotlin("plugin.allopen").version(Kotlin.version)
+    kotlin("plugin.serialization").version(Kotlin.version)
 
     id(Shadow.pluginId) version (Shadow.version)
-
     // Apply the application plugin to add support for building a CLI application.
     application
 }
@@ -26,12 +26,11 @@ dependencies {
     implementation(Brukernotifikasjon.schemas)
     implementation(DittNAV.Common.utils)
     implementation(Hikari.cp)
-    implementation(Jackson.dataTypeJsr310)
     implementation(Kafka.Apache.clients)
     implementation(Kafka.Confluent.avroSerializer)
     implementation(Ktor.auth)
     implementation(Ktor.authJwt)
-    implementation(Ktor.jackson)
+    implementation(Ktor.serialization)
     implementation(Ktor.serverNetty)
     implementation(Logback.classic)
     implementation(Logstash.logbackEncoder)
@@ -47,7 +46,7 @@ dependencies {
     testImplementation(H2Database.h2)
     testImplementation(Jjwt.api)
     testImplementation(Jjwt.impl)
-    testImplementation(Jjwt.jackson)
+    testImplementation(Jjwt.orgjson)
     testImplementation(Junit.api)
     testImplementation(Junit.engine)
     testImplementation(Kafka.Apache.kafka_2_12)
