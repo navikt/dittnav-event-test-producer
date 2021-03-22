@@ -1,6 +1,8 @@
 package no.nav.personbruker.dittnav.eventtestproducer.beskjed
 
+import kotlinx.serialization.Serializable
 
+@Serializable
 class ProduceBeskjedDto(val tekst: String,
                         val link: String?,
                         val grupperingsid: String,

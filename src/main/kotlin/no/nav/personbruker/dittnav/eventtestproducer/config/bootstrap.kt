@@ -1,13 +1,11 @@
 package no.nav.personbruker.dittnav.eventtestproducer.config
 
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.features.*
 import io.ktor.http.*
-import io.ktor.jackson.*
 import io.ktor.routing.*
+import io.ktor.serialization.*
 import io.ktor.util.*
 import io.ktor.util.pipeline.*
 import io.prometheus.client.hotspot.DefaultExports
@@ -34,10 +32,7 @@ fun Application.mainModule(appContext: ApplicationContext = ApplicationContext()
     }
 
     install(ContentNegotiation) {
-        jackson {
-            enable(SerializationFeature.INDENT_OUTPUT)
-            registerModule(JavaTimeModule())
-        }
+        json()
     }
 
     val config = this.environment.config

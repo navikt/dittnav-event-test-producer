@@ -1,5 +1,8 @@
 package no.nav.personbruker.dittnav.eventtestproducer.oppgave
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 class ProduceOppgaveDto(val tekst: String,
                         val link: String,
                         val grupperingsid: String,

@@ -1,5 +1,8 @@
 package no.nav.personbruker.dittnav.eventtestproducer.statusoppdatering
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 class ProduceStatusoppdateringDto (val link: String,
                                    val statusGlobal: String,
                                    val statusIntern: String,
