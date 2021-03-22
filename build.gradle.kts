@@ -9,6 +9,10 @@ plugins {
     application
 }
 
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions.jvmTarget = "13"
+}
+
 repositories {
     // Use jcenter for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
@@ -56,7 +60,7 @@ dependencies {
 }
 
 application {
-    mainClassName = "io.ktor.server.netty.EngineMain"
+    mainClass.set("io.ktor.server.netty.EngineMain")
 }
 
 tasks {
@@ -74,9 +78,12 @@ tasks {
             environment(name, value)
         }
 
-        main = application.mainClassName
+        main = application.mainClass.get()
         classpath = sourceSets["main"].runtimeClasspath
     }
 }
 
+// TODO: Fjern følgende work around i ny versjon av Shadow-pluginet:
+// Skal være løst i denne: https://github.com/johnrengelman/shadow/pull/612
+project.setProperty("mainClassName", application.mainClass.get())
 apply(plugin = Shadow.pluginId)
