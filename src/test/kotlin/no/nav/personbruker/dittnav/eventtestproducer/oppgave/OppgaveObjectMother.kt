@@ -4,7 +4,7 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 
 object OppgaveObjectMother {
-    fun createOppgave(id: Int, eventId: String, fodselsnummer: String, aktiv: Boolean, eksternVarsling: Boolean): Oppgave {
+    fun createOppgave(id: Int, eventId: String, fodselsnummer: String, aktiv: Boolean, eksternVarsling: Boolean, prefererteKanaler: List<String>): Oppgave {
         return Oppgave(
                 id = id,
                 fodselsnummer = fodselsnummer,
@@ -17,6 +17,7 @@ object OppgaveObjectMother {
                 tekst = "Dette er melding til brukeren",
                 link = "https://nav.no/systemX/$fodselsnummer",
                 aktiv = aktiv,
-                eksternVarsling = eksternVarsling)
+                eksternVarsling = eksternVarsling,
+                prefererteKanaler = prefererteKanaler)
     }
 }

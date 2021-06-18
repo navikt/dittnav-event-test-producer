@@ -20,3 +20,13 @@ fun ResultSet.getNullableUtcTimeStamp(label: String): Timestamp? = getTimestamp(
 fun ResultSet.getNullableZonedDateTime(label: String) : ZonedDateTime? {
     return getNullableUtcTimeStamp(label)?.let { timestamp -> ZonedDateTime.ofInstant(timestamp.toInstant(), ZoneId.of("Europe/Oslo")) }
 }
+
+fun ResultSet.getListFromSeparatedString(columnLabel: String, separator: String): List<String> {
+    var stringValue = getString(columnLabel)
+    return if(stringValue.isNullOrEmpty()) {
+        emptyList()
+    }
+    else {
+        stringValue.split(separator)
+    }
+}

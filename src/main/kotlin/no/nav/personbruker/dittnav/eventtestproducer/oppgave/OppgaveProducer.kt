@@ -6,6 +6,7 @@ import no.nav.brukernotifikasjon.schemas.builders.OppgaveBuilder
 import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
+import no.nav.personbruker.dittnav.eventtestproducer.common.getPrefererteKanaler
 import org.slf4j.LoggerFactory
 import java.net.URL
 import java.time.LocalDateTime
@@ -39,6 +40,7 @@ class OppgaveProducer(private val oppgaveKafkaProducer: KafkaProducerWrapper<Nok
                 .withTidspunkt(now)
                 .withSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)
                 .withEksternVarsling(dto.eksternVarsling)
+                .withPrefererteKanaler(*getPrefererteKanaler(dto.prefererteKanaler).toTypedArray())
         return build.build()
     }
 }

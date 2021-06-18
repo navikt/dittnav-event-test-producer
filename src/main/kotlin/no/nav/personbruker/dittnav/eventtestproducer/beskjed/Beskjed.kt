@@ -15,7 +15,8 @@ data class Beskjed(
         override val tekst: String,
         override val link: String?,
         override val aktiv: Boolean,
-        val eksternVarsling: Boolean
+        val eksternVarsling: Boolean,
+        val prefererteKanaler: List<String>
 ) : Brukernotifikasjon {
 
     override fun toString(): String {
@@ -32,7 +33,8 @@ data class Beskjed(
                 "synligFremTil=$synligFremTil, " +
                 "tekst=***, " +
                 "link=***, " +
-                "aktiv=$aktiv" +
-                "eksternVarsling=$eksternVarsling"
+                "aktiv=$aktiv, " +
+                "eksternVarsling=$eksternVarsling, " +
+                "prefererteKanaler=$prefererteKanaler"
     }
 }

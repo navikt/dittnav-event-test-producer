@@ -4,8 +4,8 @@ import java.sql.Connection
 import java.sql.Types
 
 fun Connection.createOppgave(oppgaver: List<Oppgave>) =
-        prepareStatement("""INSERT INTO oppgave(id, systembruker, eventTidspunkt, fodselsnummer, eventId, grupperingsId, tekst, link, sikkerhetsnivaa, sistOppdatert, aktiv)
-            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""")
+        prepareStatement("""INSERT INTO oppgave(id, systembruker, eventTidspunkt, fodselsnummer, eventId, grupperingsId, tekst, link, sikkerhetsnivaa, sistOppdatert, aktiv, eksternVarsling, prefererteKanaler)
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""")
                 .use {
                     oppgaver.forEach { oppgave ->
                         run {
@@ -20,6 +20,8 @@ fun Connection.createOppgave(oppgaver: List<Oppgave>) =
                             it.setInt(9, oppgave.sikkerhetsnivaa)
                             it.setObject(10, oppgave.sistOppdatert.toLocalDateTime(), Types.TIMESTAMP)
                             it.setBoolean(11, oppgave.aktiv)
+                            it.setBoolean(12, oppgave.eksternVarsling)
+                            it.setObject(13, oppgave.prefererteKanaler.joinToString(","))
                             it.addBatch()
                         }
                     }

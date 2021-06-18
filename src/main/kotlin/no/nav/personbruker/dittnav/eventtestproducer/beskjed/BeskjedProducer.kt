@@ -3,8 +3,10 @@ package no.nav.personbruker.dittnav.eventtestproducer.beskjed
 import no.nav.brukernotifikasjon.schemas.Beskjed
 import no.nav.brukernotifikasjon.schemas.Nokkel
 import no.nav.brukernotifikasjon.schemas.builders.BeskjedBuilder
+import no.nav.brukernotifikasjon.schemas.builders.domain.PreferertKanal
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
+import no.nav.personbruker.dittnav.eventtestproducer.common.getPrefererteKanaler
 import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import org.slf4j.LoggerFactory
 import java.net.URL
@@ -41,6 +43,7 @@ class BeskjedProducer(private val beskjedKafkaProducer: KafkaProducerWrapper<Nok
                 .withSynligFremTil(weekFromNow)
                 .withSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)
                 .withEksternVarsling(dto.eksternVarsling)
+                .withPrefererteKanaler(*getPrefererteKanaler(dto.prefererteKanaler).toTypedArray())
         if(!dto.link.isNullOrBlank()) {
             build.withLink(URL(dto.link))
         }
