@@ -1,6 +1,7 @@
 package no.nav.personbruker.dittnav.eventtestproducer.oppgave
 
 import kotlinx.coroutines.runBlocking
+import no.nav.brukernotifikasjon.schemas.builders.domain.PreferertKanal
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBrukerObjectMother
 import no.nav.personbruker.dittnav.eventtestproducer.common.database.H2Database
 import org.amshove.kluent.`should be equal to`
@@ -15,10 +16,10 @@ class OppgaveQueriesTest {
     private val database = H2Database()
     private val innloggetBruker = InnloggetBrukerObjectMother.createInnloggetBruker()
 
-    private val oppgave1 = OppgaveObjectMother.createOppgave(id = 1, eventId = "123", fodselsnummer = innloggetBruker.ident, aktiv = true, eksternVarsling = true)
-    private val oppgave2 = OppgaveObjectMother.createOppgave(id = 2, eventId = "345", fodselsnummer = innloggetBruker.ident, aktiv = true, eksternVarsling = true)
-    private val oppgave3 = OppgaveObjectMother.createOppgave(id = 3, eventId = "567", fodselsnummer = innloggetBruker.ident, aktiv = false, eksternVarsling = true)
-    private val oppgave4 = OppgaveObjectMother.createOppgave(id = 4, eventId = "789", fodselsnummer = "54321", aktiv = true, eksternVarsling = true)
+    private val oppgave1 = OppgaveObjectMother.createOppgave(id = 1, eventId = "123", fodselsnummer = innloggetBruker.ident, aktiv = true, eksternVarsling = true, prefererteKanaler = listOf(PreferertKanal.SMS.toString()))
+    private val oppgave2 = OppgaveObjectMother.createOppgave(id = 2, eventId = "345", fodselsnummer = innloggetBruker.ident, aktiv = true, eksternVarsling = true, prefererteKanaler = listOf(PreferertKanal.SMS.toString()))
+    private val oppgave3 = OppgaveObjectMother.createOppgave(id = 3, eventId = "567", fodselsnummer = innloggetBruker.ident, aktiv = false, eksternVarsling = true, prefererteKanaler = listOf(PreferertKanal.EPOST.toString()))
+    private val oppgave4 = OppgaveObjectMother.createOppgave(id = 4, eventId = "789", fodselsnummer = "54321", aktiv = true, eksternVarsling = true, prefererteKanaler = listOf(PreferertKanal.EPOST.toString()))
 
     @BeforeAll
     fun `populer testdata`() {

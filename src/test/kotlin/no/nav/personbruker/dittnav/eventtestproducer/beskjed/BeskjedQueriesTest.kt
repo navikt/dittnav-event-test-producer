@@ -1,6 +1,7 @@
 package no.nav.personbruker.dittnav.eventtestproducer.beskjed
 
 import kotlinx.coroutines.runBlocking
+import no.nav.brukernotifikasjon.schemas.builders.domain.PreferertKanal
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBrukerObjectMother
 import no.nav.personbruker.dittnav.eventtestproducer.common.database.H2Database
 import org.amshove.kluent.`should be empty`
@@ -18,13 +19,13 @@ class BeskjedQueriesTest {
     private val innloggetBruker = InnloggetBrukerObjectMother.createInnloggetBruker()
 
     private val beskjed1 = BeskjedObjectMother.createBeskjed(id = 1, eventId = "123", fodselsnummer = innloggetBruker.ident,
-            synligFremTil = ZonedDateTime.now().plusHours(1), uid = "11", aktiv = true, eksternVarsling = true)
+            synligFremTil = ZonedDateTime.now().plusHours(1), uid = "11", aktiv = true, eksternVarsling = true, prefererteKanaler = listOf(PreferertKanal.SMS.toString()))
     private val beskjed2 = BeskjedObjectMother.createBeskjed(id = 2, eventId = "124", fodselsnummer = innloggetBruker.ident,
-            synligFremTil = ZonedDateTime.now().plusHours(1), uid = "22", aktiv = true, eksternVarsling = true)
+            synligFremTil = ZonedDateTime.now().plusHours(1), uid = "22", aktiv = true, eksternVarsling = true, prefererteKanaler = listOf(PreferertKanal.SMS.toString()))
     private val beskjed3 = BeskjedObjectMother.createBeskjed(id = 3, eventId = "125", fodselsnummer = innloggetBruker.ident,
-            synligFremTil = ZonedDateTime.now().plusHours(1), uid = "33", aktiv = false, eksternVarsling = true)
+            synligFremTil = ZonedDateTime.now().plusHours(1), uid = "33", aktiv = false, eksternVarsling = true, prefererteKanaler = listOf(PreferertKanal.EPOST.toString()))
     private val beskjed4 = BeskjedObjectMother.createBeskjed(id = 4, eventId = "126", fodselsnummer = "54321",
-            synligFremTil = ZonedDateTime.now().plusHours(1), uid = "44", aktiv = true, eksternVarsling = true)
+            synligFremTil = ZonedDateTime.now().plusHours(1), uid = "44", aktiv = true, eksternVarsling = true, prefererteKanaler = listOf(PreferertKanal.EPOST.toString()))
 
     @BeforeAll
     fun `populer testdata`() {

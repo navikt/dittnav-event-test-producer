@@ -2,6 +2,7 @@ package no.nav.personbruker.dittnav.eventtestproducer.beskjed
 
 import Beskjed
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
+import no.nav.personbruker.dittnav.eventtestproducer.common.database.getListFromSeparatedString
 import no.nav.personbruker.dittnav.eventtestproducer.common.database.getNullableZonedDateTime
 import no.nav.personbruker.dittnav.eventtestproducer.common.database.getUtcTimeStamp
 import no.nav.personbruker.dittnav.eventtestproducer.common.database.map
@@ -43,6 +44,7 @@ fun ResultSet.toBeskjed(): Beskjed {
             tekst = getString("tekst"),
             link = getString("link"),
             aktiv = getBoolean("aktiv"),
-            eksternVarsling = getBoolean("eksternVarsling")
+            eksternVarsling = getBoolean("eksternVarsling"),
+            prefererteKanaler = getListFromSeparatedString("prefererteKanaler", ",")
     )
 }

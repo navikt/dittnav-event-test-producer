@@ -4,9 +4,11 @@ import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import no.nav.brukernotifikasjon.schemas.Nokkel
 import no.nav.brukernotifikasjon.schemas.Oppgave
+import no.nav.brukernotifikasjon.schemas.builders.domain.PreferertKanal
 import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBrukerObjectMother
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
+import org.amshove.kluent.`should be empty`
 import org.amshove.kluent.`should be equal to`
 import org.junit.jupiter.api.Test
 import java.util.*
@@ -20,6 +22,7 @@ class OppgaveProducerTest {
     private val tekst = "dummyTekst"
     private val grupperingsid = "dummyGrupperingsid"
     private val eksternVarsling = true
+    private val prefererteKanaler = listOf(PreferertKanal.SMS.toString(), PreferertKanal.EPOST.toString())
     private val innlogetBruker = InnloggetBrukerObjectMother.createInnloggetBruker(fodselsnummer)
     private val oppgaveKafkaProducer = mockk<KafkaProducerWrapper<Nokkel, Oppgave>>()
     private val oppgaveProducer = OppgaveProducer(oppgaveKafkaProducer, systembruker)
@@ -27,12 +30,13 @@ class OppgaveProducerTest {
     @Test
     fun `should create oppgave-event`() {
         runBlocking {
-            val oppgaveDto = ProduceOppgaveDto(tekst, link, grupperingsid, eksternVarsling)
+            val oppgaveDto = ProduceOppgaveDto(tekst, link, grupperingsid, eksternVarsling, prefererteKanaler)
             val oppgaveKafkaEvent = oppgaveProducer.createOppgaveForIdent(innlogetBruker, oppgaveDto)
             oppgaveKafkaEvent.getLink() `should be equal to` link
             oppgaveKafkaEvent.getTekst() `should be equal to` tekst
             oppgaveKafkaEvent.getGrupperingsId() `should be equal to` grupperingsid
             oppgaveKafkaEvent.getEksternVarsling() `should be equal to` true
+            oppgaveKafkaEvent.getPrefererteKanaler() `should be equal to` prefererteKanaler
         }
     }
 
@@ -43,6 +47,13 @@ class OppgaveProducerTest {
             nokkel.getEventId() `should be equal to` eventId
             nokkel.getSystembruker() `should be equal to` systembruker
         }
+    }
+
+    @Test
+    fun `should allow no value for prefererte kanaler`() {
+        val oppgaveDto = ProduceOppgaveDto(tekst, link, grupperingsid, eksternVarsling)
+        val oppgaveKafkaEvent = oppgaveProducer.createOppgaveForIdent(innlogetBruker, oppgaveDto)
+        oppgaveKafkaEvent.getPrefererteKanaler().`should be empty`()
     }
 
 }

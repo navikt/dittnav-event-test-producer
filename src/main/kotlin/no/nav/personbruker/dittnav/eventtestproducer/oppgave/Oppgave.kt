@@ -15,7 +15,8 @@ data class Oppgave(
         override val tekst: String,
         override val link: String,
         override val aktiv: Boolean,
-        val eksternVarsling: Boolean
+        val eksternVarsling: Boolean,
+        val prefererteKanaler: List<String>
 ) : Brukernotifikasjon {
 
     override fun toString(): String {
@@ -31,6 +32,7 @@ data class Oppgave(
                 "tekst=***, " +
                 "link=***, " +
                 "aktiv=$aktiv, " +
-                "eksternVarsling=$eksternVarsling"
+                "eksternVarsling=$eksternVarsling, " +
+                "prefererteKanaler=$prefererteKanaler"
     }
 }

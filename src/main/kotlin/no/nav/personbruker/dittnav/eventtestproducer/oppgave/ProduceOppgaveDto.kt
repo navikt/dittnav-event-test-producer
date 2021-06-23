@@ -6,9 +6,9 @@ import kotlinx.serialization.Serializable
 class ProduceOppgaveDto(val tekst: String,
                         val link: String,
                         val grupperingsid: String,
-                        val eksternVarsling: Boolean = false) {
+                        val eksternVarsling: Boolean = false,
+                        val prefererteKanaler: List<String> = emptyList()) {
     override fun toString(): String {
-        return "ProduceOppgaveDto{tekst='$tekst', link='$link', grupperingsid='$grupperingsid', eksternVarsling='$eksternVarsling'}"
-
+        return "ProduceOppgaveDto{tekst='$tekst', link='$link', grupperingsid='$grupperingsid', eksternVarsling='$eksternVarsling', prefererteKanaler='$prefererteKanaler}"
     }
 }
