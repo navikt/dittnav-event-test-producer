@@ -23,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.navikt:brukernotifikasjon-schemas:preferert-kanal-SNAPSHOT")
+    implementation(Brukernotifikasjon.schemas)
     implementation(DittNAV.Common.utils)
     implementation(Hikari.cp)
     implementation(Kafka.Apache.clients)
