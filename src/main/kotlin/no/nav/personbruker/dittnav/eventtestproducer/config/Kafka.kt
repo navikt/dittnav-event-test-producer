@@ -8,6 +8,7 @@ import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.config.SaslConfigs
 import org.apache.kafka.common.config.SslConfigs
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.InetSocketAddress
@@ -15,7 +16,7 @@ import java.util.*
 
 object Kafka {
 
-    val log = LoggerFactory.getLogger(Kafka::class.java)
+    private val log: Logger = LoggerFactory.getLogger(Kafka::class.java)
 
     val doneTopicName = "aapen-brukernotifikasjon-done-v1"
     val beskjedTopicName = "aapen-brukernotifikasjon-nyBeskjed-v1"

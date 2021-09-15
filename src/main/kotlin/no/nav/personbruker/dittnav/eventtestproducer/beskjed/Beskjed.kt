@@ -1,3 +1,5 @@
+package no.nav.personbruker.dittnav.eventtestproducer.beskjed
+
 import no.nav.personbruker.dittnav.eventtestproducer.common.database.Brukernotifikasjon
 import java.time.ZonedDateTime
 

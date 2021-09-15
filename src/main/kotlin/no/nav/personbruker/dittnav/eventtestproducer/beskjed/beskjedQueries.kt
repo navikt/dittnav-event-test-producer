@@ -1,6 +1,5 @@
 package no.nav.personbruker.dittnav.eventtestproducer.beskjed
 
-import Beskjed
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.database.getListFromSeparatedString
 import no.nav.personbruker.dittnav.eventtestproducer.common.database.getNullableZonedDateTime

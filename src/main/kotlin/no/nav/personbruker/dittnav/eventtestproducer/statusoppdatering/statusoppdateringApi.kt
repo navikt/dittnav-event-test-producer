@@ -8,7 +8,7 @@ import no.nav.personbruker.dittnav.eventtestproducer.config.respondForParameterT
 fun Route.statusoppdateringApi(statusoppdateringProducer: StatusoppdateringProducer) {
 
     post("/produce/statusoppdatering") {
-        respondForParameterType<ProduceStatusoppdateringDto> { statusoppdateringDto ->
+        this.respondForParameterType<ProduceStatusoppdateringDto> { statusoppdateringDto ->
             statusoppdateringProducer.produceStatusoppdateringEventForIdent(innloggetBruker, statusoppdateringDto)
             "Et statusoppdatering-event for brukeren: $innloggetBruker har blitt lagt på kafka."
         }

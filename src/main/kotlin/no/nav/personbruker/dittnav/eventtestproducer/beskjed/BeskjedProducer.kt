@@ -3,7 +3,6 @@ package no.nav.personbruker.dittnav.eventtestproducer.beskjed
 import no.nav.brukernotifikasjon.schemas.Beskjed
 import no.nav.brukernotifikasjon.schemas.Nokkel
 import no.nav.brukernotifikasjon.schemas.builders.BeskjedBuilder
-import no.nav.brukernotifikasjon.schemas.builders.domain.PreferertKanal
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.common.getPrefererteKanaler

@@ -1,6 +1,5 @@
 package no.nav.personbruker.dittnav.eventtestproducer.beskjed
 
-import Beskjed
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
