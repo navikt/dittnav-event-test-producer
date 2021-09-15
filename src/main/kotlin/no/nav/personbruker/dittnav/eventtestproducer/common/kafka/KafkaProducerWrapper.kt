@@ -2,6 +2,7 @@ package no.nav.personbruker.dittnav.eventtestproducer.common.kafka
 
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerRecord
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 class KafkaProducerWrapper<K, V>(
@@ -9,7 +10,7 @@ class KafkaProducerWrapper<K, V>(
         private val kafkaProducer: KafkaProducer<K, V>
 ) {
 
-    val log = LoggerFactory.getLogger(KafkaProducerWrapper::class.java)
+    private val log: Logger = LoggerFactory.getLogger(KafkaProducerWrapper::class.java)
 
     fun sendEvent(key: K, event: V) {
         ProducerRecord(topicName, key, event).let { producerRecord ->
