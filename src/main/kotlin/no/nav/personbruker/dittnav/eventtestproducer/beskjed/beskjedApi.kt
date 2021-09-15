@@ -8,7 +8,7 @@ import no.nav.personbruker.dittnav.eventtestproducer.config.respondForParameterT
 fun Route.beskjedApi(beskjedProducer: BeskjedProducer) {
 
     post("/produce/beskjed") {
-        respondForParameterType<ProduceBeskjedDto> { beskjedDto ->
+        this.respondForParameterType<ProduceBeskjedDto> { beskjedDto ->
             beskjedProducer.produceBeskjedEventForIdent(innloggetBruker, beskjedDto)
             "Et beskjed-event for brukeren: $innloggetBruker har blitt lagt på kafka."
         }
