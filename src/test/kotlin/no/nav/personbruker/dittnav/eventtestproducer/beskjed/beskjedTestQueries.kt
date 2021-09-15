@@ -1,6 +1,5 @@
 package no.nav.personbruker.dittnav.eventtestproducer.beskjed
 
-import Beskjed
 import java.sql.Connection
 import java.sql.Types
 
