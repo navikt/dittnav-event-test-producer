@@ -1,6 +1,7 @@
 package no.nav.personbruker.dittnav.eventtestproducer.innboks
 
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
+import no.nav.personbruker.dittnav.eventtestproducer.common.database.getListFromSeparatedString
 import no.nav.personbruker.dittnav.eventtestproducer.common.database.getUtcTimeStamp
 import no.nav.personbruker.dittnav.eventtestproducer.common.database.map
 import java.sql.Connection
@@ -38,6 +39,8 @@ private fun ResultSet.toInnboks(): Innboks {
             link = getString("link"),
             sikkerhetsnivaa = getInt("sikkerhetsnivaa"),
             sistOppdatert = ZonedDateTime.ofInstant(getUtcTimeStamp("sistOppdatert").toInstant(), ZoneId.of("Europe/Oslo")),
-            aktiv = getBoolean("aktiv")
+            aktiv = getBoolean("aktiv"),
+            eksternVarsling = getBoolean("eksternVarsling"),
+            prefererteKanaler = getListFromSeparatedString("prefererteKanaler", ",")
     )
 }

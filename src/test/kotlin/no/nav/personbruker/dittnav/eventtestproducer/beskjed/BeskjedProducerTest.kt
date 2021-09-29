@@ -5,16 +5,16 @@ import kotlinx.coroutines.runBlocking
 import no.nav.brukernotifikasjon.schemas.Beskjed
 import no.nav.brukernotifikasjon.schemas.Nokkel
 import no.nav.brukernotifikasjon.schemas.builders.domain.PreferertKanal
-import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBrukerObjectMother
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
+import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import org.amshove.kluent.`should be empty`
 import org.amshove.kluent.`should be equal to`
-import org.amshove.kluent.`should be null`
 import org.junit.jupiter.api.Test
 import java.util.*
 
 class BeskjedProducerTest {
+
     private val fodselsnummer = "12345678910"
     private val eventId = UUID.randomUUID().toString()
     private val systembruker = "x-dittNAV"
@@ -23,7 +23,7 @@ class BeskjedProducerTest {
     private val grupperingsid = "dummyGrupperingsid"
     private val eksternVarsling = true
     private val prefererteKanaler = listOf(PreferertKanal.SMS.toString(), PreferertKanal.EPOST.toString())
-    private val innlogetBruker = InnloggetBrukerObjectMother.createInnloggetBruker(fodselsnummer)
+    private val innloggetBruker = InnloggetBrukerObjectMother.createInnloggetBruker(fodselsnummer)
     private val beskjedKafkaProducer = mockk<KafkaProducerWrapper<Nokkel, Beskjed>>()
     private val beskjedProducer = BeskjedProducer(beskjedKafkaProducer, systembruker)
 
@@ -31,7 +31,7 @@ class BeskjedProducerTest {
     fun `should create beskjed-event`() {
         runBlocking {
             val beskjedDto = ProduceBeskjedDto(tekst, link, grupperingsid, eksternVarsling, prefererteKanaler)
-            val beskjedKafkaEvent = beskjedProducer.createBeskjedForIdent(innlogetBruker, beskjedDto)
+            val beskjedKafkaEvent = beskjedProducer.createBeskjedForIdent(innloggetBruker, beskjedDto)
             beskjedKafkaEvent.getLink() `should be equal to` link
             beskjedKafkaEvent.getTekst() `should be equal to` tekst
             beskjedKafkaEvent.getGrupperingsId() `should be equal to` grupperingsid
@@ -43,7 +43,7 @@ class BeskjedProducerTest {
     @Test
     fun `should allow no link value`() {
         val beskjedDto = ProduceBeskjedDto(tekst, null, grupperingsid, eksternVarsling)
-        val beskjedKafkaEvent = beskjedProducer.createBeskjedForIdent(innlogetBruker, beskjedDto)
+        val beskjedKafkaEvent = beskjedProducer.createBeskjedForIdent(innloggetBruker, beskjedDto)
         beskjedKafkaEvent.getLink() `should be equal to` ""
     }
 
@@ -59,7 +59,7 @@ class BeskjedProducerTest {
     @Test
     fun `should allow no value for prefererte kanaler`() {
         val beskjedDto = ProduceBeskjedDto(tekst, link, grupperingsid, eksternVarsling)
-        val beskjedKafkaEvent = beskjedProducer.createBeskjedForIdent(innlogetBruker, beskjedDto)
+        val beskjedKafkaEvent = beskjedProducer.createBeskjedForIdent(innloggetBruker, beskjedDto)
         beskjedKafkaEvent.getPrefererteKanaler().`should be empty`()
     }
 

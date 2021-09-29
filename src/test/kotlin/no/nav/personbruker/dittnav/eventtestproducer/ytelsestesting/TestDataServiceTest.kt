@@ -50,6 +50,7 @@ internal class TestDataServiceTest {
         runBlocking {
             testDataService.produserBeskjeder(produceDone = false, YTestDto(eksternVarsling = true))
             testDataService.produserOppgaver(produceDone = false, YTestDto(eksternVarsling = true))
+            testDataService.produserInnboks(produceDone = false, YTestDto(eksternVarsling = true))
         }
     }
 

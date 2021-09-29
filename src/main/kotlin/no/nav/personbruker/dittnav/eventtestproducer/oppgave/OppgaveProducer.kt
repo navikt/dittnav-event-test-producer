@@ -32,7 +32,7 @@ class OppgaveProducer(private val oppgaveKafkaProducer: KafkaProducerWrapper<Nok
 
     fun createOppgaveForIdent(innloggetBruker: InnloggetBruker, dto: ProduceOppgaveDto): Oppgave {
         val now = LocalDateTime.now(ZoneOffset.UTC)
-        val build = OppgaveBuilder()
+        val builder = OppgaveBuilder()
                 .withFodselsnummer(innloggetBruker.ident)
                 .withGrupperingsId(dto.grupperingsid)
                 .withLink(URL(dto.link))
@@ -41,6 +41,6 @@ class OppgaveProducer(private val oppgaveKafkaProducer: KafkaProducerWrapper<Nok
                 .withSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)
                 .withEksternVarsling(dto.eksternVarsling)
                 .withPrefererteKanaler(*getPrefererteKanaler(dto.prefererteKanaler).toTypedArray())
-        return build.build()
+        return builder.build()
     }
 }

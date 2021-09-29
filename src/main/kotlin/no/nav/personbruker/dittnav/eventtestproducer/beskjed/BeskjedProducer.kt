@@ -34,7 +34,7 @@ class BeskjedProducer(private val beskjedKafkaProducer: KafkaProducerWrapper<Nok
     fun createBeskjedForIdent(innloggetBruker: InnloggetBruker, dto: ProduceBeskjedDto): Beskjed {
         val now = LocalDateTime.now(ZoneOffset.UTC)
         val weekFromNow = now.plus(7, ChronoUnit.DAYS)
-        val build = BeskjedBuilder()
+        val builder = BeskjedBuilder()
                 .withFodselsnummer(innloggetBruker.ident)
                 .withGrupperingsId(dto.grupperingsid)
                 .withTekst(dto.tekst)
@@ -44,8 +44,8 @@ class BeskjedProducer(private val beskjedKafkaProducer: KafkaProducerWrapper<Nok
                 .withEksternVarsling(dto.eksternVarsling)
                 .withPrefererteKanaler(*getPrefererteKanaler(dto.prefererteKanaler).toTypedArray())
         if(!dto.link.isNullOrBlank()) {
-            build.withLink(URL(dto.link))
+            builder.withLink(URL(dto.link))
         }
-        return build.build()
+        return builder.build()
     }
 }

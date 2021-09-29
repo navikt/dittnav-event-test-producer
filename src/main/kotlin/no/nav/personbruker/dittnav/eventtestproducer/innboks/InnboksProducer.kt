@@ -2,10 +2,14 @@ package no.nav.personbruker.dittnav.eventtestproducer.innboks
 
 import no.nav.brukernotifikasjon.schemas.Innboks
 import no.nav.brukernotifikasjon.schemas.Nokkel
+import no.nav.brukernotifikasjon.schemas.builders.InnboksBuilder
+import no.nav.brukernotifikasjon.schemas.builders.OppgaveBuilder
 import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
+import no.nav.personbruker.dittnav.eventtestproducer.common.getPrefererteKanaler
 import org.slf4j.LoggerFactory
+import java.net.URL
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
@@ -28,15 +32,16 @@ class InnboksProducer(private val innboksKafkaProducer: KafkaProducerWrapper<Nok
     }
 
     fun createInnboksForIdent(innloggetBruker: InnloggetBruker, dto: ProduceInnboksDto): Innboks {
-        val nowInMs = LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()
-
-        return Innboks.newBuilder()
-                .setFodselsnummer(innloggetBruker.ident)
-                .setGrupperingsId(dto.grupperingsid)
-                .setLink(dto.link)
-                .setTekst(dto.tekst)
-                .setTidspunkt(nowInMs)
-                .setSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)
-                .build()
+        val nowInMs = LocalDateTime.now(ZoneOffset.UTC)
+        val builder = InnboksBuilder()
+            .withFodselsnummer(innloggetBruker.ident)
+            .withGrupperingsId(dto.grupperingsid)
+            .withLink(URL(dto.link))
+            .withTekst(dto.tekst)
+            .withTidspunkt(nowInMs)
+            .withSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)
+            .withEksternVarsling(dto.eksternVarsling)
+            .withPrefererteKanaler(*getPrefererteKanaler(dto.prefererteKanaler).toTypedArray())
+        return builder.build()
     }
 }
