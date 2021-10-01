@@ -57,6 +57,8 @@ create table if not exists innboks
   sikkerhetsnivaa integer,
   sistoppdatert   timestamp,
   aktiv           boolean,
+  eksternVarsling   boolean,
+  prefererteKanaler varchar(100),
   constraint innbokseventidprodusent
   unique (eventid, systembruker)
 );

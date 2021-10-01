@@ -14,7 +14,9 @@ data class Innboks (
         override val link: String,
         override val sikkerhetsnivaa: Int,
         override val sistOppdatert: ZonedDateTime,
-        override val aktiv: Boolean
+        override val aktiv: Boolean,
+        val eksternVarsling: Boolean,
+        val prefererteKanaler: List<String>
 ) : Brukernotifikasjon {
 
     override fun toString(): String {
@@ -29,6 +31,8 @@ data class Innboks (
                 "link=***, " +
                 "sikkerhetsnivaa=$sikkerhetsnivaa, " +
                 "sistOppdatert=$sistOppdatert, " +
-                "aktiv=$aktiv"
+                "aktiv=$aktiv, " +
+                "eksternVarsling=$eksternVarsling, " +
+                "prefererteKanaler=$prefererteKanaler"
     }
 }

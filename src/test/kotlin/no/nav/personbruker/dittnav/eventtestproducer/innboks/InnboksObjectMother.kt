@@ -4,7 +4,7 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 
 object InnboksObjectMother {
-    fun createInnboks(id: Int, eventId: String, fodselsnummer: String, aktiv: Boolean): Innboks {
+    fun createInnboks(id: Int, eventId: String, fodselsnummer: String, aktiv: Boolean, eksternVarsling: Boolean, prefererteKanaler: List<String>): Innboks {
         return Innboks(
                 id = id,
                 systembruker = "x-dittnav",
@@ -16,6 +16,8 @@ object InnboksObjectMother {
                 link = "https://nav.no/systemX/$fodselsnummer",
                 sistOppdatert = ZonedDateTime.now(ZoneId.of("Europe/Oslo")),
                 sikkerhetsnivaa = 4,
-                aktiv = aktiv)
+                aktiv = aktiv,
+                eksternVarsling = eksternVarsling,
+                prefererteKanaler = prefererteKanaler)
     }
 }

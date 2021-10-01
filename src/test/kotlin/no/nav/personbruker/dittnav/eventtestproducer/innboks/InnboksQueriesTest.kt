@@ -1,6 +1,7 @@
 package no.nav.personbruker.dittnav.eventtestproducer.innboks
 
 import kotlinx.coroutines.runBlocking
+import no.nav.brukernotifikasjon.schemas.builders.domain.PreferertKanal
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBrukerObjectMother
 import no.nav.personbruker.dittnav.eventtestproducer.common.database.H2Database
 import org.amshove.kluent.`should be empty`
@@ -16,10 +17,14 @@ class InnboksQueriesTest {
     private val database = H2Database()
     private val innloggetBruker = InnloggetBrukerObjectMother.createInnloggetBruker()
 
-    private val innboks1 = InnboksObjectMother.createInnboks(id = 1, eventId = "123", fodselsnummer = innloggetBruker.ident, aktiv = true)
-    private val innboks2 = InnboksObjectMother.createInnboks(id = 2, eventId = "345", fodselsnummer = innloggetBruker.ident, aktiv = true)
-    private val innboks3 = InnboksObjectMother.createInnboks(id = 3, eventId = "567", fodselsnummer = innloggetBruker.ident, aktiv = false)
-    private val innboks4 = InnboksObjectMother.createInnboks(id = 4, eventId = "789", fodselsnummer = innloggetBruker.ident, aktiv = false)
+    private val innboks1 = InnboksObjectMother.createInnboks(id = 1, eventId = "123", fodselsnummer = innloggetBruker.ident,
+        aktiv = true, eksternVarsling = true, prefererteKanaler = listOf(PreferertKanal.SMS.toString()))
+    private val innboks2 = InnboksObjectMother.createInnboks(id = 2, eventId = "345", fodselsnummer = innloggetBruker.ident,
+        aktiv = true, eksternVarsling = true, prefererteKanaler = listOf(PreferertKanal.SMS.toString()))
+    private val innboks3 = InnboksObjectMother.createInnboks(id = 3, eventId = "567", fodselsnummer = innloggetBruker.ident,
+        aktiv = false, eksternVarsling = true, prefererteKanaler = listOf(PreferertKanal.EPOST.toString()))
+    private val innboks4 = InnboksObjectMother.createInnboks(id = 4, eventId = "789", fodselsnummer = innloggetBruker.ident,
+        aktiv = false, eksternVarsling = true, prefererteKanaler = listOf(PreferertKanal.EPOST.toString()))
 
     @BeforeAll
     fun `populer testdata`() {

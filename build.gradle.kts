@@ -23,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    implementation(Brukernotifikasjon.schemas)
+    implementation("com.github.navikt:brukernotifikasjon-schemas:1.1.0")
     implementation(DittNAV.Common.utils)
     implementation(Hikari.cp)
     implementation(Kafka.Apache.clients)

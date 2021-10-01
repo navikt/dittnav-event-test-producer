@@ -23,7 +23,7 @@ class OppgaveProducerTest {
     private val grupperingsid = "dummyGrupperingsid"
     private val eksternVarsling = true
     private val prefererteKanaler = listOf(PreferertKanal.SMS.toString(), PreferertKanal.EPOST.toString())
-    private val innlogetBruker = InnloggetBrukerObjectMother.createInnloggetBruker(fodselsnummer)
+    private val innloggetBruker = InnloggetBrukerObjectMother.createInnloggetBruker(fodselsnummer)
     private val oppgaveKafkaProducer = mockk<KafkaProducerWrapper<Nokkel, Oppgave>>()
     private val oppgaveProducer = OppgaveProducer(oppgaveKafkaProducer, systembruker)
 
@@ -31,7 +31,7 @@ class OppgaveProducerTest {
     fun `should create oppgave-event`() {
         runBlocking {
             val oppgaveDto = ProduceOppgaveDto(tekst, link, grupperingsid, eksternVarsling, prefererteKanaler)
-            val oppgaveKafkaEvent = oppgaveProducer.createOppgaveForIdent(innlogetBruker, oppgaveDto)
+            val oppgaveKafkaEvent = oppgaveProducer.createOppgaveForIdent(innloggetBruker, oppgaveDto)
             oppgaveKafkaEvent.getLink() `should be equal to` link
             oppgaveKafkaEvent.getTekst() `should be equal to` tekst
             oppgaveKafkaEvent.getGrupperingsId() `should be equal to` grupperingsid
@@ -52,7 +52,7 @@ class OppgaveProducerTest {
     @Test
     fun `should allow no value for prefererte kanaler`() {
         val oppgaveDto = ProduceOppgaveDto(tekst, link, grupperingsid, eksternVarsling)
-        val oppgaveKafkaEvent = oppgaveProducer.createOppgaveForIdent(innlogetBruker, oppgaveDto)
+        val oppgaveKafkaEvent = oppgaveProducer.createOppgaveForIdent(innloggetBruker, oppgaveDto)
         oppgaveKafkaEvent.getPrefererteKanaler().`should be empty`()
     }
 

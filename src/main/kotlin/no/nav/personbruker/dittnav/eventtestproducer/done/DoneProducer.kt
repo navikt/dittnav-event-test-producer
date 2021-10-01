@@ -31,11 +31,11 @@ class DoneProducer(private val doneKafkaProducer: KafkaProducerWrapper<Nokkel, D
 
     fun createDoneEvent(innloggetBruker: InnloggetBruker): Done {
         val now = LocalDateTime.now(ZoneOffset.UTC)
-        val build = DoneBuilder()
+        val builder = DoneBuilder()
                 .withFodselsnummer(innloggetBruker.ident)
                 .withTidspunkt(now)
                 .withGrupperingsId("100$now")
-        return build.build()
+        return builder.build()
     }
 
 }
