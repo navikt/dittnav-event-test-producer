@@ -1,8 +1,8 @@
 package no.nav.personbruker.dittnav.eventtestproducer.beskjed
 
-import no.nav.brukernotifikasjon.schemas.Beskjed
-import no.nav.brukernotifikasjon.schemas.Nokkel
-import no.nav.brukernotifikasjon.schemas.builders.BeskjedBuilder
+import no.nav.brukernotifikasjon.schemas.builders.BeskjedInputBuilder
+import no.nav.brukernotifikasjon.schemas.input.BeskjedInput
+import no.nav.brukernotifikasjon.schemas.input.NokkelInput
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.common.getPrefererteKanaler
@@ -13,7 +13,7 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 
-class BeskjedProducer(private val beskjedKafkaProducer: KafkaProducerWrapper<Nokkel, Beskjed>, private val systembruker: String) {
+class BeskjedProducer(private val beskjedKafkaProducer: KafkaProducerWrapper<NokkelInput, BeskjedInput>, private val systembruker: String) {
 
     private val log = LoggerFactory.getLogger(BeskjedProducer::class.java)
 
@@ -27,14 +27,14 @@ class BeskjedProducer(private val beskjedKafkaProducer: KafkaProducerWrapper<Nok
         }
     }
 
-    fun sendEventToKafka(key: Nokkel, event: Beskjed) {
+    fun sendEventToKafka(key: NokkelInput, event: BeskjedInput) {
         beskjedKafkaProducer.sendEvent(key, event)
     }
 
     fun createBeskjedForIdent(innloggetBruker: InnloggetBruker, dto: ProduceBeskjedDto): Beskjed {
         val now = LocalDateTime.now(ZoneOffset.UTC)
         val weekFromNow = now.plus(7, ChronoUnit.DAYS)
-        val builder = BeskjedBuilder()
+        val builder = BeskjedInputBuilder()
                 .withFodselsnummer(innloggetBruker.ident)
                 .withGrupperingsId(dto.grupperingsid)
                 .withTekst(dto.tekst)

@@ -1,19 +1,18 @@
 package no.nav.personbruker.dittnav.eventtestproducer.innboks
 
-import no.nav.brukernotifikasjon.schemas.Innboks
-import no.nav.brukernotifikasjon.schemas.Nokkel
-import no.nav.brukernotifikasjon.schemas.builders.InnboksBuilder
-import no.nav.brukernotifikasjon.schemas.builders.OppgaveBuilder
-import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
+import no.nav.brukernotifikasjon.schemas.builders.InnboksInputBuilder
+import no.nav.brukernotifikasjon.schemas.input.InnboksInput
+import no.nav.brukernotifikasjon.schemas.input.NokkelInput
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.common.getPrefererteKanaler
+import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import org.slf4j.LoggerFactory
 import java.net.URL
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
-class InnboksProducer(private val innboksKafkaProducer: KafkaProducerWrapper<Nokkel, Innboks>, private val systembruker: String) {
+class InnboksProducer(private val innboksKafkaProducer: KafkaProducerWrapper<NokkelInput, InnboksInput>, private val systembruker: String) {
 
     private val log = LoggerFactory.getLogger(InnboksProducer::class.java)
 
@@ -27,13 +26,13 @@ class InnboksProducer(private val innboksKafkaProducer: KafkaProducerWrapper<Nok
         }
     }
 
-    fun sendEventToKafka(key: Nokkel, event: Innboks) {
+    fun sendEventToKafka(key: NokkelInput, event: InnboksInput) {
         innboksKafkaProducer.sendEvent(key, event)
     }
 
     fun createInnboksForIdent(innloggetBruker: InnloggetBruker, dto: ProduceInnboksDto): Innboks {
         val nowInMs = LocalDateTime.now(ZoneOffset.UTC)
-        val builder = InnboksBuilder()
+        val builder = InnboksInputBuilder()
             .withFodselsnummer(innloggetBruker.ident)
             .withGrupperingsId(dto.grupperingsid)
             .withLink(URL(dto.link))

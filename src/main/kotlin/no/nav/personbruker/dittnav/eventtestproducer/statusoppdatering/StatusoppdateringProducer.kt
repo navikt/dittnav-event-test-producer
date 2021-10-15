@@ -1,18 +1,18 @@
 package no.nav.personbruker.dittnav.eventtestproducer.statusoppdatering
 
-import no.nav.brukernotifikasjon.schemas.Nokkel
-import no.nav.brukernotifikasjon.schemas.Statusoppdatering
-import no.nav.brukernotifikasjon.schemas.builders.StatusoppdateringBuilder
+import no.nav.brukernotifikasjon.schemas.builders.StatusoppdateringInputBuilder
 import no.nav.brukernotifikasjon.schemas.builders.domain.StatusGlobal
-import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
+import no.nav.brukernotifikasjon.schemas.input.NokkelInput
+import no.nav.brukernotifikasjon.schemas.input.StatusoppdateringInput
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
+import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import org.slf4j.LoggerFactory
 import java.net.URL
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
-class StatusoppdateringProducer(private val statusoppdateringKafkaProducer: KafkaProducerWrapper<Nokkel, Statusoppdatering>, private val systembruker: String) {
+class StatusoppdateringProducer(private val statusoppdateringKafkaProducer: KafkaProducerWrapper<NokkelInput, StatusoppdateringInput>, private val systembruker: String) {
 
     private val log = LoggerFactory.getLogger(StatusoppdateringProducer::class.java)
 
@@ -26,13 +26,13 @@ class StatusoppdateringProducer(private val statusoppdateringKafkaProducer: Kafk
         }
     }
 
-    fun sendEventToKafka(key: Nokkel, event: Statusoppdatering) {
+    fun sendEventToKafka(key: NokkelInput, event: StatusoppdateringInput) {
         statusoppdateringKafkaProducer.sendEvent(key, event)
     }
 
     fun createStatusoppdateringForIdent(innloggetBruker: InnloggetBruker, dto: ProduceStatusoppdateringDto): Statusoppdatering {
         val now = LocalDateTime.now(ZoneOffset.UTC)
-        val build = StatusoppdateringBuilder()
+        val build = StatusoppdateringInputBuilder()
                 .withFodselsnummer(innloggetBruker.ident)
                 .withGrupperingsId(dto.grupperingsid)
                 .withLink(URL(dto.link))

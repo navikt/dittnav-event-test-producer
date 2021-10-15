@@ -1,17 +1,17 @@
 package no.nav.personbruker.dittnav.eventtestproducer.done
 
-import no.nav.brukernotifikasjon.schemas.Done
-import no.nav.brukernotifikasjon.schemas.Nokkel
-import no.nav.brukernotifikasjon.schemas.builders.DoneBuilder
-import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
+import no.nav.brukernotifikasjon.schemas.builders.DoneInputBuilder
+import no.nav.brukernotifikasjon.schemas.input.DoneInput
+import no.nav.brukernotifikasjon.schemas.input.NokkelInput
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.common.database.Brukernotifikasjon
+import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import org.slf4j.LoggerFactory
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
-class DoneProducer(private val doneKafkaProducer: KafkaProducerWrapper<Nokkel, Done>, private val systembruker: String) {
+class DoneProducer(private val doneKafkaProducer: KafkaProducerWrapper<NokkelInput, DoneInput>, private val systembruker: String) {
 
     private val log = LoggerFactory.getLogger(DoneProducer::class.java)
 
@@ -25,13 +25,13 @@ class DoneProducer(private val doneKafkaProducer: KafkaProducerWrapper<Nokkel, D
         }
     }
 
-    fun sendEventToKafka(key: Nokkel, event: Done) {
+    fun sendEventToKafka(key: NokkelInput, event: DoneInput) {
         doneKafkaProducer.sendEvent(key, event)
     }
 
-    fun createDoneEvent(innloggetBruker: InnloggetBruker): Done {
+    fun createDoneEvent(innloggetBruker: InnloggetBruker): DoneInput {
         val now = LocalDateTime.now(ZoneOffset.UTC)
-        val builder = DoneBuilder()
+        val builder = DoneInputBuilder()
                 .withFodselsnummer(innloggetBruker.ident)
                 .withTidspunkt(now)
                 .withGrupperingsId("100$now")
