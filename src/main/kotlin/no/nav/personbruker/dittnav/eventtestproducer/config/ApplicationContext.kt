@@ -1,6 +1,5 @@
 package no.nav.personbruker.dittnav.eventtestproducer.config
 
-import no.nav.brukernotifikasjon.schemas.*
 import no.nav.brukernotifikasjon.schemas.builders.domain.Eventtype
 import no.nav.brukernotifikasjon.schemas.input.*
 import no.nav.personbruker.dittnav.eventtestproducer.beskjed.BeskjedProducer
@@ -21,19 +20,19 @@ class ApplicationContext {
     val database: Database = PostgresDatabase(environment)
 
     val kafkaProducerBeskjed = KafkaProducerWrapper(environment.beskjedInputTopicName, KafkaProducer<NokkelInput, BeskjedInput>(Kafka.producerProps(environment, Eventtype.BESKJED)))
-    val beskjedProducer = BeskjedProducer(kafkaProducerBeskjed, environment.systemUserName)
+    val beskjedProducer = BeskjedProducer(environment, kafkaProducerBeskjed)
 
     val kafkaProducerOppgave = KafkaProducerWrapper(environment.oppgaveInputTopicName, KafkaProducer<NokkelInput, OppgaveInput>(Kafka.producerProps(environment, Eventtype.OPPGAVE)))
-    val oppgaveProducer = OppgaveProducer(kafkaProducerOppgave, environment.systemUserName)
+    val oppgaveProducer = OppgaveProducer(environment, kafkaProducerOppgave)
 
     val kafkaProducerInnboks = KafkaProducerWrapper(environment.innboksInputTopicName, KafkaProducer<NokkelInput, InnboksInput>(Kafka.producerProps(environment, Eventtype.INNBOKS)))
-    val innboksProducer = InnboksProducer(kafkaProducerInnboks, environment.systemUserName)
+    val innboksProducer = InnboksProducer(environment, kafkaProducerInnboks)
 
-    val kafkaProducerDone = KafkaProducerWrapper(environment.doneInputTopicName, KafkaProducer<NokkelInput, DoneInput>(Kafka.producerProps(environment, Eventtype.DONE)))
-    val doneProducer = DoneProducer(kafkaProducerDone, environment.systemUserName)
+    val kafkaProducerDone = KafkaProducerWrapper(environment.doneInputTopicName, KafkaProducer<NokkelInput, DoneInput>(Kafka.producerProps(environment, Eventtype.BESKJED)))
+    val doneProducer = DoneProducer(environment, kafkaProducerDone)
 
     val kafkaProducerStatusoppdatering = KafkaProducerWrapper(environment.statusoppdateringInputTopicName, KafkaProducer<NokkelInput, StatusoppdateringInput>(Kafka.producerProps(environment, Eventtype.STATUSOPPDATERING)))
-    val statusoppdateringProducer = StatusoppdateringProducer(kafkaProducerStatusoppdatering, environment.systemUserName)
+    val statusoppdateringProducer = StatusoppdateringProducer(environment, kafkaProducerStatusoppdatering)
 
     val doneEventService = DoneEventService(database, doneProducer)
     val testDataService = TestDataService(doneProducer, beskjedProducer, oppgaveProducer, innboksProducer, statusoppdateringProducer)

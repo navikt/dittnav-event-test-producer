@@ -3,7 +3,6 @@ package no.nav.personbruker.dittnav.eventtestproducer.oppgave
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import no.nav.brukernotifikasjon.schemas.Nokkel
-import no.nav.brukernotifikasjon.schemas.Oppgave
 import no.nav.brukernotifikasjon.schemas.builders.domain.PreferertKanal
 import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBrukerObjectMother
@@ -31,7 +30,7 @@ class OppgaveProducerTest {
     fun `should create oppgave-event`() {
         runBlocking {
             val oppgaveDto = ProduceOppgaveDto(tekst, link, grupperingsid, eksternVarsling, prefererteKanaler)
-            val oppgaveKafkaEvent = oppgaveProducer.createOppgaveForIdent(innloggetBruker, oppgaveDto)
+            val oppgaveKafkaEvent = oppgaveProducer.createOppgaveInput(innloggetBruker, oppgaveDto)
             oppgaveKafkaEvent.getLink() `should be equal to` link
             oppgaveKafkaEvent.getTekst() `should be equal to` tekst
             oppgaveKafkaEvent.getGrupperingsId() `should be equal to` grupperingsid
@@ -52,7 +51,7 @@ class OppgaveProducerTest {
     @Test
     fun `should allow no value for prefererte kanaler`() {
         val oppgaveDto = ProduceOppgaveDto(tekst, link, grupperingsid, eksternVarsling)
-        val oppgaveKafkaEvent = oppgaveProducer.createOppgaveForIdent(innloggetBruker, oppgaveDto)
+        val oppgaveKafkaEvent = oppgaveProducer.createOppgaveInput(innloggetBruker, oppgaveDto)
         oppgaveKafkaEvent.getPrefererteKanaler().`should be empty`()
     }
 

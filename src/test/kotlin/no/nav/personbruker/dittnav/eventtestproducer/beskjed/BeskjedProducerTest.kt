@@ -2,7 +2,6 @@ package no.nav.personbruker.dittnav.eventtestproducer.beskjed
 
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import no.nav.brukernotifikasjon.schemas.Beskjed
 import no.nav.brukernotifikasjon.schemas.Nokkel
 import no.nav.brukernotifikasjon.schemas.builders.domain.PreferertKanal
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBrukerObjectMother
@@ -31,7 +30,7 @@ class BeskjedProducerTest {
     fun `should create beskjed-event`() {
         runBlocking {
             val beskjedDto = ProduceBeskjedDto(tekst, link, grupperingsid, eksternVarsling, prefererteKanaler)
-            val beskjedKafkaEvent = beskjedProducer.createBeskjedForIdent(innloggetBruker, beskjedDto)
+            val beskjedKafkaEvent = beskjedProducer.createBeskjedInput(innloggetBruker, beskjedDto)
             beskjedKafkaEvent.getLink() `should be equal to` link
             beskjedKafkaEvent.getTekst() `should be equal to` tekst
             beskjedKafkaEvent.getGrupperingsId() `should be equal to` grupperingsid
@@ -43,7 +42,7 @@ class BeskjedProducerTest {
     @Test
     fun `should allow no link value`() {
         val beskjedDto = ProduceBeskjedDto(tekst, null, grupperingsid, eksternVarsling)
-        val beskjedKafkaEvent = beskjedProducer.createBeskjedForIdent(innloggetBruker, beskjedDto)
+        val beskjedKafkaEvent = beskjedProducer.createBeskjedInput(innloggetBruker, beskjedDto)
         beskjedKafkaEvent.getLink() `should be equal to` ""
     }
 
@@ -59,7 +58,7 @@ class BeskjedProducerTest {
     @Test
     fun `should allow no value for prefererte kanaler`() {
         val beskjedDto = ProduceBeskjedDto(tekst, link, grupperingsid, eksternVarsling)
-        val beskjedKafkaEvent = beskjedProducer.createBeskjedForIdent(innloggetBruker, beskjedDto)
+        val beskjedKafkaEvent = beskjedProducer.createBeskjedInput(innloggetBruker, beskjedDto)
         beskjedKafkaEvent.getPrefererteKanaler().`should be empty`()
     }
 

@@ -34,7 +34,7 @@ class TestDataService(
         for (i in 1..yTestDto.antallEventer) {
             val key = createKeyForEvent(eventId = UUID.randomUUID().toString(), systembruker = dummySystembruker)
             val dto = ProduceBeskjedDto(tekst = "Beskjedtekst $i", link = "https://beskjed-$i", grupperingsid = "grupperingsid-$i", eksternVarsling = yTestDto.eksternVarsling)
-            val beskjedEvent = beskjedProducer.createBeskjedForIdent(innloggetBruker, dto)
+            val beskjedEvent = beskjedProducer.createBeskjedInput(innloggetBruker, dto)
             beskjedProducer.sendEventToKafka(key, beskjedEvent)
             if(produceDone) {
                 val doneEvent = doneProducer.createDoneEvent(innloggetBruker)
@@ -55,7 +55,7 @@ class TestDataService(
         for (i in 1..yTestDto.antallEventer) {
             val key = createKeyForEvent(eventId = UUID.randomUUID().toString(), systembruker = dummySystembruker)
             val dto = ProduceOppgaveDto(tekst = "Oppgavetekst $i", link = "https://oppgave-$i", grupperingsid = "grupperingsid-$i", eksternVarsling = yTestDto.eksternVarsling)
-            val oppgaveEvent = oppgaveProducer.createOppgaveForIdent(innloggetBruker, dto)
+            val oppgaveEvent = oppgaveProducer.createOppgaveInput(innloggetBruker, dto)
             oppgaveProducer.sendEventToKafka(key, oppgaveEvent)
             if(produceDone) {
                 val doneEvent = doneProducer.createDoneEvent(innloggetBruker)
@@ -76,7 +76,7 @@ class TestDataService(
         for (i in 1..yTestDto.antallEventer) {
             val key = createKeyForEvent("i-$i", dummySystembruker)
             val dto = ProduceInnboksDto("Innbokstekst $i", "https://innboks-$i", "grupperingsid-$i")
-            val innboksEvent = innboksProducer.createInnboksForIdent(innloggetBruker, dto)
+            val innboksEvent = innboksProducer.createInnboksInput(innloggetBruker, dto)
             innboksProducer.sendEventToKafka(key, innboksEvent)
             if(produceDone) {
                 val doneEvent = doneProducer.createDoneEvent(innloggetBruker)
@@ -97,7 +97,7 @@ class TestDataService(
         for (i in 1..yTestDto.antallEventer) {
             val key = createKeyForEvent("s-$i", dummySystembruker)
             val dto = ProduceStatusoppdateringDto("https://dummyLink_$i", "SENDT", "dummyStatusIntern_$i", "dummySakstema_$i", "grupperingsid-$i")
-            val statusoppdateringEvent = statusoppdateringProducer.createStatusoppdateringForIdent(innloggetBruker, dto)
+            val statusoppdateringEvent = statusoppdateringProducer.createStatusoppdateringInput(innloggetBruker, dto)
             statusoppdateringProducer.sendEventToKafka(key, statusoppdateringEvent)
             if (isShouldTakeASmallBreakAndLogProgress(i, yTestDto.antallEventer)) {
                 log.info("Har produsert Statusoppdatering-event nummer $i tar en liten pause")

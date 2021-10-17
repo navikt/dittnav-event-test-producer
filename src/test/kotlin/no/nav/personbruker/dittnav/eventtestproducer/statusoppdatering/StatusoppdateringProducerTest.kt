@@ -3,7 +3,6 @@ package no.nav.personbruker.dittnav.eventtestproducer.statusoppdatering
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import no.nav.brukernotifikasjon.schemas.Nokkel
-import no.nav.brukernotifikasjon.schemas.Statusoppdatering
 import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBrukerObjectMother
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
@@ -28,7 +27,7 @@ class StatusoppdateringProducerTest {
     fun `should create statusoppdatering-event`() {
         runBlocking {
             val statusoppdateringDto = ProduceStatusoppdateringDto(link, statusGlobal, statusInternal, sakstema, grupperingsid)
-            val statusoppdateringKafkaEvent = statusoppdateringProducer.createStatusoppdateringForIdent(innlogetBruker, statusoppdateringDto)
+            val statusoppdateringKafkaEvent = statusoppdateringProducer.createStatusoppdateringInput(innlogetBruker, statusoppdateringDto)
             statusoppdateringKafkaEvent.getLink() `should be equal to` link
             statusoppdateringKafkaEvent.getStatusGlobal() `should be equal to` statusGlobal
             statusoppdateringKafkaEvent.getStatusIntern() `should be equal to` statusInternal

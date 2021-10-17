@@ -2,7 +2,6 @@ package no.nav.personbruker.dittnav.eventtestproducer.innboks
 
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import no.nav.brukernotifikasjon.schemas.Innboks
 import no.nav.brukernotifikasjon.schemas.Nokkel
 import no.nav.brukernotifikasjon.schemas.builders.domain.PreferertKanal
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBrukerObjectMother
@@ -31,7 +30,7 @@ class InnboksProducerTest {
     fun `should create innboks-event`() {
         runBlocking {
             val innboksDto = ProduceInnboksDto(tekst, link, grupperingsid, eksternVarsling, prefererteKanaler)
-            val innboksKafkaEvent = innboksProducer.createInnboksForIdent(innloggetBruker, innboksDto)
+            val innboksKafkaEvent = innboksProducer.createInnboksInput(innloggetBruker, innboksDto)
             innboksKafkaEvent.getLink() `should be equal to` link
             innboksKafkaEvent.getTekst() `should be equal to` tekst
             innboksKafkaEvent.getGrupperingsId() `should be equal to` grupperingsid
@@ -52,7 +51,7 @@ class InnboksProducerTest {
     @Test
     fun `should allow no value for prefererte kanaler`() {
         val innboksDto = ProduceInnboksDto(tekst, link, grupperingsid, eksternVarsling)
-        val innboksKafkaEvent = innboksProducer.createInnboksForIdent(innloggetBruker, innboksDto)
+        val innboksKafkaEvent = innboksProducer.createInnboksInput(innloggetBruker, innboksDto)
         innboksKafkaEvent.getPrefererteKanaler().`should be empty`()
     }
 
