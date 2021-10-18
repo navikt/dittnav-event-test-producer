@@ -32,7 +32,7 @@ class OppgaveProducer(private val environment: Environment, private val oppgaveK
         oppgaveKafkaProducer.sendEvent(key, event)
     }
 
-    private fun createNokkelInput(innloggetBruker: InnloggetBruker, dto: ProduceOppgaveDto): NokkelInput {
+    fun createNokkelInput(innloggetBruker: InnloggetBruker, dto: ProduceOppgaveDto): NokkelInput {
         return NokkelInputBuilder()
             .withEventId(UUID.randomUUID().toString())
             .withGrupperingsId(dto.grupperingsid)

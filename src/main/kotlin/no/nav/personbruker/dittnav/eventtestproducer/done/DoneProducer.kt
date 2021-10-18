@@ -19,7 +19,7 @@ class DoneProducer(private val environment: Environment, private val doneKafkaPr
     fun produceDoneEventForSpecifiedEvent(innloggetBruker: InnloggetBruker, eventThatsDone: Brukernotifikasjon) {
         try {
             val key = createNokkelInput(innloggetBruker, eventThatsDone.eventId)
-            val doneEvent = createDoneEvent()
+            val doneEvent = createDoneInput()
             sendEventToKafka(key, doneEvent)
         } catch (e: Exception) {
             log.error("Det skjedde en feil ved produsering av et event for brukeren $innloggetBruker", e)
@@ -30,7 +30,7 @@ class DoneProducer(private val environment: Environment, private val doneKafkaPr
         doneKafkaProducer.sendEvent(key, event)
     }
 
-    private fun createNokkelInput(innloggetBruker: InnloggetBruker, eventId: String): NokkelInput {
+    fun createNokkelInput(innloggetBruker: InnloggetBruker, eventId: String): NokkelInput {
         return NokkelInputBuilder()
             .withEventId(eventId)
             .withFodselsnummer(innloggetBruker.ident)
@@ -39,7 +39,7 @@ class DoneProducer(private val environment: Environment, private val doneKafkaPr
             .build()
     }
 
-    fun createDoneEvent(): DoneInput {
+    fun createDoneInput(): DoneInput {
         val now = LocalDateTime.now(ZoneOffset.UTC)
         val builder = DoneInputBuilder()
                 .withTidspunkt(now)

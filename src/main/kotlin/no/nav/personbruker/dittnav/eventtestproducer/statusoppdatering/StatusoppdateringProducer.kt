@@ -32,7 +32,7 @@ class StatusoppdateringProducer(private val environment: Environment, private va
         statusoppdateringKafkaProducer.sendEvent(key, event)
     }
 
-    private fun createNokkelInput(innloggetBruker: InnloggetBruker, dto: ProduceStatusoppdateringDto): NokkelInput {
+    fun createNokkelInput(innloggetBruker: InnloggetBruker, dto: ProduceStatusoppdateringDto): NokkelInput {
         return NokkelInputBuilder()
             .withEventId(UUID.randomUUID().toString())
             .withGrupperingsId(dto.grupperingsid)

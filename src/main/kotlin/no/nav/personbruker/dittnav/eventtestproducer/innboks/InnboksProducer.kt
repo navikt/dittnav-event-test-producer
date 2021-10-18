@@ -32,7 +32,7 @@ class InnboksProducer(private val environment: Environment, private val innboksK
         innboksKafkaProducer.sendEvent(key, event)
     }
 
-    private fun createNokkelInput(innloggetBruker: InnloggetBruker, dto: ProduceInnboksDto): NokkelInput {
+    fun createNokkelInput(innloggetBruker: InnloggetBruker, dto: ProduceInnboksDto): NokkelInput {
         return NokkelInputBuilder()
             .withEventId(UUID.randomUUID().toString())
             .withGrupperingsId(dto.grupperingsid)

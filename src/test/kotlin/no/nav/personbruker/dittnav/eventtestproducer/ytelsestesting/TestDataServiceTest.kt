@@ -1,10 +1,11 @@
 package no.nav.personbruker.dittnav.eventtestproducer.ytelsestesting
 
 import kotlinx.coroutines.runBlocking
-import no.nav.brukernotifikasjon.schemas.*
-import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
+import no.nav.brukernotifikasjon.schemas.builders.domain.Eventtype
+import no.nav.brukernotifikasjon.schemas.input.*
 import no.nav.personbruker.dittnav.eventtestproducer.beskjed.BeskjedProducer
-import no.nav.personbruker.dittnav.eventtestproducer.config.Environment
+import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
+import no.nav.personbruker.dittnav.eventtestproducer.common.util.createPropertiesForTestEnvironment
 import no.nav.personbruker.dittnav.eventtestproducer.config.Kafka
 import no.nav.personbruker.dittnav.eventtestproducer.done.DoneProducer
 import no.nav.personbruker.dittnav.eventtestproducer.innboks.InnboksProducer
@@ -16,20 +17,20 @@ internal class TestDataServiceTest {
 
     private val env = createPropertiesForTestEnvironment()
 
-    private val kafkaProducerDone = KafkaProducerWrapper(Kafka.doneTopicName, KafkaProducer<Nokkel, Done>(Kafka.producerProps(env, EventType.DONE_INPUT)))
-    private val doneProducer = DoneProducer(kafkaProducerDone, env.systemUserName)
+    private val kafkaProducerDone = KafkaProducerWrapper(env.doneInputTopicName, KafkaProducer<NokkelInput, DoneInput>(Kafka.producerProps(env, Eventtype.DONE)))
+    private val doneProducer = DoneProducer(env, kafkaProducerDone)
 
-    private val kafkaProducerBeskjed = KafkaProducerWrapper(Kafka.beskjedTopicName, KafkaProducer<Nokkel, Beskjed>(Kafka.producerProps(env, EventType.BESKJED_INPUT)))
-    private val beskjedProducer = BeskjedProducer(kafkaProducerBeskjed, env.systemUserName)
+    private val kafkaProducerBeskjed = KafkaProducerWrapper(env.beskjedInputTopicName, KafkaProducer<NokkelInput, BeskjedInput>(Kafka.producerProps(env, Eventtype.BESKJED)))
+    private val beskjedProducer = BeskjedProducer(env, kafkaProducerBeskjed)
 
-    private val kafkaProducerInnboks = KafkaProducerWrapper(Kafka.innboksTopicName, KafkaProducer<Nokkel, Innboks>(Kafka.producerProps(env, EventType.INNBOKS_INPUT)))
-    private val innboksProducer = InnboksProducer(kafkaProducerInnboks, env.systemUserName)
+    private val kafkaProducerInnboks = KafkaProducerWrapper(env.innboksInputTopicName, KafkaProducer<NokkelInput, InnboksInput>(Kafka.producerProps(env, Eventtype.INNBOKS)))
+    private val innboksProducer = InnboksProducer(env, kafkaProducerInnboks)
 
-    private val kafkaProducerOppgave = KafkaProducerWrapper(Kafka.oppgaveTopicName, KafkaProducer<Nokkel, Oppgave>(Kafka.producerProps(env, EventType.OPPGAVE_INPUT)))
-    private val oppgaveProducer = OppgaveProducer(kafkaProducerOppgave, env.systemUserName)
+    private val kafkaProducerOppgave = KafkaProducerWrapper(env.oppgaveInputTopicName, KafkaProducer<NokkelInput, OppgaveInput>(Kafka.producerProps(env, Eventtype.OPPGAVE)))
+    private val oppgaveProducer = OppgaveProducer(env, kafkaProducerOppgave)
 
-    private val kafkaProducerStatusoppdatering = KafkaProducerWrapper(Kafka.statusoppdateringTopicName, KafkaProducer<Nokkel, Statusoppdatering>(Kafka.producerProps(env, EventType.STATUSOPPDATERING_INPUT)))
-    private val statusoppdateringProducer = StatusoppdateringProducer(kafkaProducerStatusoppdatering, env.systemUserName)
+    private val kafkaProducerStatusoppdatering = KafkaProducerWrapper(env.statusoppdateringInputTopicName, KafkaProducer<NokkelInput, StatusoppdateringInput>(Kafka.producerProps(env, Eventtype.STATUSOPPDATERING)))
+    private val statusoppdateringProducer = StatusoppdateringProducer(env, kafkaProducerStatusoppdatering)
 
     //@Test
     fun produserTestcaseUtenEksternVarsling() {
@@ -50,20 +51,6 @@ internal class TestDataServiceTest {
             testDataService.produserOppgaver(produceDone = false, YTestDto(eksternVarsling = true))
             testDataService.produserInnboks(produceDone = false, YTestDto(eksternVarsling = true))
         }
-    }
-
-
-    private fun createPropertiesForTestEnvironment(): Environment {
-        return Environment(
-                bootstrapServers = "localhost:29092",
-                schemaRegistryUrl = "http://localhost:8081",
-                systemUserName = "username",
-                systemUserPassword = "password",
-                dbHost = "localhost:5432",
-                dbName = "dittnav-event-cache-preprod",
-                dbMountPath = "notUsedOnLocalhost",
-                corsAllowedOrigins = "localhost:9002"
-        )
     }
 
 }

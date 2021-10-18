@@ -33,7 +33,7 @@ class BeskjedProducer(private val environment: Environment, private val beskjedK
         beskjedKafkaProducer.sendEvent(key, event)
     }
 
-    private fun createNokkelInput(innloggetBruker: InnloggetBruker, dto: ProduceBeskjedDto): NokkelInput {
+    fun createNokkelInput(innloggetBruker: InnloggetBruker, dto: ProduceBeskjedDto): NokkelInput {
         return NokkelInputBuilder()
             .withEventId(UUID.randomUUID().toString())
             .withGrupperingsId(dto.grupperingsid)
@@ -43,7 +43,7 @@ class BeskjedProducer(private val environment: Environment, private val beskjedK
             .build()
     }
 
-    private fun createBeskjedInput(innloggetBruker: InnloggetBruker, dto: ProduceBeskjedDto): BeskjedInput {
+    fun createBeskjedInput(innloggetBruker: InnloggetBruker, dto: ProduceBeskjedDto): BeskjedInput {
         val now = LocalDateTime.now(ZoneOffset.UTC)
         val weekFromNow = now.plus(7, ChronoUnit.DAYS)
         val builder = BeskjedInputBuilder()
