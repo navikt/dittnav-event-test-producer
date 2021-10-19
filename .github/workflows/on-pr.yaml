@@ -1,7 +1,7 @@
 name: Kjør ende-til-ende-tester ved pull-request
 
 on:
-  pull_request_target: 
+  pull_request:
 
 jobs:
   should-run-end-to-end-tests:
