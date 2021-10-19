@@ -46,5 +46,4 @@ class StatusoppdateringProducerTest {
             nokkel.getSystembruker() `should be equal to` systembruker
         }
     }
-
 }
