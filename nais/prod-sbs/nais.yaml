@@ -2,7 +2,7 @@ apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
   name: dittnav-event-test-producer
-  namespace: {{namespace}}
+  namespace: personbruker
   labels:
     team: personbruker
 spec:
@@ -19,19 +19,17 @@ spec:
   prometheus:
     path: /person/dittnav-event-test-producer/metrics
   replicas:
-    min: 0
+    min: 1
     max: 1
   webproxy: true
   ingresses:
-{{#each ingresses}}
-  - "{{this}}"
-{{/each}}
+    - "https://www.nav.no/person/dittnav-event-test-producer"
   vault:
     enabled: true
     paths:
-      - kvPath: /kv/{{cluster}}/sbs/dittnav-event-test-producer/{{namespace}}
+      - kvPath: /kv/prod/sbs/dittnav-event-test-producer/personbruker
         mountPath: /var/run/secrets/nais.io/vault
-      - kvPath: /serviceuser/data/{{environment}}/srvdn-e-t-producer
+      - kvPath: /serviceuser/data/prod/srvdn-e-t-producer
         mountPath: /secret/serviceuser
   resources:
     limits:
