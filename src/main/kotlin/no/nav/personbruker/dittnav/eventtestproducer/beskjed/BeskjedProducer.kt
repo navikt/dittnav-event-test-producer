@@ -1,5 +1,6 @@
 package no.nav.personbruker.dittnav.eventtestproducer.beskjed
 
+import kotlinx.datetime.toJavaLocalDateTime
 import no.nav.brukernotifikasjon.schemas.Beskjed
 import no.nav.brukernotifikasjon.schemas.Nokkel
 import no.nav.brukernotifikasjon.schemas.builders.BeskjedBuilder
@@ -33,13 +34,12 @@ class BeskjedProducer(private val beskjedKafkaProducer: KafkaProducerWrapper<Nok
 
     fun createBeskjedForIdent(innloggetBruker: InnloggetBruker, dto: ProduceBeskjedDto): Beskjed {
         val now = LocalDateTime.now(ZoneOffset.UTC)
-        val weekFromNow = now.plus(7, ChronoUnit.DAYS)
         val builder = BeskjedBuilder()
                 .withFodselsnummer(innloggetBruker.ident)
                 .withGrupperingsId(dto.grupperingsid)
                 .withTekst(dto.tekst)
                 .withTidspunkt(now)
-                .withSynligFremTil(weekFromNow)
+                .withSynligFremTil(dto.synligFremTil.toJavaLocalDateTime())
                 .withSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)
                 .withEksternVarsling(dto.eksternVarsling)
                 .withPrefererteKanaler(*getPrefererteKanaler(dto.prefererteKanaler).toTypedArray())
