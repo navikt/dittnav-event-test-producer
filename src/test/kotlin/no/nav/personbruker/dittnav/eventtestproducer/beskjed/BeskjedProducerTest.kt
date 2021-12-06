@@ -2,6 +2,8 @@ package no.nav.personbruker.dittnav.eventtestproducer.beskjed
 
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import kotlinx.datetime.*
+import kotlinx.datetime.TimeZone
 import no.nav.brukernotifikasjon.schemas.Beskjed
 import no.nav.brukernotifikasjon.schemas.Nokkel
 import no.nav.brukernotifikasjon.schemas.builders.domain.PreferertKanal
@@ -15,6 +17,7 @@ import java.util.*
 
 class BeskjedProducerTest {
 
+    private val synligFremTil = Clock.System.now().plus(7, DateTimeUnit.DAY, TimeZone.UTC).toLocalDateTime(TimeZone.UTC)
     private val fodselsnummer = "12345678910"
     private val eventId = UUID.randomUUID().toString()
     private val systembruker = "x-dittNAV"
@@ -30,14 +33,22 @@ class BeskjedProducerTest {
     @Test
     fun `should create beskjed-event`() {
         runBlocking {
-            val beskjedDto = ProduceBeskjedDto(tekst, link, grupperingsid, eksternVarsling, prefererteKanaler)
+            val beskjedDto = ProduceBeskjedDto(tekst, link, grupperingsid, eksternVarsling, prefererteKanaler, synligFremTil)
             val beskjedKafkaEvent = beskjedProducer.createBeskjedForIdent(innloggetBruker, beskjedDto)
             beskjedKafkaEvent.getLink() `should be equal to` link
             beskjedKafkaEvent.getTekst() `should be equal to` tekst
             beskjedKafkaEvent.getGrupperingsId() `should be equal to` grupperingsid
             beskjedKafkaEvent.getEksternVarsling() `should be equal to` true
             beskjedKafkaEvent.getPrefererteKanaler() `should be equal to` prefererteKanaler
+            beskjedKafkaEvent.getSynligFremTil() `should be equal to` synligFremTil.toInstant(TimeZone.UTC).toEpochMilliseconds()
         }
+    }
+
+    @Test
+    fun `should allow no synligFremTil value`() {
+        val beskjedDto = ProduceBeskjedDto(tekst, link, grupperingsid, eksternVarsling, prefererteKanaler, synligFremTil = null)
+        val beskjedKafkaEvent = beskjedProducer.createBeskjedForIdent(innloggetBruker, beskjedDto)
+        beskjedKafkaEvent.getSynligFremTil() `should be equal to` null
     }
 
     @Test

@@ -31,6 +31,7 @@ dependencies {
     implementation(Ktor.auth)
     implementation(Ktor.authJwt)
     implementation(Ktor.serialization)
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.1")
     implementation(Ktor.serverNetty)
     implementation(Logback.classic)
     implementation(Logstash.logbackEncoder)
