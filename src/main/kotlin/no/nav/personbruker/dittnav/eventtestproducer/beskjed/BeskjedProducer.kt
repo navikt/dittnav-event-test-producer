@@ -39,7 +39,7 @@ class BeskjedProducer(private val beskjedKafkaProducer: KafkaProducerWrapper<Nok
                 .withGrupperingsId(dto.grupperingsid)
                 .withTekst(dto.tekst)
                 .withTidspunkt(now)
-                .withSynligFremTil(dto.synligFremTil.toJavaLocalDateTime())
+                .withSynligFremTil(dto.synligFremTil?.toJavaLocalDateTime())
                 .withSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)
                 .withEksternVarsling(dto.eksternVarsling)
                 .withPrefererteKanaler(*getPrefererteKanaler(dto.prefererteKanaler).toTypedArray())

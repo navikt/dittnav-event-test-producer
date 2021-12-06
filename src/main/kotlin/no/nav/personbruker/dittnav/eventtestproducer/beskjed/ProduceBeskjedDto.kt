@@ -9,7 +9,7 @@ class ProduceBeskjedDto(val tekst: String,
                         val grupperingsid: String,
                         val eksternVarsling: Boolean = false,
                         val prefererteKanaler: List<String> = emptyList(),
-                        val synligFremTil: LocalDateTime = Clock.System.now().plus(DateTimePeriod(days = 7), TimeZone.UTC).toLocalDateTime(TimeZone.UTC)) {
+                        val synligFremTil: LocalDateTime? = null) {
     override fun toString(): String {
         return "ProduceBeskjedDto{tekst='$tekst', link='$link', grupperingsid='$grupperingsid', eksternVarsling='$eksternVarsling', synligFremTil='$synligFremTil'}, prefererteKanaler='$prefererteKanaler"
     }
