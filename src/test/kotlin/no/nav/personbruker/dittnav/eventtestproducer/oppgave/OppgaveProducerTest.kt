@@ -2,6 +2,8 @@ package no.nav.personbruker.dittnav.eventtestproducer.oppgave
 
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import kotlinx.datetime.*
+import kotlinx.datetime.TimeZone
 import no.nav.brukernotifikasjon.schemas.Nokkel
 import no.nav.brukernotifikasjon.schemas.Oppgave
 import no.nav.brukernotifikasjon.schemas.builders.domain.PreferertKanal
@@ -22,6 +24,9 @@ class OppgaveProducerTest {
     private val tekst = "dummyTekst"
     private val grupperingsid = "dummyGrupperingsid"
     private val eksternVarsling = true
+    private val synligFremTil = Clock.System.now().plus(7, DateTimeUnit.DAY, TimeZone.UTC).toLocalDateTime(TimeZone.UTC)
+    private val epostVarslingstekst = "<p>Du har fått en ny oppgave på Ditt NAV</p>"
+    private val smsVarslingstekst = "Du har fått en ny oppgave på Ditt NAV"
     private val prefererteKanaler = listOf(PreferertKanal.SMS.toString(), PreferertKanal.EPOST.toString())
     private val innloggetBruker = InnloggetBrukerObjectMother.createInnloggetBruker(fodselsnummer)
     private val oppgaveKafkaProducer = mockk<KafkaProducerWrapper<Nokkel, Oppgave>>()
@@ -30,13 +35,16 @@ class OppgaveProducerTest {
     @Test
     fun `should create oppgave-event`() {
         runBlocking {
-            val oppgaveDto = ProduceOppgaveDto(tekst, link, grupperingsid, eksternVarsling, prefererteKanaler)
+            val oppgaveDto = ProduceOppgaveDto(tekst, link, grupperingsid, eksternVarsling, prefererteKanaler, synligFremTil, epostVarslingstekst, smsVarslingstekst)
             val oppgaveKafkaEvent = oppgaveProducer.createOppgaveForIdent(innloggetBruker, oppgaveDto)
             oppgaveKafkaEvent.getLink() `should be equal to` link
             oppgaveKafkaEvent.getTekst() `should be equal to` tekst
             oppgaveKafkaEvent.getGrupperingsId() `should be equal to` grupperingsid
             oppgaveKafkaEvent.getEksternVarsling() `should be equal to` true
             oppgaveKafkaEvent.getPrefererteKanaler() `should be equal to` prefererteKanaler
+            oppgaveKafkaEvent.getSynligFremTil() `should be equal to` synligFremTil.toInstant(TimeZone.UTC).toEpochMilliseconds()
+            oppgaveKafkaEvent.getEpostVarslingstekst() `should be equal to` epostVarslingstekst
+            oppgaveKafkaEvent.getSmsVarslingstekst() `should be equal to` smsVarslingstekst
         }
     }
 

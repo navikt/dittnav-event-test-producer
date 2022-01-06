@@ -3,7 +3,7 @@ package no.nav.personbruker.dittnav.eventtestproducer.beskjed
 import kotlinx.datetime.toJavaLocalDateTime
 import no.nav.brukernotifikasjon.schemas.Beskjed
 import no.nav.brukernotifikasjon.schemas.Nokkel
-import no.nav.brukernotifikasjon.schemas.builders.BeskjedBuilder
+import no.nav.brukernotifikasjon.schemas.builders.legacy.BeskjedBuilder
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.common.getPrefererteKanaler
@@ -42,6 +42,8 @@ class BeskjedProducer(private val beskjedKafkaProducer: KafkaProducerWrapper<Nok
                 .withSynligFremTil(dto.synligFremTil?.toJavaLocalDateTime())
                 .withSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)
                 .withEksternVarsling(dto.eksternVarsling)
+                .withEpostVarslingstekst(dto.epostVarslingstekst)
+                .withSmsVarslingstekst(dto.smsVarslingstekst)
                 .withPrefererteKanaler(*getPrefererteKanaler(dto.prefererteKanaler).toTypedArray())
         if(!dto.link.isNullOrBlank()) {
             builder.withLink(URL(dto.link))
