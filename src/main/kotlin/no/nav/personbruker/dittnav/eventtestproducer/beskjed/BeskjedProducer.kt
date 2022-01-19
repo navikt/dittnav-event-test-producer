@@ -1,6 +1,8 @@
 package no.nav.personbruker.dittnav.eventtestproducer.beskjed
 
+import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toJavaLocalDateTime
+import kotlinx.datetime.toLocalDateTime
 import no.nav.brukernotifikasjon.schemas.Beskjed
 import no.nav.brukernotifikasjon.schemas.Nokkel
 import no.nav.brukernotifikasjon.schemas.builders.legacy.BeskjedBuilder
@@ -39,7 +41,7 @@ class BeskjedProducer(private val beskjedKafkaProducer: KafkaProducerWrapper<Nok
                 .withGrupperingsId(dto.grupperingsid)
                 .withTekst(dto.tekst)
                 .withTidspunkt(now)
-                .withSynligFremTil(dto.synligFremTil?.toJavaLocalDateTime())
+                .withSynligFremTil(dto.synligFremTil?.toLocalDateTime(TimeZone.UTC)?.toJavaLocalDateTime())
                 .withSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)
                 .withEksternVarsling(dto.eksternVarsling)
                 .withEpostVarslingstekst(dto.epostVarslingstekst)

@@ -1,5 +1,6 @@
 package no.nav.personbruker.dittnav.eventtestproducer.oppgave
 
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 
@@ -9,7 +10,7 @@ class ProduceOppgaveDto(val tekst: String,
                         val grupperingsid: String,
                         val eksternVarsling: Boolean = false,
                         val prefererteKanaler: List<String> = emptyList(),
-                        val synligFremTil: LocalDateTime? = null,
+                        val synligFremTil: Instant? = null,
                         val epostVarslingstekst: String? = null,
                         val epostVarslingstittel: String? = null,
                         val smsVarslingstekst: String? = null) {

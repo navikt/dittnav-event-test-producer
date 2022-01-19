@@ -1,6 +1,9 @@
 package no.nav.personbruker.dittnav.eventtestproducer.oppgave
 
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toJavaInstant
 import kotlinx.datetime.toJavaLocalDateTime
+import kotlinx.datetime.toLocalDateTime
 import no.nav.brukernotifikasjon.schemas.Nokkel
 import no.nav.brukernotifikasjon.schemas.Oppgave
 import no.nav.brukernotifikasjon.schemas.builders.legacy.OppgaveBuilder
@@ -40,7 +43,7 @@ class OppgaveProducer(private val oppgaveKafkaProducer: KafkaProducerWrapper<Nok
                 .withTekst(dto.tekst)
                 .withTidspunkt(now)
                 .withSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)
-                .withSynligFremTil(dto.synligFremTil?.toJavaLocalDateTime())
+                .withSynligFremTil(dto.synligFremTil?.toLocalDateTime(TimeZone.UTC)?.toJavaLocalDateTime())
                 .withEpostVarslingstekst(dto.epostVarslingstekst)
                 .withEpostVarslingstittel(dto.epostVarslingstittel)
                 .withSmsVarslingstekst(dto.smsVarslingstekst)

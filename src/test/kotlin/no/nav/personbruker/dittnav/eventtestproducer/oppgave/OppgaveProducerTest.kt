@@ -24,7 +24,7 @@ class OppgaveProducerTest {
     private val tekst = "dummyTekst"
     private val grupperingsid = "dummyGrupperingsid"
     private val eksternVarsling = true
-    private val synligFremTil = Clock.System.now().plus(7, DateTimeUnit.DAY, TimeZone.UTC).toLocalDateTime(TimeZone.UTC)
+    private val synligFremTil = Clock.System.now().plus(7, DateTimeUnit.DAY, TimeZone.UTC)
     private val epostVarslingstekst = "<p>Du har fått en ny oppgave på Ditt NAV</p>"
     private val epostVarslingstittel = "Oppgave"
     private val smsVarslingstekst = "Du har fått en ny oppgave på Ditt NAV"
@@ -43,7 +43,7 @@ class OppgaveProducerTest {
             oppgaveKafkaEvent.getGrupperingsId() `should be equal to` grupperingsid
             oppgaveKafkaEvent.getEksternVarsling() `should be equal to` true
             oppgaveKafkaEvent.getPrefererteKanaler() `should be equal to` prefererteKanaler
-            oppgaveKafkaEvent.getSynligFremTil() `should be equal to` synligFremTil.toInstant(TimeZone.UTC).toEpochMilliseconds()
+            oppgaveKafkaEvent.getSynligFremTil() `should be equal to` synligFremTil.toEpochMilliseconds()
             oppgaveKafkaEvent.getEpostVarslingstekst() `should be equal to` epostVarslingstekst
             oppgaveKafkaEvent.getEpostVarslingstittel() `should be equal to` epostVarslingstittel
             oppgaveKafkaEvent.getSmsVarslingstekst() `should be equal to` smsVarslingstekst
