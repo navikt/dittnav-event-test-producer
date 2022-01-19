@@ -26,6 +26,7 @@ class OppgaveProducerTest {
     private val eksternVarsling = true
     private val synligFremTil = Clock.System.now().plus(7, DateTimeUnit.DAY, TimeZone.UTC).toLocalDateTime(TimeZone.UTC)
     private val epostVarslingstekst = "<p>Du har fått en ny oppgave på Ditt NAV</p>"
+    private val epostVarslingstittel = "Oppgave"
     private val smsVarslingstekst = "Du har fått en ny oppgave på Ditt NAV"
     private val prefererteKanaler = listOf(PreferertKanal.SMS.toString(), PreferertKanal.EPOST.toString())
     private val innloggetBruker = InnloggetBrukerObjectMother.createInnloggetBruker(fodselsnummer)
@@ -35,7 +36,7 @@ class OppgaveProducerTest {
     @Test
     fun `should create oppgave-event`() {
         runBlocking {
-            val oppgaveDto = ProduceOppgaveDto(tekst, link, grupperingsid, eksternVarsling, prefererteKanaler, synligFremTil, epostVarslingstekst, smsVarslingstekst)
+            val oppgaveDto = ProduceOppgaveDto(tekst, link, grupperingsid, eksternVarsling, prefererteKanaler, synligFremTil, epostVarslingstekst, epostVarslingstittel, smsVarslingstekst)
             val oppgaveKafkaEvent = oppgaveProducer.createOppgaveForIdent(innloggetBruker, oppgaveDto)
             oppgaveKafkaEvent.getLink() `should be equal to` link
             oppgaveKafkaEvent.getTekst() `should be equal to` tekst
@@ -44,6 +45,7 @@ class OppgaveProducerTest {
             oppgaveKafkaEvent.getPrefererteKanaler() `should be equal to` prefererteKanaler
             oppgaveKafkaEvent.getSynligFremTil() `should be equal to` synligFremTil.toInstant(TimeZone.UTC).toEpochMilliseconds()
             oppgaveKafkaEvent.getEpostVarslingstekst() `should be equal to` epostVarslingstekst
+            oppgaveKafkaEvent.getEpostVarslingstittel() `should be equal to` epostVarslingstittel
             oppgaveKafkaEvent.getSmsVarslingstekst() `should be equal to` smsVarslingstekst
         }
     }

@@ -42,6 +42,7 @@ class OppgaveProducer(private val oppgaveKafkaProducer: KafkaProducerWrapper<Nok
                 .withSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)
                 .withSynligFremTil(dto.synligFremTil?.toJavaLocalDateTime())
                 .withEpostVarslingstekst(dto.epostVarslingstekst)
+                .withEpostVarslingstittel(dto.epostVarslingstittel)
                 .withSmsVarslingstekst(dto.smsVarslingstekst)
                 .withEksternVarsling(dto.eksternVarsling)
                 .withPrefererteKanaler(*getPrefererteKanaler(dto.prefererteKanaler).toTypedArray())

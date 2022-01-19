@@ -43,6 +43,7 @@ class BeskjedProducer(private val beskjedKafkaProducer: KafkaProducerWrapper<Nok
                 .withSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)
                 .withEksternVarsling(dto.eksternVarsling)
                 .withEpostVarslingstekst(dto.epostVarslingstekst)
+                .withEpostVarslingstittel(dto.epostVarslingstittel)
                 .withSmsVarslingstekst(dto.smsVarslingstekst)
                 .withPrefererteKanaler(*getPrefererteKanaler(dto.prefererteKanaler).toTypedArray())
         if(!dto.link.isNullOrBlank()) {
