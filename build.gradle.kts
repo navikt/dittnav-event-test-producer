@@ -23,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.navikt:brukernotifikasjon-schemas:feature~overstyre-varslingtekst-SNAPSHOT")
+    implementation("com.github.navikt:brukernotifikasjon-schemas:v1.3.1")
     implementation(DittNAV.Common.utils)
     implementation(Hikari.cp)
     implementation(Kafka.Apache.clients)
