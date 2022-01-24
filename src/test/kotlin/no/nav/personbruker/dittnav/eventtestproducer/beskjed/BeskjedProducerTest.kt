@@ -17,7 +17,6 @@ import java.util.*
 
 class BeskjedProducerTest {
 
-    private val synligFremTil = Clock.System.now().plus(7, DateTimeUnit.DAY, TimeZone.UTC).toLocalDateTime(TimeZone.UTC)
     private val fodselsnummer = "12345678910"
     private val eventId = UUID.randomUUID().toString()
     private val systembruker = "x-dittNAV"
@@ -25,6 +24,10 @@ class BeskjedProducerTest {
     private val tekst = "dummyTekst"
     private val grupperingsid = "dummyGrupperingsid"
     private val eksternVarsling = true
+    private val synligFremTil = Clock.System.now().plus(7, DateTimeUnit.DAY, TimeZone.UTC)
+    private val epostVarslingstekst = "<p>Du har fått en ny beskjed på Ditt NAV</p>"
+    private val epostVarslingstittel = "Beskjed"
+    private val smsVarslingstekst = "Du har fått en ny beskjed på Ditt NAV"
     private val prefererteKanaler = listOf(PreferertKanal.SMS.toString(), PreferertKanal.EPOST.toString())
     private val innloggetBruker = InnloggetBrukerObjectMother.createInnloggetBruker(fodselsnummer)
     private val beskjedKafkaProducer = mockk<KafkaProducerWrapper<Nokkel, Beskjed>>()
@@ -33,14 +36,17 @@ class BeskjedProducerTest {
     @Test
     fun `should create beskjed-event`() {
         runBlocking {
-            val beskjedDto = ProduceBeskjedDto(tekst, link, grupperingsid, eksternVarsling, prefererteKanaler, synligFremTil)
+            val beskjedDto = ProduceBeskjedDto(tekst, link, grupperingsid, eksternVarsling, prefererteKanaler, synligFremTil, epostVarslingstekst, epostVarslingstittel, smsVarslingstekst)
             val beskjedKafkaEvent = beskjedProducer.createBeskjedForIdent(innloggetBruker, beskjedDto)
             beskjedKafkaEvent.getLink() `should be equal to` link
             beskjedKafkaEvent.getTekst() `should be equal to` tekst
             beskjedKafkaEvent.getGrupperingsId() `should be equal to` grupperingsid
             beskjedKafkaEvent.getEksternVarsling() `should be equal to` true
             beskjedKafkaEvent.getPrefererteKanaler() `should be equal to` prefererteKanaler
-            beskjedKafkaEvent.getSynligFremTil() `should be equal to` synligFremTil.toInstant(TimeZone.UTC).toEpochMilliseconds()
+            beskjedKafkaEvent.getSynligFremTil() `should be equal to` synligFremTil.toEpochMilliseconds()
+            beskjedKafkaEvent.getEpostVarslingstekst() `should be equal to` epostVarslingstekst
+            beskjedKafkaEvent.getEpostVarslingstittel() `should be equal to` epostVarslingstittel
+            beskjedKafkaEvent.getSmsVarslingstekst() `should be equal to` smsVarslingstekst
         }
     }
 

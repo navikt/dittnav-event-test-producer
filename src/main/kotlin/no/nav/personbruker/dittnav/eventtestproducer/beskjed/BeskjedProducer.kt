@@ -1,9 +1,11 @@
 package no.nav.personbruker.dittnav.eventtestproducer.beskjed
 
+import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toJavaLocalDateTime
+import kotlinx.datetime.toLocalDateTime
 import no.nav.brukernotifikasjon.schemas.Beskjed
 import no.nav.brukernotifikasjon.schemas.Nokkel
-import no.nav.brukernotifikasjon.schemas.builders.BeskjedBuilder
+import no.nav.brukernotifikasjon.schemas.builders.legacy.BeskjedBuilder
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.common.getPrefererteKanaler
@@ -39,9 +41,12 @@ class BeskjedProducer(private val beskjedKafkaProducer: KafkaProducerWrapper<Nok
                 .withGrupperingsId(dto.grupperingsid)
                 .withTekst(dto.tekst)
                 .withTidspunkt(now)
-                .withSynligFremTil(dto.synligFremTil?.toJavaLocalDateTime())
+                .withSynligFremTil(dto.synligFremTil?.toLocalDateTime(TimeZone.UTC)?.toJavaLocalDateTime())
                 .withSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)
                 .withEksternVarsling(dto.eksternVarsling)
+                .withEpostVarslingstekst(dto.epostVarslingstekst)
+                .withEpostVarslingstittel(dto.epostVarslingstittel)
+                .withSmsVarslingstekst(dto.smsVarslingstekst)
                 .withPrefererteKanaler(*getPrefererteKanaler(dto.prefererteKanaler).toTypedArray())
         if(!dto.link.isNullOrBlank()) {
             builder.withLink(URL(dto.link))

@@ -1,7 +1,7 @@
 package no.nav.personbruker.dittnav.eventtestproducer.common
 
 import no.nav.brukernotifikasjon.schemas.Nokkel
-import no.nav.brukernotifikasjon.schemas.builders.NokkelBuilder
+import no.nav.brukernotifikasjon.schemas.builders.legacy.NokkelBuilder
 import java.util.*
 
 fun createKeyForEvent(systembruker: String): Nokkel {

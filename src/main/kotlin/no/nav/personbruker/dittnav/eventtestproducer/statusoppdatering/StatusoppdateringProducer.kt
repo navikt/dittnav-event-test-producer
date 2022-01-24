@@ -2,11 +2,11 @@ package no.nav.personbruker.dittnav.eventtestproducer.statusoppdatering
 
 import no.nav.brukernotifikasjon.schemas.Nokkel
 import no.nav.brukernotifikasjon.schemas.Statusoppdatering
-import no.nav.brukernotifikasjon.schemas.builders.StatusoppdateringBuilder
 import no.nav.brukernotifikasjon.schemas.builders.domain.StatusGlobal
-import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
+import no.nav.brukernotifikasjon.schemas.builders.legacy.StatusoppdateringBuilder
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
+import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import org.slf4j.LoggerFactory
 import java.net.URL
 import java.time.LocalDateTime

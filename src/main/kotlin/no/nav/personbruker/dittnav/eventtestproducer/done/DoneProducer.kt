@@ -2,7 +2,7 @@ package no.nav.personbruker.dittnav.eventtestproducer.done
 
 import no.nav.brukernotifikasjon.schemas.Done
 import no.nav.brukernotifikasjon.schemas.Nokkel
-import no.nav.brukernotifikasjon.schemas.builders.DoneBuilder
+import no.nav.brukernotifikasjon.schemas.builders.legacy.DoneBuilder
 import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent

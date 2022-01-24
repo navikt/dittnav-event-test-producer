@@ -2,8 +2,7 @@ package no.nav.personbruker.dittnav.eventtestproducer.innboks
 
 import no.nav.brukernotifikasjon.schemas.Innboks
 import no.nav.brukernotifikasjon.schemas.Nokkel
-import no.nav.brukernotifikasjon.schemas.builders.InnboksBuilder
-import no.nav.brukernotifikasjon.schemas.builders.OppgaveBuilder
+import no.nav.brukernotifikasjon.schemas.builders.legacy.InnboksBuilder
 import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent

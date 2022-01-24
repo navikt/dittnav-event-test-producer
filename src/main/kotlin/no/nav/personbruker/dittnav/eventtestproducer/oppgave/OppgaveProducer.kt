@@ -1,12 +1,16 @@
 package no.nav.personbruker.dittnav.eventtestproducer.oppgave
 
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toJavaInstant
+import kotlinx.datetime.toJavaLocalDateTime
+import kotlinx.datetime.toLocalDateTime
 import no.nav.brukernotifikasjon.schemas.Nokkel
 import no.nav.brukernotifikasjon.schemas.Oppgave
-import no.nav.brukernotifikasjon.schemas.builders.OppgaveBuilder
-import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
+import no.nav.brukernotifikasjon.schemas.builders.legacy.OppgaveBuilder
 import no.nav.personbruker.dittnav.eventtestproducer.common.InnloggetBruker
 import no.nav.personbruker.dittnav.eventtestproducer.common.createKeyForEvent
 import no.nav.personbruker.dittnav.eventtestproducer.common.getPrefererteKanaler
+import no.nav.personbruker.dittnav.eventtestproducer.common.kafka.KafkaProducerWrapper
 import org.slf4j.LoggerFactory
 import java.net.URL
 import java.time.LocalDateTime
@@ -39,6 +43,10 @@ class OppgaveProducer(private val oppgaveKafkaProducer: KafkaProducerWrapper<Nok
                 .withTekst(dto.tekst)
                 .withTidspunkt(now)
                 .withSikkerhetsnivaa(innloggetBruker.innloggingsnivaa)
+                .withSynligFremTil(dto.synligFremTil?.toLocalDateTime(TimeZone.UTC)?.toJavaLocalDateTime())
+                .withEpostVarslingstekst(dto.epostVarslingstekst)
+                .withEpostVarslingstittel(dto.epostVarslingstittel)
+                .withSmsVarslingstekst(dto.smsVarslingstekst)
                 .withEksternVarsling(dto.eksternVarsling)
                 .withPrefererteKanaler(*getPrefererteKanaler(dto.prefererteKanaler).toTypedArray())
         return builder.build()
