@@ -27,7 +27,7 @@ fun Route.innboksApi(innboksProducer: InnboksProducer) {
 
 
 private fun createTestEventMedEksternVarslingAktivert(): ProduceInnboksDto {
-    val tekst = "Dette er et test-innboks-event med ekstern varsling"
+    val tekst = "Dette er et test-innboks-event med ekstern varsling og en default-tekst."
     val link = "https://www.nav.no"
     val grupperingsid = "1234"
     return ProduceInnboksDto(
