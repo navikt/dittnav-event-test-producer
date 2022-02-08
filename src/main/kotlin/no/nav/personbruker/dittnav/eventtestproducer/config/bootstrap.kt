@@ -45,6 +45,7 @@ fun Application.mainModule(appContext: ApplicationContext = ApplicationContext()
         healthApi()
         authenticate {
             innboksApi(appContext.innboksProducer)
+            doneApi(appContext.doneEventService)
         }
     }
 
