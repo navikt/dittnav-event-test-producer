@@ -20,7 +20,6 @@ import no.nav.personbruker.dittnav.eventtestproducer.statusoppdatering.statusopp
 import no.nav.personbruker.dittnav.eventtestproducer.ytelsestesting.ytelsestestApi
 import no.nav.security.token.support.ktor.tokenValidationSupport
 
-@KtorExperimentalAPI
 fun Application.mainModule(appContext: ApplicationContext = ApplicationContext()) {
     DefaultExports.initialize()
     install(DefaultHeaders)
@@ -43,13 +42,15 @@ fun Application.mainModule(appContext: ApplicationContext = ApplicationContext()
 
     routing {
         healthApi()
+
         authenticate {
-            oppgaveApi(appContext.oppgaveProducer)
-            beskjedApi(appContext.beskjedProducer)
-            innboksApi(appContext.innboksProducer)
-            doneApi(appContext.doneEventService)
-            statusoppdateringApi(appContext.statusoppdateringProducer)
-            ytelsestestApi(appContext.testDataService)
+            if (appContext.environment.enableApi) {
+                oppgaveApi(appContext.oppgaveProducer)
+                beskjedApi(appContext.beskjedProducer)
+                innboksApi(appContext.innboksProducer)
+                doneApi(appContext.doneEventService)
+                statusoppdateringApi(appContext.statusoppdateringProducer)
+            }
         }
     }
 
