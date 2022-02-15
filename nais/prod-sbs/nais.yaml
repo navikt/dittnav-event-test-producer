@@ -23,8 +23,7 @@ spec:
     max: 1
   webproxy: true
   ingresses:
-    - "https://dittnav-event-test-producer.nais.oera.no",
-    - "https://www.nav.no/person/dittnav-event-test-producer"
+    - "https://dittnav-event-test-producer.nais.oera.no/person/dittnav-event-test-producer",
 vault:
   enabled: true
   paths:
