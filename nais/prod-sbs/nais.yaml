@@ -23,18 +23,18 @@ spec:
     max: 1
   webproxy: true
   ingresses:
-    - "https://dittnav-event-test-producer.nais.oera.no/person/dittnav-event-test-producer",
-vault:
-  enabled: true
-  paths:
-    - kvPath: /kv/prod/sbs/dittnav-event-test-producer/personbruker
-      mountPath: /var/run/secrets/nais.io/vault
-    - kvPath: /serviceuser/data/prod/srvdn-e-t-producer
-      mountPath: /secret/serviceuser
-resources:
-  limits:
-    cpu: 3000m
-    memory: 512Mi
-  requests:
-    cpu: 2000m
-    memory: 256Mi
+    - "https://dittnav-event-test-producer.nais.oera.no/person/dittnav-event-test-producer"
+  vault:
+    enabled: true
+    paths:
+      - kvPath: /kv/prod/sbs/dittnav-event-test-producer/personbruker
+        mountPath: /var/run/secrets/nais.io/vault
+      - kvPath: /serviceuser/data/prod/srvdn-e-t-producer
+        mountPath: /secret/serviceuser
+  resources:
+    limits:
+      cpu: 3000m
+      memory: 512Mi
+    requests:
+      cpu: 2000m
+      memory: 256Mi
